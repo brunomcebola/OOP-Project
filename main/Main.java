@@ -1,6 +1,6 @@
 package main;
 
-import exceptions.*;
+import deck.*;
 
 public class Main {
   public static void main(String args[]) {
@@ -12,8 +12,11 @@ public class Main {
     String card_file = "";
 
     try {
-      if (args.length != 4)
-        throw new InvalidNumberOfArguments();
+      /*
+       * if (args.length != 4) {
+       * throw new InvalidNumberOfArgumentsException();
+       * }
+       */
 
       switch (args[0]) {
         case "-d":
@@ -42,12 +45,26 @@ public class Main {
 
           break;
 
+        case "-c":
+          System.out.println("Deck test mode");
+          System.out.println("----------");
+
+          Deck deck = new Deck(52);
+
+          System.out.println("1st card: " + deck.drawCard());
+          System.out.println("2nd card: " + deck.drawCard());
+          System.out.println("3rd card: " + deck.drawCard());
+          System.out.println("4th card: " + deck.drawCard());
+          System.out.println("5th card: " + deck.drawCard());
+
+          break;
+
         default:
           System.out.println("Unknown mode");
           break;
       }
-    } catch (InvalidNumberOfArguments e) {
-      System.out.println(e.getMessage());
+    } catch (Exception e) {
+      System.out.println(e);
     }
   }
 }
