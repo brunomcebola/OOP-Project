@@ -25,12 +25,20 @@ public class Deck {
   }
 
   public void upload(String[] cards)
-      throws InvalidCardValueException, InvalidCardRankException, InvalidCardValueAndRankException {
+      throws InvalidCardValueException, InvalidCardRankException, InvalidCardValueAndRankException,
+      DuplicateCardException {
     nbdraws = 0;
     this.cards = new ArrayList<Card>();
 
+    Card tempCard;
+
     for (String card : cards) {
-      this.cards.add(new Card(card.charAt(0), card.charAt(1)));
+      tempCard = new Card(card.charAt(0), card.charAt(1));
+
+      if (this.cards.contains(tempCard))
+        throw new DuplicateCardException();
+
+      this.cards.add(tempCard);
     }
   }
 

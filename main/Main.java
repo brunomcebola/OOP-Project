@@ -53,7 +53,7 @@ public class Main {
           // System.out.println(card);
 
           Deck deck = new Deck();
-          String[] cards = { "AS", "TC" };
+          String[] cards = { "AS", "AS" };
           deck.upload(cards);
 
           System.out.println(deck.withdrawCard());
