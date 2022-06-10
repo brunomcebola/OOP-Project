@@ -126,7 +126,10 @@ public class Card {
     if (value == 'K')
       return 4;
 
-    if (value - '0' >= 2 && value - '0' <= 10)
+    if (value == 'T')
+      return 10;
+
+    if (value - '0' >= 2 && value - '0' <= 9)
       return value - '0';
 
     throw new InvalidCardValueException();

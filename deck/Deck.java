@@ -1,8 +1,8 @@
 package deck;
 
 import java.util.*;
-import exceptions.*;
 import exceptions.cardExcepetions.*;
+import exceptions.deckExceptions.*;
 
 public class Deck {
   private int nbdraws;
@@ -24,8 +24,14 @@ public class Deck {
     }
   }
 
-  public void upload() {
-    return;
+  public void upload(String[] cards)
+      throws InvalidCardValueException, InvalidCardRankException, InvalidCardValueAndRankException {
+    nbdraws = 0;
+    this.cards = new ArrayList<Card>();
+
+    for (String card : cards) {
+      this.cards.add(new Card(card.charAt(0), card.charAt(1)));
+    }
   }
 
   public void shuffle() {

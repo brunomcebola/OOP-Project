@@ -49,9 +49,16 @@ public class Main {
           System.out.println("Deck test mode");
           System.out.println("----------");
 
-          Card card = new Card(2, 1);
+          // Card card = new Card(2, 1);
+          // System.out.println(card);
 
-          System.out.println(card);
+          Deck deck = new Deck();
+          String[] cards = { "AS", "TC" };
+          deck.upload(cards);
+
+          System.out.println(deck.withdrawCard());
+          System.out.println(deck.withdrawCard());
+          System.out.println(deck.withdrawCard());
 
           break;
 
@@ -60,7 +67,7 @@ public class Main {
           break;
       }
     } catch (Exception e) {
-      System.out.println(e);
+      System.out.println(e.getMessage());
     }
   }
 }
