@@ -1,6 +1,6 @@
 package deck;
 
-import exceptions.*;
+import exceptions.cardExcepetions.*;
 
 /*
  * Card explanation:
@@ -16,14 +16,36 @@ public class Card {
   private final int value;
   private final int rank;
 
-  public Card(int value, int rank) throws InvalidCardFormatException {
+  public Card(int value, int rank)
+      throws InvalidCardValueException, InvalidCardRankException, InvalidCardValueAndRankException {
+    boolean invalidValue = false;
+    boolean invalidRank = false;
 
-    if (value < 1 || value > 13 || rank < 1 || rank > 4) {
-      throw new InvalidCardFormatException();
-    }
+    // Check if specified card value is valid
+    if (value < 1 || value > 13)
+      invalidValue = true;
+
+    // Check if specified card rank is valid
+    if (rank < 1 || rank > 4)
+      invalidRank = true;
+
+    if (invalidValue && invalidRank)
+      throw new InvalidCardValueAndRankException();
+
+    if (invalidValue)
+      throw new InvalidCardValueException();
+
+    if (invalidRank)
+      throw new InvalidCardRankException();
 
     this.value = value;
     this.rank = rank;
+  }
+
+  public Card(char value, char rank)
+      throws InvalidCardValueException, InvalidCardRankException, InvalidCardValueAndRankException {
+    this(valueToInt(value), rankToInt(rank));
+
   }
 
   public String toString() {
@@ -71,5 +93,42 @@ public class Card {
       return false;
 
     return true;
+  }
+
+  // Class
+
+  static private int rankToInt(char rank) throws InvalidCardRankException {
+    if (rank == 'S')
+      return 1;
+
+    if (rank == 'H')
+      return 2;
+
+    if (rank == 'C')
+      return 3;
+
+    if (rank == 'D')
+      return 4;
+
+    throw new InvalidCardRankException();
+  }
+
+  static private int valueToInt(char value) throws InvalidCardValueException {
+    if (value == 'A')
+      return 1;
+
+    if (value == 'J')
+      return 2;
+
+    if (value == 'Q')
+      return 3;
+
+    if (value == 'K')
+      return 4;
+
+    if (value - '0' >= 2 && value - '0' <= 10)
+      return value - '0';
+
+    throw new InvalidCardValueException();
   }
 }

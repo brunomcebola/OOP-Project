@@ -49,13 +49,9 @@ public class Main {
           System.out.println("Deck test mode");
           System.out.println("----------");
 
-          Deck deck = new Deck(52);
+          Card card = new Card(2, 1);
 
-          System.out.println("1st card: " + deck.drawCard());
-          System.out.println("2nd card: " + deck.drawCard());
-          System.out.println("3rd card: " + deck.drawCard());
-          System.out.println("4th card: " + deck.drawCard());
-          System.out.println("5th card: " + deck.drawCard());
+          System.out.println(card);
 
           break;
 
