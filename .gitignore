@@ -4,3 +4,5 @@ test/
 *.class
 *.pdf
 .fuse*
+debug/card-file.txt
+debug/cmd-file.txt
