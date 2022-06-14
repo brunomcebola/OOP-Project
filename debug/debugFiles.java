@@ -5,12 +5,18 @@ import java.util.*;
 import exceptions.debugExceptions.*;
 
 public class debugFiles {
-    File cardFile = new File("debug/card-file.txt");
-    File cmdFile = new File("debug/cmd-file.txt"); 
+
+    String card_file = "card-file.txt";
+    String cmd_file = "cmd-file.txt";
+
+    File cardFile = new File("txtFiles/"+card_file);
+    File cmdFile = new File("txtFiles/"+cmd_file); 
 
     private String debugDeck = new String();
 
     private String debugCommandList = new String();
+
+
 
     public void readCardFile() throws cardFileDoesntExistException, IOException{
         if (cardFile.exists() == false) {
@@ -52,6 +58,41 @@ public class debugFiles {
         return finalCommandList;
     }
 
+    public void checkDeckSize(String[] commandList, String[] deck) throws invalidDeckSizeException{
+        int deckSize = deck.length;
+        int requiredSize = 0, auxCounter = 1, holdBuffer = 0;
+
+        for (int i = 0; i < commandList.length; i++) {
+            //System.out.println("command: "+commandList[i]);
+            switch (commandList[i]) {
+                case "d":
+                    requiredSize += 5;
+                    //System.out.println("requiredSize: "+requiredSize);
+                    break;
+                case "h":
+                    while ((i+auxCounter) < commandList.length && auxFunctions.aux.isNumber(commandList[i+auxCounter])) {
+                        holdBuffer++;
+                        auxCounter++;
+                    }
+                    requiredSize += (5-holdBuffer);//size of hand - cards that are not discarded
+                    //System.out.println("requiredSize: "+requiredSize);
+                    holdBuffer = 0;
+                    auxCounter = 1;
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (deckSize < requiredSize) {
+            throw new invalidDeckSizeException();
+        } else {
+            System.out.println("Deck is valid!");
+        }
+    }
+
+    
+
+
     public static void main(String[] args){
 
         debugFiles mystr = new debugFiles();
@@ -64,13 +105,18 @@ public class debugFiles {
 
             System.out.println(mystr.debugDeck);
             for(String a : finalCardList){
-                System.out.println(a);
+                System.out.print(a);
+                System.out.print(" ");
             }
-            
+            System.out.println("");
             System.out.println(mystr.debugCommandList);
             for(String b : finalCommandList){
-                System.out.println(b);
+                System.out.print(b);
+                System.out.print(" ");
             }
+            System.out.println("");
+            mystr.checkDeckSize(finalCommandList, finalCardList);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -37,7 +37,7 @@ public class Main {
           bet = Integer.parseInt(args[2]);
           nbdeals = Integer.parseInt(args[3]);
 
-          System.out.println("Sinulation mode");
+          System.out.println("Simulation mode");
           System.out.println("----------");
           System.out.println("credit: " + credit);
           System.out.println("bet: " + bet);
