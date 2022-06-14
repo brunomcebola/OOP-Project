@@ -4,3 +4,5 @@ test/
 *.class
 *.pdf
 .fuse*
+deck/
+main/
