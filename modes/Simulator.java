@@ -64,6 +64,9 @@ public class Simulator implements Mode {
     }
 
     private int verifyPoints(){
+
+        //TODO: THE LOGIC, BECAUSE THE IFS CAN FUCK THINGS UP...
+
         //check rank here
         if(checkFlush('S', 5 , 'N') || checkFourOfAKind() || checkFlush('R', 5, 'N') ) return 1;
 
@@ -94,15 +97,15 @@ public class Simulator implements Mode {
 
             return 12;
         }
-
+        //TODO:
         else if(checkFlush('N',4,'N')) return 9;
-
+        //TODO:
         else if(checkFlush('R',3,'N')) return 10;
         //TODO:
         else if(checkFourtoOusideStraight()) return 11;
 
         else if(checkAKQJUnsuited()) return 13; // AKQJ unsuited
-        //TODO: can do without the sorted()
+        //TODO:
         else if(checkThreeToStraightFlush()){
             if(checkTypeOne()) return 14;
             else if(checkTypeTwo()) return 20;
@@ -110,10 +113,10 @@ public class Simulator implements Mode {
         }
 
         else if(checkQJS()) return 16; // GJ suited
-        //TODO: 
-        else if(checkThreeToFlush()){
-            if(checkTwoHighCardsOnFlush()) return 17;
-            if(checkOneHighCardsOnFlush()) return 25;
+        //TODO:CAN DO WITHOUT SORT() 
+        else if(checkFlush('N',3,'N')){
+            if(checkFlush('N',2,'H')) return 17;
+            if(checkFlush('N',1,'H')) return 25;
             return 33;
         }
 
@@ -165,8 +168,12 @@ public class Simulator implements Mode {
         // basically, normal flush, 4 to flush, 3 to flush...
         // so options are 3,4,5
         int[] count= new int[]{0,0,0,0};
+        int myRank = -1;
+        int counter = 0;
+
         Card newCard;
         int auxValue = 0;
+
 
         // STRAIGHT FLUSH
         if(principalType == 'S'){
@@ -196,19 +203,41 @@ public class Simulator implements Mode {
             }
         }
 
-        // FLUSH
-        if(principalType == 'N' && secondType == 5){
+        // FLUSH / 4 TO FLUSH / 3 TO FLUSH
+        if(principalType == 'N' && thirdType == 'N'){
             for(int i = 0; i < N_CARDS_ON_HAND; i++){
                 newCard = myHand.get(i);
                 count[newCard.getRank() - 1] +=1;
             }
             
             for(int i = 0; i < 4; i++){
-                if(count[i] == 5)
+                if(count[i] == secondType)
                     return true;
             }
         }
 
+        // 3 TO FLUSH WITH 2/1 OR 0 HIGH CARDS
+
+        if(principalType == 'N' && thirdType == 'H'){
+            for(int i = 0; i < N_CARDS_ON_HAND; i++){
+                newCard = myHand.get(i);
+                count[newCard.getRank() - 1] +=1;
+            }
+
+            //s search for our three cards with the same naipe.
+            for(int i = 0; i < 4; i++){
+                counter = 0;
+                if(count[i] == 3) // already known that it's 3 in the case
+                    for(int j = 0; j < N_CARDS_ON_HAND; j++){
+                        newCard =  myHand.get(i);
+                        auxValue = newCard.getValue();
+                        if(auxValue == 1 || auxValue == 10 || auxValue == 11 || auxValue == 12 || auxValue == 13){
+                            counter++;
+                        }
+                    }
+                if(counter == secondType) return true;
+            }
+        }
 
 
         return false;
