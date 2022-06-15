@@ -1,4 +1,4 @@
-package deck;
+package cards;
 
 import exceptions.cardExcepetions.*;
 
@@ -95,7 +95,7 @@ public class Card {
     return true;
   }
 
-  // Class
+  // Class Methods
 
   static private int rankToInt(char rank) throws InvalidCardRankException {
     if (rank == 'S')

@@ -1,7 +1,7 @@
-package exceptions.deckExceptions;
+package exceptions.cardGroupExceptions;
 
 public class DuplicateCardException extends Exception {
   public DuplicateCardException() {
-    super("Card already exists on the deck.");
+    super("There cannot be duplciate cards.");
   }
 }

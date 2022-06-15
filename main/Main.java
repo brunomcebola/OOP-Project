@@ -1,6 +1,6 @@
 package main;
 
-import deck.*;
+import game.*;
 
 public class Main {
   public static void main(String args[]) {
@@ -45,20 +45,11 @@ public class Main {
 
           break;
 
-        case "-c":
-          System.out.println("Deck test mode");
+        case "-t":
+          System.out.println("Game test");
           System.out.println("----------");
 
-          // Card card = new Card(2, 1);
-          // System.out.println(card);
-
-          Deck deck = new Deck();
-          String[] cards = { "AS", "AS" };
-          deck.upload(cards);
-
-          System.out.println(deck.withdrawCard());
-          System.out.println(deck.withdrawCard());
-          System.out.println(deck.withdrawCard());
+          
 
           break;
 
