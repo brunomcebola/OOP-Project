@@ -4,14 +4,14 @@ import java.util.stream.IntStream;
 
 import cards.*;
 
-public abstract class Game implements GameInterface {
+public abstract class GameAbstract implements GameInterface {
   protected final int initial_credits;
   protected int current_credits;
   protected Deck deck;
   protected Hand hand;
   protected int[] stats;
 
-  public Game(int credits) {
+  public GameAbstract(int credits) {
     this.deck = new Deck();
     this.hand = new Hand();
     
