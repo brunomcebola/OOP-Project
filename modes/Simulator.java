@@ -85,72 +85,72 @@ public class Simulator implements Mode {
         //check rank here
         if(checkFlush('S', 5 , 'N').size() != 0 || checkFourOfAKind().size() != 0 || checkFlush('R', 5, 'N').size() != 0 ) return 1;
 
-        if(checkFlush('R',4,'N').size() != 0 ) return 2;
+        else if(checkFlush('R',4,'N').size() != 0 ) return 2;
 
-        if(checkThreeAces().size() != 0) return 3;
-
-        //TODO:
-        if(checkStraight().size() != 0 || checkFlush('N', 5, 'N').size() != 0 || checkFHouse().size() != 0) return 4;
-
-        if(checkThreeOfAKind().size() != 0) return 5;
+        else if(checkThreeAces().size() != 0) return 3;
 
         //TODO:
-        if(checkStraight('S', 4, 'N').size() != 0 ) return 6;
+        else if(checkStraight().size() != 0 || checkFlush('N', 5, 'N').size() != 0 || checkFHouse().size() != 0) return 4;
+
+        else if(checkThreeOfAKind().size() != 0) return 5;
+
+        //TODO:
+        else if(checkStraight('S', 4, 'N').size() != 0 ) return 6;
         
-        if(checkTwoPair().size() != 0) return 7;
+        else if(checkTwoPair().size() != 0) return 7;
         
-        if(checkHighPair().size() != 0) return 8;
+        else if(checkHighPair().size() != 0) return 8;
        
-        if(checkFlush('N',4,'N').size() != 0) return 9;
+        else if(checkFlush('N',4,'N').size() != 0) return 9;
        
-        if(checkFlush('R',3,'N').size() != 0) return 10;
+        else if(checkFlush('R',3,'N').size() != 0) return 10;
         //TODO:
-        if(checkFourtoOusideStraight().size() != 0) return 11;
+        else if(checkFourtoOusideStraight().size() != 0) return 11;
         
-        if(checkPair().size() != 0) return 12;
+        else if(checkPair().size() != 0) return 12;
         
-        if(checkAKQJUnsuited().size() != 0) return 13; // AKQJ unsuited
+        else if(checkAKQJUnsuited().size() != 0) return 13; // AKQJ unsuited
 
         //TODO:
-        if(checkThreeToStraightFlush().size() != 0){
+        else if(checkThreeToStraightFlush().size() != 0){
             if(checkTypeOne().size() != 0) return 14;
             else if(checkTypeTwo().size() != 0) return 20;
             return 27;// type 3
         }
         //TODO:
-        if( checkFourToInsideWithThreeHigh().size() != 0) return 15;
+        else if( checkFourToInsideWithThreeHigh().size() != 0) return 15;
 
-        if(checkQJS().size() != 0) return 16; // GJ suited
+        else if(checkQJS().size() != 0) return 16; // GJ suited
 
-        if(checkFlush('N',2,'H').size() != 0) return 17;
+        else if(checkFlush('N',2,'H').size() != 0) return 17;
         
-        if(checkTwoSHC().size() != 0) return 18; // Two suited high cards        
+        else if(checkTwoSHC().size() != 0) return 18; // Two suited high cards        
         //TODO:
-        if(checkFourToInsideStraight().size() != 0){
+        else if(checkFourToInsideStraight().size() != 0){
             if(checkTwoHighCardsOnStraigh().size() != 0) return 19;
             if(checkOneHighCardsOnStraigh().size() != 0) return 21;
             return 32;
         }
         
-        if(checkKQJUnsuited().size() != 0) return 22;
+        else if(checkKQJUnsuited().size() != 0) return 22;
         
-        if(checkPairSuits(11, 10, 'S' ).size() != 0) return 23; // check JT suited
+        else if(checkPairSuits(11, 10, 'S' ).size() != 0) return 23; // check JT suited
         
-        if(checkPairSuits(12 , 11 ,'U').size() != 0) return 24; // check QJ unsuited
+        else if(checkPairSuits(12 , 11 ,'U').size() != 0) return 24; // check QJ unsuited
    
-        if(checkFlush('N',1,'H').size() != 0) return 25;
+        else if(checkFlush('N',1,'H').size() != 0) return 25;
 
-        if(checkPairSuits(12, 10 , 'S').size() != 0) return 26; // check QT suited
+        else if(checkPairSuits(12, 10 , 'S').size() != 0) return 26; // check QT suited
 
-        if(checkPairSuits( 13, 11, 'U').size() != 0 || checkPairSuits(13, 12, 'U').size() != 0) return 28; // check KJ and KQ unsuited
+        else if(checkPairSuits( 13, 11, 'U').size() != 0 || checkPairSuits(13, 12, 'U').size() != 0) return 28; // check KJ and KQ unsuited
 
-        if(checkAce().size() != 0) return 29;
+        else if(checkAce().size() != 0) return 29;
 
-        if(checkPairSuits(13,10,'S').size() != 0) return 30; // KT  suited
+        else if(checkPairSuits(13,10,'S').size() != 0) return 30; // KT  suited
 
-        if(checkForRoyalCard().size() != 0) return 31;
+        else if(checkForRoyalCard().size() != 0) return 31;
 
-        if(checkFlush('N',3,'N').size() != 0) return 33;
+        else if(checkFlush('N',3,'N').size() != 0) return 33;
 
         return 34; // discard all
     }
@@ -168,9 +168,10 @@ public class Simulator implements Mode {
 
     //TODO:NEEDS COMMENTS FOR JAVA DOCS
     //TODO:needs checking for the idxoutput
+    //TODO:SEPARATE ROYAL STRAIGHT AND FLUSH
     private ArrayList<Integer> checkFlush(char principalType, int secondType, char thirdType){
         //Principal type and thirdType
-        // N -> None
+        // N -> Normal
         // R -> Royal
         // S -> Straight
         //Second Type
@@ -664,7 +665,7 @@ public class Simulator implements Mode {
 
         }
 
-        if(type == 'U'){
+        else if(type == 'U'){
             for(int i = 0; i < N_CARDS_ON_HAND; i++){
                 auxCard = myHand.get(i);
                 if(auxCard.getValue() == value1){
