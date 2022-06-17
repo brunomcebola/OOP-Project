@@ -51,6 +51,8 @@ public class Main {
 
           GameTestMode Game = new GameTestMode(5);
 
+          Game.generateDeck();
+
           Game.playRound();
 
           break;

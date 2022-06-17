@@ -7,7 +7,7 @@ public class GameTestMode extends Game {
     super(credits);
   }
 
-  protected Deck generateDeck() throws Exception {
+  public Deck generateDeck() throws Exception {
     Deck deck = new Deck();
 
     deck.generateCards();

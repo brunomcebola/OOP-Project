@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 import cards.*;
 import exceptions.gameExceptions.*;
 
-public abstract class Game {
+public abstract class Game implements GameInterface {
   protected int bet;
   protected Hand hand;
   protected int[] stats;
@@ -27,34 +27,25 @@ public abstract class Game {
     this.deck = this.generateDeck();
   }
 
-  protected abstract Deck generateDeck() throws Exception;
+  // TODO: ver o que fazer a este
+  public abstract Deck generateDeck() throws Exception;
 
-  public abstract void playRound() throws Exception;
-
-  // Game commands
-
-  protected final void shuffleDeck() {
+  public final void shuffleDeck() throws Exception {
     this.deck.shuffle();
   }
 
-  // d - Deal command
-
-  protected final void dealHand() throws Exception {
+  public final void dealHand() throws Exception {
     // create hand
     for (int i = 0; i < 5; i++)
       hand.appendCard(deck.drawCard());
   }
 
-  // h - Hold (swap) command
-
-  protected final void swapCards(int[] swap) throws Exception {
+  public final void swapCards(int[] swap) throws Exception {
     for (int s : swap)
       hand.swapCard(s, deck.drawCard());
   }
 
-  // b - Bet command
-
-  protected final void placeBet(int bet) throws InvalidBetValueException {
+  public final void placeBet(int bet) throws Exception {
     if (bet > this.currCredits || bet < 1 || bet > 5)
       throw new InvalidBetValueException();
 
@@ -62,19 +53,11 @@ public abstract class Game {
     this.currCredits -= bet;
   }
 
-  // $ - Credit command
-
-  protected final void printCredits() {
-    System.out.println("Current credits: " + this.currCredits);
+  public final void saveStatistics(int stat) {
+    this.stats[stat] += 1;
   }
 
-  // Statistics command
-
-  protected final void saveStatistics(int sel) {
-    this.stats[sel] += 1;
-  }
-
-  protected final void printStatistics() {
+  public final void printStatistics() {
     System.out.println("Hand                  Nb   ");
     System.out.println("---------------------------");
     System.out.println("Jacks or Better       " + this.stats[0]);
@@ -93,9 +76,11 @@ public abstract class Game {
     System.out.println("Credit             " + this.currCredits + " (" + this.getTheoReturn() + "%)");
   }
 
-  // Finalize round command
+  public final void printCredits() {
+    System.out.println("Current credits: " + this.currCredits);
+  }
 
-  protected final void endRound() {
+  public final void endRound() {
     /*
      * 1 -> Royal Flush
      * 2 -> Straight Flush
