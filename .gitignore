@@ -1,4 +1,8 @@
 .vscode/
+test/
 *.jar
-.fuse*
 *.class
+*.pdf
+.fuse*
+deck/
+main/

@@ -1,6 +1,6 @@
 package main;
 
-import deck.*;
+import game.*;
 
 public class Main {
   public static void main(String args[]) {
@@ -37,7 +37,7 @@ public class Main {
           bet = Integer.parseInt(args[2]);
           nbdeals = Integer.parseInt(args[3]);
 
-          System.out.println("Sinulation mode");
+          System.out.println("Simulation mode");
           System.out.println("----------");
           System.out.println("credit: " + credit);
           System.out.println("bet: " + bet);
@@ -45,17 +45,13 @@ public class Main {
 
           break;
 
-        case "-c":
-          System.out.println("Deck test mode");
+        case "-t":
+          System.out.println("Game test");
           System.out.println("----------");
 
-          Deck deck = new Deck(52);
+          GameTestMode Game = new GameTestMode(5);
 
-          System.out.println("1st card: " + deck.drawCard());
-          System.out.println("2nd card: " + deck.drawCard());
-          System.out.println("3rd card: " + deck.drawCard());
-          System.out.println("4th card: " + deck.drawCard());
-          System.out.println("5th card: " + deck.drawCard());
+          Game.playRound();
 
           break;
 
@@ -64,7 +60,7 @@ public class Main {
           break;
       }
     } catch (Exception e) {
-      System.out.println(e);
+      System.out.println(e.getMessage());
     }
   }
 }
