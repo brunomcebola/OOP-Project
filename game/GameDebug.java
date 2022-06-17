@@ -4,7 +4,9 @@ import java.io.*;
 import java.util.*;
 import exceptions.debugExceptions.*;
 
-public class GameDebugMode {
+import cards.*;
+
+public class GameDebug extends Game {
     private String cardFilePath;
     private String cmdFilePath;
 
@@ -14,10 +16,8 @@ public class GameDebugMode {
     private String[] cardList;
     private String[] cmdList;
 
-    public GameDebugMode(int credits, String cmdFilePath, String cardFilePath)
-            throws cardFileDoesntExistException, cmdFileDoesntExistException, invalidDeckSizeException, IOException {
-
-        // super(credits);
+    public GameDebug(int credits, String cmdFilePath, String cardFilePath) throws Exception {
+        super(credits);
 
         this.cmdFilePath = cmdFilePath;
         this.cardFilePath = cardFilePath;
@@ -29,11 +29,17 @@ public class GameDebugMode {
         this.readCardFile();
 
         this.checkDeckSize();
+    }
 
+    protected Deck generateDeck() throws Exception {
+        Deck deck = new Deck();
 
-        int[] v = {1,3};
-        Command t = new Command('o', v);
-        System.out.println(t.cmd);
+        deck.uploadCards(cardList);
+
+        return deck;
+    }
+
+    public void playRound() throws Exception {
     }
 
     // Private Instance Methods

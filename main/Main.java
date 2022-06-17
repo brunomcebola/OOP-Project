@@ -49,11 +49,9 @@ public class Main {
           System.out.println("Game test");
           System.out.println("----------");
 
-          GameTestMode Game = new GameTestMode(10);
+          GameTestMode Game = new GameTestMode(5);
 
-          
           Game.playRound();
-          
 
           break;
 

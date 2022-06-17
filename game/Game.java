@@ -114,7 +114,7 @@ public abstract class Game {
 
     switch (this.analyseHand()) {
       case 1:
-        if (bet != 5)
+        if (bet == 5)
           winnings = 4000;
         else
           winnings = bet * 250;
@@ -163,12 +163,23 @@ public abstract class Game {
 
   // Private Instance Methods
 
-  protected final double getTheoReturn() {
+  private double getTheoReturn() {
     return (this.currCredits * 100) / this.initCredits;
   }
 
   private int analyseHand() {
     return 1;
+  }
+
+  // TODO: delete below - test porpuses only
+
+  protected void printHand() {
+    int i = 1;
+    System.out.println("Hand:");
+    for (Card c : this.hand.getAllCards()) {
+      System.out.println(i++ + ": " + c);
+    }
+    System.out.println();
   }
 
 }
