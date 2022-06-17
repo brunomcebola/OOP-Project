@@ -14,26 +14,26 @@ public class GameDebugMode {
     private String[] cardList;
     private String[] cmdList;
 
+    private ArrayList<Command> commands;
+
     public GameDebugMode(int credits, String cmdFilePath, String cardFilePath)
-            throws cardFileDoesntExistException, cmdFileDoesntExistException, invalidDeckSizeException, IOException {
+            throws cardFileDoesntExistException, cmdFileDoesntExistException, invalidDeckSizeException, invalidCommandException, IOException {
 
         // super(credits);
 
         this.cmdFilePath = cmdFilePath;
         this.cardFilePath = cardFilePath;
+        this.commands = new ArrayList<Command>();
 
         cardFile = new File(this.cardFilePath);
         cmdFile = new File(this.cmdFilePath);
+
+        
 
         this.readCmdFile();
         this.readCardFile();
 
         this.checkDeckSize();
-
-
-        int[] v = {1,3};
-        Command t = new Command('o', v);
-        System.out.println(t.cmd);
     }
 
     // Private Instance Methods
@@ -56,13 +56,12 @@ public class GameDebugMode {
         cardList = text.split(" ");
     }
 
-    private void readCmdFile() throws cmdFileDoesntExistException, IOException {
+    private void readCmdFile() throws cmdFileDoesntExistException, invalidCommandException, IOException {
         // TODO: check if commands are valid
 
-        if (cardFile.exists() == false) {
+        if (cmdFile.exists() == false) {
             throw new cmdFileDoesntExistException();
         }
-
         String text = "";
 
         Scanner cmdReader = new Scanner(cmdFile);
@@ -74,6 +73,82 @@ public class GameDebugMode {
         cmdReader.close();
 
         cmdList = text.split(" ");
+
+        Command tempCommand;
+        int commandValueSize = 0; //size of array of values in a command
+        int auxCounter = 1; //used to move through the cmdList without changing the value of i
+        int[] tempValues;
+
+        for (int i = 0; i < cmdList.length; i++) { //transforms string into ArrayList of Commands
+            switch (cmdList[i]) {
+                case "b":
+                    while ((i+auxCounter) < cmdList.length && auxFunctions.aux.isNumber(cmdList[(i+auxCounter)])) {
+                        commandValueSize++; //determines size of values array in the new command
+                        if (commandValueSize > 1) { // bet can only have 1 number after
+                            throw new invalidCommandException(cmdList[i+commandValueSize], i+commandValueSize);
+                        }
+                        auxCounter++;
+                    }
+
+                    tempValues = new int[commandValueSize];
+                    for (int j = 1; j <= commandValueSize; j++) {
+                        tempValues[j-1] = Integer.parseInt(cmdList[i+j]); //all the numbers before the next symbol in the cmdList are added to the values array
+                    }
+                    tempCommand = new Command('b', tempValues);
+                    this.commands.add(tempCommand);
+                    i = i + commandValueSize;
+                    commandValueSize = 0;
+                    auxCounter = 1;
+                    break;
+
+                case "h":
+                    while ((i+auxCounter) < cmdList.length && auxFunctions.aux.isNumber(cmdList[(i+auxCounter)])) {
+                        commandValueSize++;
+                        if (commandValueSize > 5) { //the user can hold up to 5 cards
+                            throw new invalidCommandException(cmdList[i+commandValueSize], i+commandValueSize);
+                        }
+                        auxCounter++;
+                    }
+
+                    tempValues = new int[commandValueSize];
+                    for (int j = 1; j <= commandValueSize; j++) {
+                        tempValues[j-1] = Integer.parseInt(cmdList[i+j]);
+                    }
+                    tempCommand = new Command('h', tempValues);
+                    this.commands.add(tempCommand);
+                    i = i + commandValueSize;
+                    commandValueSize = 0;
+                    auxCounter = 1;
+                    break;
+
+                case "$":
+                    tempValues = new int[0];
+                    tempCommand = new Command('$', tempValues);
+                    this.commands.add(tempCommand);
+                    break;
+
+                case "d":
+                    tempValues = new int[0];
+                    tempCommand = new Command('d', tempValues);
+                    this.commands.add(tempCommand);
+                    break;
+
+                case "a":
+                    tempValues = new int[0];
+                    tempCommand = new Command('a', tempValues);
+                    this.commands.add(tempCommand);
+                    break;
+                
+                case "s":
+                    tempValues = new int[0];
+                    tempCommand = new Command('s', tempValues);
+                    this.commands.add(tempCommand);
+                    break;
+            
+                default:
+                    throw new invalidCommandException(cmdList[i], i);
+            }
+        }
 
     }
 
@@ -116,4 +191,19 @@ public class GameDebugMode {
             this.values = values;
         }
     }
+
+
+
+    public static void main(String[] args) throws cardFileDoesntExistException, cmdFileDoesntExistException, invalidDeckSizeException, invalidCommandException, IOException{
+        GameDebugMode mystr = new GameDebugMode(5, "game/cmd-file.txt", "game/card-file.txt");
+
+        for(Command a : mystr.commands){
+            System.out.println("cmd: " + a.cmd);
+            
+            for (int i = 0; i < a.values.length; i++) {
+                System.out.println("value " + i + ": " + a.values[i]);
+            }
+        }
+    }
+
 }
