@@ -9,11 +9,11 @@ public class Hand extends CardGroup {
     super();
   }
 
-  public void funcaoRuiValor() {
-
-  }
-
   public void swapCard(int position, Card card) {
     this.cards.set(position, card);
+  }
+
+  public void appendCard(Card card) {
+    this.cards.add(card);
   }
 }

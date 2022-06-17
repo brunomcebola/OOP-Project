@@ -1,10 +1,10 @@
-package debug;
+package game;
 
 import java.io.*;
 import java.util.*;
 import exceptions.debugExceptions.*;
 
-public class GameDebug {
+public class GameDebugMode {
     private String cardFilePath;
     private String cmdFilePath;
 
@@ -14,7 +14,7 @@ public class GameDebug {
     private String[] cardList;
     private String[] cmdList;
 
-    public GameDebug(int credits, String cmdFilePath, String cardFilePath)
+    public GameDebugMode(int credits, String cmdFilePath, String cardFilePath)
             throws cardFileDoesntExistException, cmdFileDoesntExistException, invalidDeckSizeException, IOException {
 
         // super(credits);

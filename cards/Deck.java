@@ -30,6 +30,7 @@ public class Deck extends CardGroup {
 
   public void shuffle() {
     Collections.shuffle(this.cards, new Random());
+    
     this.nextCard = 0;
   }
 
