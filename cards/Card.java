@@ -113,6 +113,14 @@ public class Card {
     throw new InvalidCardRankException();
   }
 
+  public int getValue(){
+    return value;
+  }
+
+  public int getRank(){
+    return rank;
+  }
+
   static private int valueToInt(char value) throws InvalidCardValueException {
     if (value == 'A')
       return 1;
