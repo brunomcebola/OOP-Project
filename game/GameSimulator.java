@@ -47,7 +47,6 @@ public class GameSimulator extends Game {
         ArrayList<Integer> hold = null;
         ArrayList<Integer> swap = null;
 
-        
         if ( ( hold = this.hand.checkStraightFlush(5) ).size() != 0 ){
             return holdToSwap(hold); // 1
         }

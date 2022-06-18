@@ -48,6 +48,7 @@ public class Card {
 
   }
 
+  @Override
   public String toString() {
     if (value >= 2 && value <= 10)
       return Integer.toString(value) + " of " + ranks[rank - 1];

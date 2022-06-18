@@ -17,5 +17,5 @@ interface GameInterface {
 
   public void printCredits() throws Exception;
 
-  public ArrayList<Integer> getAdvice() throws Exception;
+  // public ArrayList<Integer> getAdvice() throws Exception;
 }
