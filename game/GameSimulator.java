@@ -2,6 +2,7 @@ package game;
 
 import java.nio.file.FileStore;
 import java.util.*;
+//mport auxFunctions.aux;
 import cards.*;
 
 public class GameSimulator extends Game {
@@ -22,138 +23,183 @@ public class GameSimulator extends Game {
         return deck;
     }
 
-    /**
-     * Copies the hand at the time and sorts it, giving an output
-     * of the hand sorted.
-     *
-     * @return ArrayList<Card> which is the hand sorted
-     */
-    private ArrayList<Card> sortHand() {
-        ArrayList<Card> handSorted = this.hand.getAllCards();
-        Collections.sort(handSorted, new Comparator<Card>() {
-            @Override
-            public int compare(Card card1, Card card2) {
-                if (card1.getValue() > card2.getValue()) {
-                    return 1;
-                }
-                return -1;
-            }
-        });
+    private ArrayList<Integer> holdToSwap(ArrayList<Integer> hold){
+        ArrayList<Integer> swap = new ArrayList<Integer>();
+        
+        swap.add(0);
+        swap.add(1);
+        swap.add(2);
+        swap.add(3);
+        swap.add(4);
+        
+        for(int i = 0; i < hold.size(); i++){
+            swap.remove(Integer.valueOf( hold.get(i) ));
+        }
 
-        return handSorted;
+        return swap;
     }
 
-    public int getAdvice() {
+    public ArrayList<Integer> getAdvice() {
 
         // TODO: THE LOGIC, BECAUSE THE IFS CAN FUCK THINGS UP..
         // TODO: STILL NEED THE FUNCTIONS TO SUM WHAT'S MISSING
 
         ArrayList<Integer> hold = null;
+        ArrayList<Integer> swap = null;
 
-        // check rank here
-        /* if (this.hand.checkFlush('S', 5, 'N').size() != 0 || this.hand.checkFourOfAKind().size() != 0
-                || this.hand.checkFlush('R', 5, 'N').size() != 0)
-            return 1;
-
-        else if (this.hand.checkFlush('R', 4, 'N').size() != 0)
-            return 2;
-
-        else if (this.hand.checkThreeAces().size() != 0)
-            return 3;
-
-        // TODO:
-        else if (this.hand.checkStraight().size() != 0 || this.hand.checkFlush('N', 5, 'N').size() != 0
-                || this.hand.checkFHouse().size() != 0)
-            return 4;
-
-        else if (this.hand.checkThreeOfAKind().size() != 0)
-            return 5;
-
-        // TODO:
-        else if (this.hand.checkStraight('S', 4, 'N').size() != 0)
-            return 6;
-
-        else if (this.hand.checkTwoPair().size() != 0)
-            return 7;
-
-        else if (this.hand.checkHighPair().size() != 0)
-            return 8;
-
-        else if (this.hand.checkFlush('N', 4, 'N').size() != 0)
-            return 9;
-
-        else if (this.hand.checkFlush('R', 3, 'N').size() != 0)
-            return 10;
-        // TODO:
-        else if (this.hand.checkFourtoOusideStraight().size() != 0)
-            return 11;
-
-        else if (this.hand.checkPair().size() != 0)
-            return 12;
-
-        else if (this.hand.checkAKQJUnsuited().size() != 0)
-            return 13; // AKQJ unsuited
-
-        // TODO:
-        else if (this.hand.checkThreeToStraightFlush().size() != 0) {
-            if (this.hand.checkTypeOne().size() != 0)
-                return 14;
-            else if (this.hand.checkTypeTwo().size() != 0)
-                return 20;
-            return 27;// type 3
+        
+        if ( ( hold = this.hand.checkStraightFlush(5) ).size() != 0 ){
+            return holdToSwap(hold); // 1
         }
-        // TODO:
-        else if (this.hand.checkFourToInsideWithThreeHigh().size() != 0)
-            return 15;
-
-        else if (this.hand.checkQJS().size() != 0)
-            return 16; // GJ suited
-
-        else if (this.hand.checkFlush('N', 2, 'H').size() != 0)
-            return 17;
-
-        else if (this.hand.checkTwoSHC().size() != 0)
-            return 18; // Two suited high cards
-        // TODO:
-        else if (this.hand.checkFourToInsideStraight().size() != 0) {
-            if (this.hand.checkTwoHighCardsOnStraigh().size() != 0)
-                return 19;
-            if (this.hand.checkOneHighCardsOnStraigh().size() != 0)
-                return 21;
-            return 32;
+        if( (hold = this.hand.checkFourOfAKind()).size()  !=  0){
+            return holdToSwap(hold); // 1
+        }
+        if((hold = this.hand.checkRoyalFlush(5)).size() != 0){
+            return holdToSwap(hold); // 1
         }
 
-        else if (this.hand.checkKQJUnsuited().size() != 0)
-            return 22;
+        else if( ( hold = this.hand.checkRoyalFlush(4)).size() != 0){
+            return holdToSwap(hold); // 2
+        }
 
-        else if (this.hand.checkPairSuits(11, 10, 'S').size() != 0)
-            return 23; // check JT suited
+        else if ( ( hold = this.hand.checkThreeAces()).size() != 0){
+            return holdToSwap(hold); // 3
+        }
 
-        else if (this.hand.checkPairSuits(12, 11, 'U').size() != 0)
-            return 24; // check QJ unsuited
+        // TODO:
+        else if ((hold = this.hand.checkStraight(5)).size() != 0 ){
+            return holdToSwap(hold); // 4
+        }
+        else if( (hold = this.hand.checkFlush('N', 5)).size() != 0){
+            return holdToSwap(hold); // 4
+        }
 
-        else if (this.hand.checkFlush('N', 1, 'H').size() != 0)
-            return 25;
+        else if((hold = this.hand.checkFHouse()).size() != 0){
+            return holdToSwap(hold); // 4
+        }
 
-        else if (this.hand.checkPairSuits(12, 10, 'S').size() != 0)
-            return 26; // check QT suited
+        else if ((hold = this.hand.checkThreeOfAKind()).size() != 0){
+            return holdToSwap(hold); // 5
+        }
+        // TODO:
+        else if (( hold = this.hand.checkStraight(4)).size() != 0){
+            return holdToSwap(hold); // 6
+        }
 
-        else if (this.hand.checkPairSuits(13, 11, 'U').size() != 0 || this.hand.checkPairSuits(13, 12, 'U').size() != 0)
-            return 28; // check KJ and KQ unsuited
+        else if ( ( hold =this.hand.checkTwoPair()).size() != 0){
+            return holdToSwap(hold); // 7
+        }
 
-        else if (this.hand.checkAce().size() != 0)
-            return 29;
+        else if (( hold = this.hand.checkHighPair()).size() != 0){
+            return holdToSwap(hold); // 8
+        }
 
-        else if (this.hand.checkPairSuits(13, 10, 'S').size() != 0)
-            return 30; // KT suited
+        else if (( hold = this.hand.checkFlush('N', 4)).size() != 0){
+            return holdToSwap(hold); // 9
+        }
 
-        else if (this.hand.checkForRoyalCard().size() != 0)
-            return 31;
+        else if ((hold = this.hand.checkRoyalFlush(3)).size() != 0){
+            return holdToSwap(hold); // 10
+        }
+        // TODO:
+        else if ((hold = this.hand.checkFourtoOusideStraight()).size() != 0){
+            return holdToSwap(hold); // 11
+        }
 
-        else if (this.hand.checkFlush('N', 3, 'N').size() != 0)
-            return 33;
+        else if ((hold = this.hand.checkPair()).size() != 0){
+            return holdToSwap(hold); // 12
+        }
 
-        return 34; // discard all */
+        else if ((hold = this.hand.checkAKQJUnsuited()).size() != 0){
+            return holdToSwap(hold); // 13 AKQJ unsuited
+        }
+
+        // TODO:
+        else if ((hold = this.hand.checkThreeToStraightFlush()).size() != 0) {
+            if ((hold = this.hand.checkTypeOne()).size() != 0)
+                return holdToSwap(hold); // 14
+            else if ((hold = this.hand.checkTypeTwo()).size() != 0)
+                return holdToSwap(hold); // 20
+            return holdToSwap(hold); // 27  type 3
+        }
+        // TODO:
+        else if ((hold = this.hand.checkFourToInsideWithThreeHigh()).size() != 0){
+            return holdToSwap(hold); // 15
+        }
+
+        else if (( hold = this.hand.checkQJS()).size() != 0){
+            return holdToSwap(hold); // 16 QJ suited
+        }
+
+        else if (( hold = this.hand.checkFlush('H', 2)).size() != 0){
+            return holdToSwap(hold); // 17
+        }
+
+        else if (( hold = this.hand.checkTwoSHC()).size() != 0){
+            return holdToSwap(hold); // 18 Two suited high cards
+        }
+           
+        // TODO:
+        else if ((hold = this.hand.checkFourToInsideStraight()).size() != 0) {
+            if (( hold = this.hand.checkTwoHighCardsOnStraigh()).size() != 0){
+                return holdToSwap(hold); // 19
+            }
+            if (( hold = this.hand.checkOneHighCardsOnStraigh()).size() != 0){
+                return holdToSwap(hold); // 21
+            }
+            return holdToSwap(hold); // 32
+        }
+
+        else if (( hold = this.hand.checkKQJUnsuited()).size() != 0){
+            return holdToSwap(hold); // 22
+        }
+
+        else if (( hold = this.hand.checkPairSuits(11, 10, 'S')).size() != 0){
+            return holdToSwap(hold); // 23 check JT suited
+        }   
+
+        else if (( hold = this.hand.checkPairSuits(12, 11, 'U')).size() != 0){
+            return holdToSwap(hold); // 24 check QJ unsuited
+        }
+
+        else if ((hold = this.hand.checkFlush('H', 1)).size() != 0){
+            return holdToSwap(hold); // 25
+        }
+
+        else if ((hold = this.hand.checkPairSuits(12, 10, 'S')).size() != 0){
+            return holdToSwap(hold); // 27 check QT suited
+        }
+            
+
+        else if ((hold = this.hand.checkPairSuits(13, 11, 'U')).size() != 0){
+            return holdToSwap(hold); // 28 check KJ unsuited
+        }
+        else if( ( hold = this.hand.checkPairSuits(13, 12, 'U')).size() != 0 ){
+            return holdToSwap(hold); // 28 check KQ unsuited
+        }
+
+        else if ((hold = this.hand.checkAce()).size() != 0){
+            return holdToSwap(hold); // 29
+        }
+
+        else if ((hold = this.hand.checkPairSuits(13, 10, 'S')).size() != 0){
+            return holdToSwap(hold); // 30
+        }
+
+        else if (( hold = this.hand.checkForRoyalCard()).size() != 0){
+            return holdToSwap(hold); // 31
+        }
+
+        else if ((hold = this.hand.checkFlush('N', 3)).size() != 0){
+            return holdToSwap(hold); // 33
+        }
+
+        swap.add(0);
+        swap.add(1);
+        swap.add(2);
+        swap.add(3);
+        swap.add(4);
+        return swap; // discard all
     }
 
 }

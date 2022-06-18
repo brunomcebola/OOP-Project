@@ -1,6 +1,7 @@
 package cards;
 
 import java.util.*;
+import cards.Card;
 
 public class Hand extends CardGroup {
     public static final int N_CARDS_ON_HAND = 5;
@@ -17,76 +18,59 @@ public class Hand extends CardGroup {
         this.cards.add(card);
     }
 
+
+    /**
+     * Copies the hand at the time and sorts it, giving an output
+     * of the hand sorted.
+     *
+     * @return ArrayList<Card> which is the hand sorted
+     */
+    private ArrayList<Card> sortHand() {
+      ArrayList<Card> handSorted = cards;
+      Collections.sort(handSorted, new Comparator<Card>() {
+          @Override
+          public int compare(Card card1, Card card2) {
+              if (card1.getValue() > card2.getValue()) {
+                  return 1;
+              }
+              return -1;
+          }
+      });
+
+      return handSorted;
+    }
+
+    private ArrayList<Integer> auxToIdxOutPut(ArrayList<Integer> idxOfSortedHand){
+
+      return null;
+    }
+
     // TODO:NEEDS COMMENTS FOR JAVA DOCS
     // TODO:needs checking for the idxoutput
     // TODO:SEPARATE ROYAL STRAIGHT AND FLUSH
-    public ArrayList<Integer> checkFlush(char principalType, int secondType, char thirdType) {
+    public ArrayList<Integer> checkFlush(char type, int cap) {
         // Principal type and thirdType
         // N -> Normal
-        // R -> Royal
-        // S -> Straight
-        // Second Type
-        // basically, normal flush, 4 to flush, 3 to flush...
-        // so options are 3,4,5
+        // H -> High cards
+        //
+        // Cap is basically how much it has to have
         int[] count = new int[] { 0, 0, 0, 0 };
-        int myRank = -1;
         int counter = 0;
 
         Card newCard;
         int auxValue = 0;
 
-        ArrayList<Integer> idxOutput = new ArrayList<Integer>();
-
-        // STRAIGHT FLUSH TODO: BRUNO'S HELP
-        if (principalType == 'S') {
-            for (int i = 0; i < N_CARDS_ON_HAND; i++) {
-                newCard = cards.get(i);
-                count[newCard.getRank() - 1] += 1;
-            }
-
-            for (int i = 0; i < 4; i++) {
-                if (count[i] == secondType) {
-
-                    for (int j = 0; j < secondType; j++) {
-                        idxOutput.add(j);
-                    }
-                    return idxOutput;
-                }
-            }
-        }
-
-        // ROYAL FLUSH
-        if (principalType == 'R') {
-            for (int i = 0; i < N_CARDS_ON_HAND; i++) {
-                newCard = cards.get(i);
-                auxValue = newCard.getValue();
-                if (auxValue == 1 || auxValue == 10 || auxValue == 11 || auxValue == 12 || auxValue == 13)
-                    count[newCard.getRank() - 1] += 1;
-            }
-
-            for (int i = 0; i < 4; i++) {
-                if (count[i] == secondType) {
-                    for (int j = 0; j < N_CARDS_ON_HAND; j++) {
-                        newCard = cards.get(j);
-                        if ((auxValue == 1 || auxValue == 10 || auxValue == 11 || auxValue == 12 || auxValue == 13)
-                                && newCard.getRank() == (count[i] + 1)) {
-                            idxOutput.add(j);
-                        }
-                    }
-                    return idxOutput;
-                }
-            }
-        }
+        ArrayList<Integer> idxOutput = new ArrayList<Integer>();        
 
         // FLUSH / 4 TO FLUSH / 3 TO FLUSH
-        if (principalType == 'N' && thirdType == 'N') {
+        if (type == 'N') {
             for (int i = 0; i < N_CARDS_ON_HAND; i++) {
                 newCard = cards.get(i);
                 count[newCard.getRank() - 1] += 1;
             }
 
             for (int i = 0; i < 4; i++) {
-                if (count[i] == secondType) {
+                if (count[i] == cap) {
                     for (int j = 0; j < N_CARDS_ON_HAND; j++) {
                         newCard = cards.get(j);
                         if (newCard.getRank() == (count[i] + 1))
@@ -99,7 +83,7 @@ public class Hand extends CardGroup {
 
         // 3 TO FLUSH WITH 2/1 OR 0 HIGH CARDS
 
-        if (principalType == 'N' && thirdType == 'H') {
+        if (type == 'H') {
             for (int i = 0; i < N_CARDS_ON_HAND; i++) {
                 newCard = cards.get(i);
                 count[newCard.getRank() - 1] += 1;
@@ -117,7 +101,7 @@ public class Hand extends CardGroup {
                         }
                     }
                 }
-                if (counter == secondType) {
+                if (counter == cap) {
                     for (int j = 0; j < N_CARDS_ON_HAND; j++) {
                         newCard = cards.get(j);
                         if (newCard.getRank() == (count[i] + 1))
@@ -130,6 +114,116 @@ public class Hand extends CardGroup {
         }
 
         return null;
+    }
+
+    public ArrayList<Integer> checkStraightFlush(int cap){
+      ArrayList<Integer> idxOutput = new ArrayList<Integer>();
+      Card newCard;
+      int[] count = new int[]{0,0,0,0};
+
+      for (int i = 0; i < N_CARDS_ON_HAND; i++) {
+        newCard = cards.get(i);
+        count[newCard.getRank() - 1] += 1;
+      }
+
+      for (int i = 0; i < 4; i++) {
+        if (count[i] == cap) {
+
+        for (int j = 0; j < cap; j++) {
+          idxOutput.add(j);
+        }
+          return idxOutput;
+        }
+      }
+      return null;
+    }
+
+    public ArrayList<Integer> checkRoyalFlush(int cap){
+      ArrayList<Integer> idxOutput = new ArrayList<Integer>();
+      int[] count = new int[]{0,0,0,0};
+      Card newCard;
+      int auxValue;
+
+      for (int i = 0; i < N_CARDS_ON_HAND; i++) {
+          newCard = cards.get(i);
+          auxValue = newCard.getValue();
+          if (auxValue == 1 || auxValue == 10 || auxValue == 11 || auxValue == 12 || auxValue == 13)
+            count[newCard.getRank() - 1] += 1;
+      }
+
+      for (int i = 0; i < 4; i++) {
+        if (count[i] == cap) {
+          for (int j = 0; j < N_CARDS_ON_HAND; j++) {
+            newCard = cards.get(j);
+            if ((auxValue == 1 || auxValue == 10 || auxValue == 11 || auxValue == 12 || auxValue == 13)
+            && newCard.getRank() == (i + 1)) {
+              idxOutput.add(j);
+            }
+          }
+          return idxOutput;
+        }
+      }
+      return null;
+    }
+
+    public ArrayList<Integer> checkStraight(int cap){
+      ArrayList<Integer> aux = new ArrayList<Integer>();
+
+      Card newCard, auxCard;
+      int count = 1;
+      int seq = 0;
+      ArrayList<Card> handSorted = sortHand();
+
+      //if need to have straight, it needs 5 seq, therefore
+      //it just needs to check once, if it is 4 to straight
+      // it only needs to check twice, not all hands
+      for( int i = 0; i < N_CARDS_ON_HAND - cap + 1; i++){
+        count = 1;
+        newCard = handSorted.get(i);
+
+        seq = newCard.getValue();
+        aux.add(i);
+        //if it is an ace check if it's "counted as high card"
+        if(seq == 1 ){
+          seq = 9; // starts on 9 because the next high card 
+                   //is a 10, and since cards are sorted
+                   //it as to be like this.
+          for(int j = i; j < N_CARDS_ON_HAND - i; j++){
+            seq++;
+            auxCard = handSorted.get(j);
+            if(seq == auxCard.getValue()){
+              count ++;
+              aux.add(j);
+            }
+          }
+
+          seq = newCard.getValue();
+          if(count == cap){
+            return auxToIdxOutPut(aux);
+          }
+          aux.clear();
+        }
+
+       
+
+        for(int j = i; j < N_CARDS_ON_HAND - i; j++){
+          seq++;
+          auxCard = handSorted.get(j);
+          if(seq == auxCard.getValue()){
+            count ++;
+            aux.add(j);
+          }
+        }
+
+        if(count == cap){
+          return auxToIdxOutPut(aux);
+        }
+        aux.clear();
+        
+      }
+
+
+      return null;
     }
 
     public ArrayList<Integer> checkAKQJUnsuited() {

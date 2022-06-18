@@ -114,11 +114,11 @@ public class Card {
   }
 
   public int getValue(){
-    return value;
+    return this.value;
   }
 
   public int getRank(){
-    return rank;
+    return this.rank;
   }
 
   static private int valueToInt(char value) throws InvalidCardValueException {
