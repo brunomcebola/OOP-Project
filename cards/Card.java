@@ -48,6 +48,7 @@ public class Card {
 
   }
 
+  @Override
   public String toString() {
     if (value >= 2 && value <= 10)
       return Integer.toString(value) + " of " + ranks[rank - 1];
@@ -111,6 +112,14 @@ public class Card {
       return 4;
 
     throw new InvalidCardRankException();
+  }
+
+  public int getValue() {
+    return value;
+  }
+
+  public int getRank() {
+    return rank;
   }
 
   static private int valueToInt(char value) throws InvalidCardValueException {
