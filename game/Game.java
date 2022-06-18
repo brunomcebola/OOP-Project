@@ -8,22 +8,22 @@ import exceptions.gameExceptions.*;
 
 public abstract class Game implements GameInterface {
   protected int bet;
-  protected Hand hand;
-  protected int[] stats;
   protected int currCredits;
   protected final int initCredits;
 
-  private Deck deck;
+  protected Deck deck;
+  protected Hand hand;
+  protected Statistics stats;
 
   public Game(int credits) throws Exception {
-    this.hand = new Hand();
-
-    this.stats = new int[10];
-
     this.bet = 0;
+
+    this.hand = new Hand();
 
     this.initCredits = credits;
     this.currCredits = credits;
+
+    this.stats = new Statistics(credits);
 
     this.deck = this.generateDeck();
   }
@@ -52,29 +52,16 @@ public abstract class Game implements GameInterface {
 
     this.bet = bet;
     this.currCredits -= bet;
+
+    this.stats.registerBet(bet);
   }
 
-  public final void saveStatistics(int stat) {
-    this.stats[stat] += 1;
+  public final void saveStatistics(int handSel) {
+    this.stats.registerHand(handSel);
   }
 
   public final void printStatistics() {
-    System.out.println("Hand                  Nb   ");
-    System.out.println("---------------------------");
-    System.out.println("Jacks or Better       " + this.stats[0]);
-    System.out.println("Two Pair              " + this.stats[1]);
-    System.out.println("Three of a Kind       " + this.stats[2]);
-    System.out.println("Straight              " + this.stats[3]);
-    System.out.println("Flush                 " + this.stats[4]);
-    System.out.println("Full house            " + this.stats[5]);
-    System.out.println("Four of a Kind        " + this.stats[6]);
-    System.out.println("Straight Flush        " + this.stats[7]);
-    System.out.println("Royal Flush           " + this.stats[8]);
-    System.out.println("Other                 " + this.stats[9]);
-    System.out.println("---------------------------");
-    System.out.println("Total                 " + IntStream.of(this.stats).sum());
-    System.out.println("---------------------------");
-    System.out.println("Credit             " + this.currCredits + " (" + this.getTheoReturn() + "%)");
+    System.out.println(stats);
   }
 
   public final void printCredits() {
@@ -96,62 +83,59 @@ public abstract class Game implements GameInterface {
      * 11 -> Jacks or Better
      */
 
-    int winnings = 0;
+    int gain = 0;
 
     switch (this.analyseHand()) {
       case 1:
         if (bet == 5)
-          winnings = 4000;
+          gain = 4000;
         else
-          winnings = bet * 250;
+          gain = bet * 250;
         break;
 
       case 2:
       case 5:
-        winnings = bet * 50;
+        gain = bet * 50;
         break;
 
       case 3:
-        winnings = bet * 160;
+        gain = bet * 160;
         break;
 
       case 4:
-        winnings = bet * 80;
+        gain = bet * 80;
         break;
 
       case 6:
-        winnings = bet * 10;
+        gain = bet * 10;
         break;
 
       case 7:
-        winnings = bet * 7;
+        gain = bet * 7;
         break;
 
       case 8:
-        winnings = bet * 5;
+        gain = bet * 5;
         break;
 
       case 9:
-        winnings = bet * 3;
+        gain = bet * 3;
         break;
 
       case 10:
       case 11:
-        winnings = bet;
+        gain = bet;
 
         break;
 
     }
 
-    this.currCredits += winnings;
+    this.currCredits += gain;
 
+    this.stats.registerGain(gain);
   }
 
   // Private Instance Methods
-
-  private double getTheoReturn() {
-    return (this.currCredits * 100) / this.initCredits;
-  }
 
   private int analyseHand() {
     return 1;
