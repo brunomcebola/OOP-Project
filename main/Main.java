@@ -1,5 +1,7 @@
 package main;
 
+import java.util.ArrayList;
+
 import game.*;
 
 public class Main {
@@ -49,11 +51,29 @@ public class Main {
           System.out.println("Game test");
           System.out.println("----------");
 
-          GameTestMode Game = new GameTestMode(5);
+          Game Game = new GameSimulator(5);
 
-          Game.generateDeck();
+          Game.shuffleDeck();
 
-          Game.playRound();
+          Game.printCredits();
+
+          Game.placeBet(5);
+
+          Game.printCredits();
+
+          Game.dealHand();
+
+          Game.printHand();
+
+          ArrayList<Integer> swap = Game.getAdvice();
+
+          Game.swapCards(swap);
+
+          Game.printHand();
+
+          Game.endRound();
+
+          Game.printCredits();
 
           break;
 

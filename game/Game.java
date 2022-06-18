@@ -1,5 +1,6 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 import cards.*;
@@ -28,7 +29,7 @@ public abstract class Game implements GameInterface {
   }
 
   // TODO: ver o que fazer a este
-  public abstract Deck generateDeck() throws Exception;
+  protected abstract Deck generateDeck() throws Exception;
 
   public final void shuffleDeck() throws Exception {
     this.deck.shuffle();
@@ -37,12 +38,12 @@ public abstract class Game implements GameInterface {
   public final void dealHand() throws Exception {
     // create hand
     for (int i = 0; i < 5; i++)
-      hand.appendCard(deck.drawCard());
+      this.hand.appendCard(this.deck.drawCard());
   }
 
-  public final void swapCards(int[] swap) throws Exception {
-    for (int s : swap)
-      hand.swapCard(s, deck.drawCard());
+  public final void swapCards(ArrayList<Integer> swapId) throws Exception {
+    for (int s : swapId)
+      this.hand.swapCard(s, this.deck.drawCard());
   }
 
   public final void placeBet(int bet) throws Exception {
@@ -158,7 +159,7 @@ public abstract class Game implements GameInterface {
 
   // TODO: delete below - test porpuses only
 
-  protected void printHand() {
+  public void printHand() {
     int i = 1;
     System.out.println("Hand:");
     for (Card c : this.hand.getAllCards()) {
