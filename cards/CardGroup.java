@@ -12,21 +12,17 @@ public abstract class CardGroup {
     cards = new ArrayList<Card>();
   }
 
-  public final void uploadCards(String[] cards)
+  public final void uploadCards(ArrayList<Card> cardsList)
       throws InvalidCardValueException, InvalidCardRankException,
       InvalidCardValueAndRankException, DuplicateCardException {
 
     this.cards = new ArrayList<Card>();
 
-    Card tempCard;
-
-    for (String card : cards) {
-      tempCard = new Card(card.charAt(0), card.charAt(1));
-
-      if (this.cards.contains(tempCard))
+    for (Card c : cardsList) {
+      if (this.cards.contains(c))
         throw new DuplicateCardException();
 
-      this.cards.add(tempCard);
+      this.cards.add(c);
     }
   }
 

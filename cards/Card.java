@@ -1,5 +1,7 @@
 package cards;
 
+import java.util.ArrayList;
+
 import exceptions.cardExcepetions.*;
 
 /*
@@ -96,7 +98,19 @@ public class Card {
     return true;
   }
 
-  // Class Methods
+  public static ArrayList<Card> generateAllCards()
+      throws InvalidCardValueException, InvalidCardRankException, InvalidCardValueAndRankException {
+
+    ArrayList<Card> cardsList = new ArrayList<Card>();
+
+    for (int value = 1; value <= 13; value++) {
+      for (int rank = 1; rank <= 4; rank++) {
+        cardsList.add(new Card(value, rank));
+      }
+    }
+
+    return cardsList;
+  }
 
   static private int rankToInt(char rank) throws InvalidCardRankException {
     if (rank == 'S')

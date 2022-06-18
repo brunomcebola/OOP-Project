@@ -53,7 +53,7 @@ public class Main {
 
           Game Game = new GameSimulator(5);
 
-          Game.generateDeck();
+          Game.createDeck();
 
           Game.shuffleDeck();
 

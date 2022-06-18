@@ -2,15 +2,15 @@ package game;
 
 import java.io.*;
 import java.util.*;
+
+import cards.*;
 import exceptions.debugExceptions.*;
 
 public class GameDebug extends Game {
     private File cardFile;
     private File cmdFile;
 
-    private String[] cardList;
-    private String[] cmdList;
-
+    private ArrayList<Card> cards;
     private ArrayList<Command> commands;
 
     public GameDebug(int credits, String cmdFilePath, String cardFilePath) throws Exception {
@@ -27,11 +27,11 @@ public class GameDebug extends Game {
         this.checkDeckSize();
     }
 
-    public void generateDeck() throws Exception {
-        this.deck.uploadCards(cardList);
+    protected ArrayList<Card> getCardsList() {
+        return this.cards;
     }
 
-    private void readCardFile() throws cardFileDoesntExistException, IOException {
+    private void readCardFile() throws Exception {
         if (cardFile.exists() == false) {
             throw new cardFileDoesntExistException();
         }
@@ -46,7 +46,12 @@ public class GameDebug extends Game {
 
         cardReader.close();
 
-        cardList = text.split(" ");
+        String[] cardList = text.split(" ");
+
+        for (String s : cardList) {
+            this.cards.add(new Card(s.charAt(0), s.charAt(1)));
+        }
+
     }
 
     private void readCmdFile() throws cmdFileDoesntExistException, invalidCommandException, IOException {
@@ -63,7 +68,7 @@ public class GameDebug extends Game {
 
         cmdReader.close();
 
-        cmdList = text.split(" ");
+        String[] cmdList = text.split(" ");
 
         Command tempCommand;
         ArrayList<Integer> values;
@@ -139,7 +144,7 @@ public class GameDebug extends Game {
                     break;
             }
         }
-        if (this.cardList.length < requiredSize) {
+        if (this.cards.size() < requiredSize) {
             throw new invalidDeckSizeException();
         }
     }

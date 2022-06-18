@@ -3,7 +3,7 @@ package game;
 import java.util.ArrayList;
 
 interface GameInterface {
-  public void generateDeck() throws Exception;
+  public void createDeck() throws Exception;
 
   public void shuffleDeck() throws Exception;
 
