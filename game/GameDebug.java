@@ -94,6 +94,9 @@ public class GameDebug extends Game {
                         // the user can hold up to 5 cards
                         if (values.size() == 5) {
                             throw new invalidCommandException(cmdList[i + lookahead], i + lookahead);
+                        } // if the card to hold is not a valid Hand card (i.e. not from card 1 to card 5)
+                        if (Integer.parseInt(cmdList[(i + lookahead)]) < 1 || Integer.parseInt(cmdList[(i + lookahead)])  > 5) {
+                            throw new invalidCommandException(cmdList[i + lookahead], i + lookahead); 
                         }
                         values.add(Integer.parseInt(cmdList[i + lookahead]));
                         lookahead++;
