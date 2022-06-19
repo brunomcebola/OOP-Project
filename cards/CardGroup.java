@@ -20,7 +20,7 @@ public abstract class CardGroup {
 
     for (Card c : cardsList) {
       if (this.cards.contains(c))
-        throw new DuplicateCardException();
+        throw new DuplicateCardException(c.toString());
 
       this.cards.add(c);
     }

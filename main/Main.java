@@ -51,33 +51,45 @@ public class Main {
           System.out.println("Game test");
           System.out.println("----------");
 
-          Game Game = new GameSimulator(5);
+          GameDebug game = new GameDebug(5, "test/cmd-file.txt", "test/card-file.txt");
 
-          Game.createDeck();
+          game.createDeck();
 
-          Game.shuffleDeck();
+          System.out.println();
 
-          Game.printCredits();
+          game.printDeck();
 
-          Game.placeBet(5);
+          System.out.println();
 
-          Game.printCredits();
+          game.printCmds();
 
-          Game.dealHand();
-
-          Game.printHand();
-
-          // ArrayList<Integer> swap = Game.getAdvice();
-
-          // Game.swapCards(swap);
-
-          // Game.printHand();
-
-          Game.endRound();
-
-          Game.printCredits();
-
-          Game.printStatistics();
+          /*
+           * Game.createDeck();
+           * 
+           * Game.shuffleDeck();
+           * 
+           * Game.printCredits();
+           * 
+           * Game.placeBet(5);
+           * 
+           * Game.printCredits();
+           * 
+           * Game.dealHand();
+           * 
+           * Game.printHand();
+           * 
+           * // ArrayList<Integer> swap = Game.getAdvice();
+           * 
+           * // Game.swapCards(swap);
+           * 
+           * // Game.printHand();
+           * 
+           * Game.endRound();
+           * 
+           * Game.printCredits();
+           * 
+           * Game.printStatistics();
+           */
 
           break;
 

@@ -18,4 +18,17 @@ public class Command {
   public ArrayList<Integer> getValues() {
     return this.values;
   }
+
+  @Override
+  public String toString() {
+    StringBuilder str = new StringBuilder();
+
+    str.append("Cmd: " + this.cmd + " -> ");
+
+    for (int v : this.values) {
+      str.append(v + " ");
+    }
+
+    return str.toString();
+  }
 }

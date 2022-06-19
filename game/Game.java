@@ -6,12 +6,12 @@ import cards.*;
 import exceptions.gameExceptions.*;
 
 public abstract class Game implements GameInterface {
-  protected int bet;
-  protected int currCredits;
+  private int bet;
+  private int currCredits;
 
-  protected Deck deck;
+  private Deck deck;
   protected Hand hand;
-  protected Statistics stats;
+  private Statistics stats;
 
   public Game(int credits) throws Exception {
     this.bet = 0;
@@ -146,6 +146,15 @@ public abstract class Game implements GameInterface {
     int i = 1;
     System.out.println("Hand:");
     for (Card c : this.hand.getAllCards()) {
+      System.out.println(i++ + ": " + c);
+    }
+    System.out.println();
+  }
+
+  public void printDeck() {
+    int i = 1;
+    System.out.println("Deck (" + this.deck.getSize() + "):");
+    for (Card c : this.deck.getAllCards()) {
       System.out.println(i++ + ": " + c);
     }
     System.out.println();

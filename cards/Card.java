@@ -128,11 +128,11 @@ public class Card {
     throw new InvalidCardRankException();
   }
 
-  public int getValue(){
+  public int getValue() {
     return this.value;
   }
 
-  public int getRank(){
+  public int getRank() {
     return this.rank;
   }
 
@@ -140,17 +140,17 @@ public class Card {
     if (value == 'A')
       return 1;
 
-    if (value == 'J')
-      return 2;
-
-    if (value == 'Q')
-      return 3;
-
-    if (value == 'K')
-      return 4;
-
     if (value == 'T')
       return 10;
+
+    if (value == 'J')
+      return 11;
+
+    if (value == 'Q')
+      return 12;
+
+    if (value == 'K')
+      return 13;
 
     if (value - '0' >= 2 && value - '0' <= 9)
       return value - '0';

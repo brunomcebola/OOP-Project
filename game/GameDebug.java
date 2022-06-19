@@ -16,6 +16,7 @@ public class GameDebug extends Game {
     public GameDebug(int credits, String cmdFilePath, String cardFilePath) throws Exception {
         super(credits);
 
+        this.cards = new ArrayList<Card>();
         this.commands = new ArrayList<Command>();
 
         this.cardFile = new File(cardFilePath);
@@ -78,7 +79,7 @@ public class GameDebug extends Game {
 
             switch (cmdList[i]) {
                 case "b":
-                    if ((i + 1) < cmdList.length && auxFunctions.aux.isNumber(cmdList[i + 1])) {
+                    if ((i + 1) < cmdList.length && isNumber(cmdList[i + 1])) {
                         values.add(Integer.parseInt(cmdList[i + 1]));
                         i++;
                     }
@@ -90,13 +91,14 @@ public class GameDebug extends Game {
                 case "h":
                     int lookahead = 1;
 
-                    while ((i + lookahead) < cmdList.length && auxFunctions.aux.isNumber(cmdList[(i + lookahead)])) {
+                    while ((i + lookahead) < cmdList.length && isNumber(cmdList[(i + lookahead)])) {
                         // the user can hold up to 5 cards
                         if (values.size() == 5) {
                             throw new invalidCommandException(cmdList[i + lookahead], i + lookahead);
                         } // if the card to hold is not a valid Hand card (i.e. not from card 1 to card 5)
-                        if (Integer.parseInt(cmdList[(i + lookahead)]) < 1 || Integer.parseInt(cmdList[(i + lookahead)])  > 5) {
-                            throw new invalidCommandException(cmdList[i + lookahead], i + lookahead); 
+                        if (Integer.parseInt(cmdList[(i + lookahead)]) < 1
+                                || Integer.parseInt(cmdList[(i + lookahead)]) > 5) {
+                            throw new invalidCommandException(cmdList[i + lookahead], i + lookahead);
                         }
                         values.add(Integer.parseInt(cmdList[i + lookahead]));
                         lookahead++;
@@ -147,8 +149,29 @@ public class GameDebug extends Game {
                     break;
             }
         }
+
         if (this.cards.size() < requiredSize) {
             throw new invalidDeckSizeException();
         }
+    }
+
+    private static boolean isNumber(String input) {
+        char[] c = input.toCharArray();
+        for (char aux : c)
+            if (!Character.isDigit(aux)) {
+                return false;
+            }
+        return true;
+    }
+
+    // TODO: delete below - test porpuses only
+
+    public void printCmds() {
+        int i = 1;
+        System.out.println("Commands:");
+        for (Command c : this.commands) {
+            System.out.println(i++ + ": " + c);
+        }
+        System.out.println();
     }
 }
