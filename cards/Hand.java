@@ -1,7 +1,8 @@
 package cards;
 
 import java.util.*;
-import cards.Card;
+
+//import auxFunctions.aux;
 
 public class Hand extends CardGroup {
     public static final int N_CARDS_ON_HAND = 5;
@@ -40,14 +41,19 @@ public class Hand extends CardGroup {
       return handSorted;
     }
 
-    private ArrayList<Integer> auxToIdxOutPut(ArrayList<Integer> idxOfSortedHand){
+    private ArrayList<Integer> auxToIdxOutPut(ArrayList<Integer> idxOfSortedHand, ArrayList<Card> sortedHand){
 
-      return null;
+        ArrayList<Integer> idxOutPut = new ArrayList<Integer>();
+        Card auxCard;
+
+        for(int i : idxOfSortedHand ){
+            auxCard = sortedHand.get( i );
+            idxOutPut.add(cards.indexOf(auxCard));
+        }
+
+        return idxOutPut;
     }
-
-    // TODO:NEEDS COMMENTS FOR JAVA DOCS
     // TODO:needs checking for the idxoutput
-    // TODO:SEPARATE ROYAL STRAIGHT AND FLUSH
     public ArrayList<Integer> checkFlush(char type, int cap) {
         // Principal type and thirdType
         // N -> Normal
@@ -116,26 +122,169 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    //TODO: needs thinling
     public ArrayList<Integer> checkStraightFlush(int cap){
-      ArrayList<Integer> idxOutput = new ArrayList<Integer>();
-      Card newCard;
-      int[] count = new int[]{0,0,0,0};
 
-      for (int i = 0; i < N_CARDS_ON_HAND; i++) {
-        newCard = cards.get(i);
-        count[newCard.getRank() - 1] += 1;
-      }
+        ArrayList<Integer> idxOutput1 = new ArrayList<Integer>();
+        ArrayList<Integer> idxOutput2= new ArrayList<Integer>();
 
-      for (int i = 0; i < 4; i++) {
-        if (count[i] == cap) {
+        int lenght1 = 0, lenght2 = 0,count = 0;
 
-        for (int j = 0; j < cap; j++) {
-          idxOutput.add(j);
+        //TODO: needs to check outside and inside straights
+        idxOutput1 = checkFlush('N', cap);
+        idxOutput2 = checkStraight(cap);
+        
+        lenght1 = idxOutput1.size();
+        lenght2 = idxOutput2.size();
+
+        if(lenght1!= 0 && lenght2 != 0 ){
+            count = 0;
+            for(int i : idxOutput1){
+                for(int j : idxOutput2){
+                    if(i == j) count++;
+                }
+                
+            }
+            if(count == cap) return idxOutput1;
         }
-          return idxOutput;
+
+        idxOutput2 = checkInsideStraight(cap);
+        lenght2 = idxOutput2.size();
+
+        if(lenght1!= 0 && lenght2 != 0 ){
+            count = 0;
+            for(int i : idxOutput1){
+                for(int j : idxOutput2){
+                    if(i == j) count++;
+                }
+                
+            }
+            if(count == cap) return idxOutput1;
         }
-      }
-      return null;
+
+        idxOutput2 = checkOusideStraight(cap);
+        lenght2 = idxOutput2.size();
+
+        if(lenght1!= 0 && lenght2 != 0 ){
+            count = 0;
+            for(int i : idxOutput1){
+                for(int j : idxOutput2){
+                    if(i == j) count++;
+                }
+                
+            }
+            if(count == cap) return idxOutput1;
+        }
+
+        return null;
+    }
+    //TODO:
+    public ArrayList<Integer> checkOusideStraight(int cap){
+
+        ArrayList<Integer> idxOutput = new ArrayList<Integer>();
+
+        idxOutput = checkStraight(cap);
+        if(idxOutput == null) return null;
+
+        for(int i: idxOutput){
+            if(cards.get(i).getValue() == 1 ) return null;
+        }
+
+        return idxOutput;
+    }
+    //TODO:
+    public ArrayList<Integer> checkInsideStraight(int cap){
+
+        ArrayList<Integer> aux = new ArrayList<Integer>();
+
+        Card newCard, auxCard;
+        int count = 1;
+        int seq = 0, auxSeq = 0;
+        ArrayList<Card> handSorted = sortHand();
+
+        //check for edges
+        aux = checkStraight(cap);
+        for(int i: aux){
+            if(cards.get(i).getValue() == 1 ) return aux;
+        }
+        //reset auxiliar variable
+        aux = new ArrayList<Integer>();
+
+        //check for seq, but this time
+        for( int i = 0; i < N_CARDS_ON_HAND - cap + 1; i++){
+            count = 1;
+            newCard = handSorted.get(i);
+
+            seq = newCard.getValue();
+            aux.add(i);
+            //if it is an ace check if it's "counted as high card"
+            if(seq == 1 ){
+                auxSeq = 9; // starts on 9 because the next high card 
+                        //is a 10, and since cards are sorted
+                        //it as to be like this.
+
+                for(int j = auxSeq + 1; j < auxSeq+5; j++){
+                    for(int k = i+1; k < N_CARDS_ON_HAND; k++){
+                        auxCard = handSorted.get(k);
+                        
+                        if(auxCard.getValue() == j){ 
+                            count++;
+                            aux.add(k);
+                        }
+                    }
+                }
+
+                if(count == cap){
+                    return auxToIdxOutPut(aux, handSorted);
+                }
+                aux.clear();
+                seq = newCard.getValue();
+                aux.add(i);
+                count = 1;
+            }
+                
+            for(int j = seq + 1; j < seq+5; j++){
+                for(int k = 0; k < N_CARDS_ON_HAND; k++){
+                    if(k == i) continue;
+                    auxCard = handSorted.get(k);
+                    if(j == 13){
+                        if(auxCard.getValue() == 1){
+                            count++;
+                            aux.add(k);
+                        }
+                    }
+                    if(auxCard.getValue() == j){ 
+                        count++;
+                        aux.add(k);
+                    }
+                }
+            }
+
+            if(count == 4){
+                return auxToIdxOutPut(aux, handSorted);
+            }
+            aux.clear();
+            
+        }
+        return null;
+    }
+
+    public ArrayList<Integer> checkFourToInsideWithHigh(int highCards){
+        ArrayList<Integer> idxOutput = new ArrayList<Integer>();
+        int count = 0, newValue = 0;
+        Card newCard;
+
+        idxOutput = checkInsideStraight(4);
+
+        for(int idx : idxOutput){
+            newCard = cards.get(idx);
+            newValue = newCard.getValue();
+            if(newValue == 1 || newValue == 10 || newValue == 11 || newValue == 12) count++;
+            
+        }
+        if(count == highCards) return idxOutput;
+
+        return null;
     }
 
     public ArrayList<Integer> checkRoyalFlush(int cap){
@@ -155,6 +304,7 @@ public class Hand extends CardGroup {
         if (count[i] == cap) {
           for (int j = 0; j < N_CARDS_ON_HAND; j++) {
             newCard = cards.get(j);
+            auxValue = newCard.getValue();
             if ((auxValue == 1 || auxValue == 10 || auxValue == 11 || auxValue == 12 || auxValue == 13)
             && newCard.getRank() == (i + 1)) {
               idxOutput.add(j);
@@ -165,65 +315,116 @@ public class Hand extends CardGroup {
       }
       return null;
     }
-
+    //TODO: verify everything
     public ArrayList<Integer> checkStraight(int cap){
-      ArrayList<Integer> aux = new ArrayList<Integer>();
+        ArrayList<Integer> aux = new ArrayList<Integer>();
 
-      Card newCard, auxCard;
-      int count = 1;
-      int seq = 0;
-      ArrayList<Card> handSorted = sortHand();
+        Card newCard, auxCard;
+        int count = 1;
+        int seq = 0;
+        ArrayList<Card> handSorted = sortHand();
 
-      //if need to have straight, it needs 5 seq, therefore
-      //it just needs to check once, if it is 4 to straight
-      // it only needs to check twice, not all hands
-      for( int i = 0; i < N_CARDS_ON_HAND - cap + 1; i++){
-        count = 1;
-        newCard = handSorted.get(i);
+        //if need to have straight, it needs 5 seq, therefore
+        //it just needs to check once, if it is 4 to straight
+        // it only needs to check twice, not all hands
+        for( int i = 0; i < N_CARDS_ON_HAND - cap + 1; i++){
+            count = 0;
+            newCard = handSorted.get(i);
 
-        seq = newCard.getValue();
-        aux.add(i);
-        //if it is an ace check if it's "counted as high card"
-        if(seq == 1 ){
-          seq = 9; // starts on 9 because the next high card 
-                   //is a 10, and since cards are sorted
-                   //it as to be like this.
-          for(int j = i; j < N_CARDS_ON_HAND - i; j++){
-            seq++;
-            auxCard = handSorted.get(j);
-            if(seq == auxCard.getValue()){
-              count ++;
-              aux.add(j);
+            seq = newCard.getValue();
+            aux.add(i);
+            //if it is an ace check if it's "counted as high card"
+            if(seq == 1 ){
+            seq = 9; // starts on 9 because the next high card 
+                    //is a 10, and since cards are sorted
+                    //it as to be like this.
+            for(int j = i + 1; j < N_CARDS_ON_HAND; j++){
+                seq++;
+                auxCard = handSorted.get(j);
+                if(seq == auxCard.getValue()){
+                    count ++;
+                }
+                aux.add(j);
             }
-          }
 
-          seq = newCard.getValue();
-          if(count == cap){
-            return auxToIdxOutPut(aux);
-          }
-          aux.clear();
-        }
+            seq = newCard.getValue();
+            if(count == cap){
+                return auxToIdxOutPut(aux, handSorted);
+            }
+            aux.clear();
+            }
 
-       
-
-        for(int j = i; j < N_CARDS_ON_HAND - i; j++){
-          seq++;
-          auxCard = handSorted.get(j);
-          if(seq == auxCard.getValue()){
-            count ++;
-            aux.add(j);
-          }
-        }
-
-        if(count == cap){
-          return auxToIdxOutPut(aux);
-        }
-        aux.clear();
         
-      }
 
+            for(int j = i + 1; j < N_CARDS_ON_HAND; j++){
+                seq++;
+                auxCard = handSorted.get(j);
+                if(seq == auxCard.getValue()){
+                    count ++;
+                }
+                aux.add(j);
+            }
 
-      return null;
+            if(count == cap){
+                return auxToIdxOutPut(aux, handSorted);
+            }
+            aux.clear();
+            
+        }
+        return null;      
+    }
+
+    public ArrayList<Integer> checkThreeToStraightFlush(int type){
+        //TODO: FALTA FAZER ISSTOOOO
+        ArrayList<Integer> aux = new ArrayList<Integer>();
+
+        ArrayList<Card> handSorted = new ArrayList<Card>();
+        ArrayList<Card> auxHand = new ArrayList<Card>();
+        handSorted = sortHand();
+
+        int gap = 0;
+        int numberOfHighCards = 0;
+        int idxMinOne = 50, idxMinTwo = 50;
+
+        //mudar um bocado o straight flush, para aceitar o cap...
+        //mudar o inside  o outside para cap
+        aux = checkStraightFlush(3);
+        if( aux == null) return null;
+        auxHand.add(cards.get(aux.get(0)));
+        auxHand.add(cards.get(aux.get(1)));
+        auxHand.add(cards.get(aux.get(2)));
+        //check for first and second minimiums
+        for(int i = 0; i < auxHand.size(); i++){
+            for(Card card : auxHand){
+                if(card.getValue() <= idxMinOne){
+                    idxMinOne = card.getValue();
+                    continue;
+                }
+                if(card.getValue() <= idxMinTwo){
+                    idxMinTwo = card.getValue();
+                }
+            }
+        }
+
+        // Gap is basically the difference between the first two minimums
+        gap =idxMinTwo - idxMinOne ; 
+        //high cards for(count high cards)
+        for(Card card : auxHand){
+            if(card.getValue() == 1 ||card.getValue() == 10 || card.getValue() == 11 || card.getValue() == 12){
+                numberOfHighCards++;
+            }
+        }
+        // if high >= gap type 1 true
+        if(type == 1 && numberOfHighCards >= gap) 
+            return auxToIdxOutPut(aux, handSorted);
+        // if high < gap type 2 true
+        if(type == 2 && numberOfHighCards < gap) 
+            return auxToIdxOutPut(aux, handSorted);
+        // if 2 gaps and 0 high cards type 3 true
+        if(type == 1 && gap == 2 && numberOfHighCards == 0) 
+            return auxToIdxOutPut(aux, handSorted);
+
+        return null;
     }
 
     public ArrayList<Integer> checkAKQJUnsuited() {

@@ -44,8 +44,8 @@ public class GameSimulator extends Game {
         // TODO: THE LOGIC, BECAUSE THE IFS CAN FUCK THINGS UP..
         // TODO: STILL NEED THE FUNCTIONS TO SUM WHAT'S MISSING
 
-        ArrayList<Integer> hold = null;
-        ArrayList<Integer> swap = null;
+        ArrayList<Integer> hold = new ArrayList<Integer>();
+        ArrayList<Integer> swap = new ArrayList<Integer>();
 
         if ( ( hold = this.hand.checkStraightFlush(5) ).size() != 0 ){
             return holdToSwap(hold); // 1
@@ -65,7 +65,6 @@ public class GameSimulator extends Game {
             return holdToSwap(hold); // 3
         }
 
-        // TODO:
         else if ((hold = this.hand.checkStraight(5)).size() != 0 ){
             return holdToSwap(hold); // 4
         }
@@ -81,7 +80,7 @@ public class GameSimulator extends Game {
             return holdToSwap(hold); // 5
         }
         // TODO:
-        else if (( hold = this.hand.checkStraight(4)).size() != 0){
+        else if (( hold = this.hand.checkStraightFlush(4)).size() != 0){
             return holdToSwap(hold); // 6
         }
 
@@ -101,7 +100,7 @@ public class GameSimulator extends Game {
             return holdToSwap(hold); // 10
         }
         // TODO:
-        else if ((hold = this.hand.checkFourtoOusideStraight()).size() != 0){
+        else if ((hold = this.hand.checkOusideStraight(4)).size() != 0){
             return holdToSwap(hold); // 11
         }
 
@@ -113,16 +112,11 @@ public class GameSimulator extends Game {
             return holdToSwap(hold); // 13 AKQJ unsuited
         }
 
+        else if ((hold = this.hand.checkThreeToStraightFlush(1)).size() != 0){
+            return holdToSwap(hold); // 14
+        }       
         // TODO:
-        else if ((hold = this.hand.checkThreeToStraightFlush()).size() != 0) {
-            if ((hold = this.hand.checkTypeOne()).size() != 0)
-                return holdToSwap(hold); // 14
-            else if ((hold = this.hand.checkTypeTwo()).size() != 0)
-                return holdToSwap(hold); // 20
-            return holdToSwap(hold); // 27  type 3
-        }
-        // TODO:
-        else if ((hold = this.hand.checkFourToInsideWithThreeHigh()).size() != 0){
+        else if ((hold = this.hand.checkFourToInsideWithHigh(3)).size() != 0){
             return holdToSwap(hold); // 15
         }
 
@@ -137,16 +131,16 @@ public class GameSimulator extends Game {
         else if (( hold = this.hand.checkTwoSHC()).size() != 0){
             return holdToSwap(hold); // 18 Two suited high cards
         }
-           
-        // TODO:
-        else if ((hold = this.hand.checkFourToInsideStraight()).size() != 0) {
-            if (( hold = this.hand.checkTwoHighCardsOnStraigh()).size() != 0){
-                return holdToSwap(hold); // 19
-            }
-            if (( hold = this.hand.checkOneHighCardsOnStraigh()).size() != 0){
-                return holdToSwap(hold); // 21
-            }
-            return holdToSwap(hold); // 32
+
+        else if (( hold = this.hand.checkFourToInsideWithHigh(2)).size() != 0){
+            return holdToSwap(hold); // 19
+        }
+
+        else if ((hold = this.hand.checkThreeToStraightFlush(2)).size() != 0)
+                return holdToSwap(hold); // 20
+
+        else if (( hold = this.hand.checkFourToInsideWithHigh(1)).size() != 0){
+            return holdToSwap(hold); // 21
         }
 
         else if (( hold = this.hand.checkKQJUnsuited()).size() != 0){
@@ -166,10 +160,13 @@ public class GameSimulator extends Game {
         }
 
         else if ((hold = this.hand.checkPairSuits(12, 10, 'S')).size() != 0){
-            return holdToSwap(hold); // 27 check QT suited
+            return holdToSwap(hold); // 26 check QT suited
+        }
+         // TODO:
+         else if ((hold = this.hand.checkThreeToStraightFlush(3)).size() != 0) {
+            return holdToSwap(hold); // 27  type 3
         }
             
-
         else if ((hold = this.hand.checkPairSuits(13, 11, 'U')).size() != 0){
             return holdToSwap(hold); // 28 check KJ unsuited
         }
@@ -187,6 +184,10 @@ public class GameSimulator extends Game {
 
         else if (( hold = this.hand.checkForRoyalCard()).size() != 0){
             return holdToSwap(hold); // 31
+        }
+        // TODO:
+        else if ((hold = this.hand.checkInsideStraight(4)).size() != 0) {
+            return holdToSwap(hold); // 32
         }
 
         else if ((hold = this.hand.checkFlush('N', 3)).size() != 0){
