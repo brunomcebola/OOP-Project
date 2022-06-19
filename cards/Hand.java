@@ -464,7 +464,7 @@ public class Hand extends CardGroup {
 
         int gap = 0;
         int numberOfHighCards = 0;
-        int idxMinOne = 50, idxMinTwo = 50;
+        int idxMinOne = 50, idxMinTwo = 50, idxMinThree = 50;
 
         // mudar um bocado o straight flush, para aceitar o cap...
         // mudar o inside o outside para cap
@@ -483,12 +483,16 @@ public class Hand extends CardGroup {
                 }
                 if (card.getValue() <= idxMinTwo) {
                     idxMinTwo = card.getValue();
+                    continue;
+                }
+                if (card.getValue() <= idxMinThree) {
+                    idxMinThree = card.getValue();
                 }
             }
         }
 
         // Gap is basically the difference between the first two minimums
-        gap = idxMinTwo - idxMinOne;
+        gap = (idxMinThree - idxMinTwo - 1) + (idxMinTwo - idxMinOne - 1);
         // high cards for(count high cards)
         for (Card card : auxHand) {
             if (card.getValue() == 1 || card.getValue() == 10 || card.getValue() == 11 || card.getValue() == 12) {
@@ -496,13 +500,18 @@ public class Hand extends CardGroup {
             }
         }
         // if high >= gap type 1 true
-        if (type == 1 && numberOfHighCards >= gap)
+        if (type == 1 && numberOfHighCards >= gap){
+            if ((cards.get(idxMinOne).getValue() == 1 && cards.get(idxMinTwo).getValue() >= 2 && cards.get(idxMinTwo).getValue() <= 4) || cards.get(idxMinOne).getValue() == 2) {
+                return null;
+            }
             return auxToIdxOutPut(aux, handSorted);
+        }
+            
         // if high < gap type 2 true
         if (type == 2 && numberOfHighCards < gap)
             return auxToIdxOutPut(aux, handSorted);
         // if 2 gaps and 0 high cards type 3 true
-        if (type == 1 && gap == 2 && numberOfHighCards == 0)
+        if (type == 3 && gap == 2 && numberOfHighCards == 0)
             return auxToIdxOutPut(aux, handSorted);
 
         return null;
