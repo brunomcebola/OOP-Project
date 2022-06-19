@@ -5,8 +5,8 @@ import java.util.stream.IntStream;
 public class Statistics {
   private int bet;
   private int gain;
-  private int credits;
   private int[] stats;
+  private final int credits;
 
   public Statistics(int credits) {
     this.bet = 0;
@@ -47,7 +47,11 @@ public class Statistics {
         "------------------------------" + "\n" +
         "Total                 " + IntStream.of(this.stats).sum() + "\n" +
         "------------------------------" + "\n" +
-        "Credit             " + this.credits + " (" + this.getTheoReturn() + "%)");
+        "Credit             " + this.currCredits() + " (" + this.getTheoReturn() + "%)");
+  }
+
+  private int currCredits() {
+    return this.credits - this.bet + this.gain;
   }
 
   private double getTheoReturn() {

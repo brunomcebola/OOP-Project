@@ -23,7 +23,10 @@ public class Command {
   public String toString() {
     StringBuilder str = new StringBuilder();
 
-    str.append("Cmd: " + this.cmd + " -> ");
+    str.append(this.cmd);
+
+    if (this.values.size() != 0)
+      str.append(" -> ");
 
     for (int v : this.values) {
       str.append(v + " ");

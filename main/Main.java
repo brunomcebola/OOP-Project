@@ -51,17 +51,9 @@ public class Main {
           System.out.println("Game test");
           System.out.println("----------");
 
-          GameDebug game = new GameDebug(5, "test/cmd-file.txt", "test/card-file.txt");
+          GameDebug game = new GameDebug(10, "test/cmd1.txt", "test/card1.txt");
 
-          game.createDeck();
-
-          System.out.println();
-
-          game.printDeck();
-
-          System.out.println();
-
-          game.printCmds();
+          game.run();
 
           /*
            * Game.createDeck();

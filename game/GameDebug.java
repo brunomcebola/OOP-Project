@@ -28,6 +28,47 @@ public class GameDebug extends Game {
         this.checkDeckSize();
     }
 
+    public void run() throws Exception {
+        this.createDeck();
+
+        int i = 1;
+        for (Command c : this.commands) {
+
+            switch (c.getCommand()) {
+                case 'b':
+                    System.out.println("• " + i++ + " cmd: " + c); // TODO: remove
+                    this.placeBet(c.getValues().get(0));
+                    break;
+                case '$':
+                    System.out.println("• " + i++ + " cmd: " + c); // TODO: remove
+                    this.printCredits();
+                    break;
+                case 'd':
+                    System.out.println("• " + i++ + " cmd: " + c); // TODO: remove
+                    this.dealHand();
+                    this.printHand(); // TODO: remove
+                    break;
+                case 'h':
+                    System.out.println("• " + i++ + " cmd: " + c); // TODO: remove
+                    ArrayList<Integer> swap = holdToSwap(c.getValues());
+                    System.out.println(swap); // TODO: remove
+                    this.swapCards(swap);
+                    this.printHand(); // TODO: remove
+                    this.endRound();
+                    break;
+                case 'a':
+                    // TODO: implement function from Rui
+                    System.out.println("• " + i++ + " cmd: " + c); // TODO: remove
+                    break;
+
+                case 's':
+                    System.out.println("• " + i++ + " cmd: " + c); // TODO: remove
+                    this.printStatistics();
+                    break;
+            }
+        }
+    }
+
     protected ArrayList<Card> getCardsList() {
         return this.cards;
     }
@@ -100,7 +141,7 @@ public class GameDebug extends Game {
                                 || Integer.parseInt(cmdList[(i + lookahead)]) > 5) {
                             throw new invalidCommandException(cmdList[i + lookahead], i + lookahead);
                         }
-                        values.add(Integer.parseInt(cmdList[i + lookahead]));
+                        values.add(Integer.parseInt(cmdList[i + lookahead]) - 1);
                         lookahead++;
                     }
 
@@ -155,6 +196,8 @@ public class GameDebug extends Game {
         }
     }
 
+    // TODO: ver o que fazer com isto
+
     private static boolean isNumber(String input) {
         char[] c = input.toCharArray();
         for (char aux : c)
@@ -162,16 +205,5 @@ public class GameDebug extends Game {
                 return false;
             }
         return true;
-    }
-
-    // TODO: delete below - test porpuses only
-
-    public void printCmds() {
-        int i = 1;
-        System.out.println("Commands:");
-        for (Command c : this.commands) {
-            System.out.println(i++ + ": " + c);
-        }
-        System.out.println();
     }
 }

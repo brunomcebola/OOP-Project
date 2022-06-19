@@ -47,7 +47,7 @@ public abstract class Game implements GameInterface {
 
   public final void placeBet(int bet) throws Exception {
     if (bet > this.currCredits || bet < 1 || bet > 5)
-      throw new InvalidBetValueException();
+      throw new InvalidBetValueException(bet);
 
     this.bet = bet;
     this.currCredits -= bet;
@@ -148,7 +148,6 @@ public abstract class Game implements GameInterface {
     for (Card c : this.hand.getAllCards()) {
       System.out.println(i++ + ": " + c);
     }
-    System.out.println();
   }
 
   public void printDeck() {
@@ -157,7 +156,32 @@ public abstract class Game implements GameInterface {
     for (Card c : this.deck.getAllCards()) {
       System.out.println(i++ + ": " + c);
     }
-    System.out.println();
+  }
+
+  // Static methods
+
+  /**
+   * Creates the indexes of the cards wanted to be swaped based on the indexes of
+   * the
+   * card that are wanted to be hold
+   * 
+   * @param ArrayList<Integer> list of the indexes that are going to be hold
+   * @return ArrayList<Integer>, indexes of the cards that are going to be swapped
+   */
+  public static ArrayList<Integer> holdToSwap(ArrayList<Integer> hold) {
+    ArrayList<Integer> swap = new ArrayList<Integer>();
+
+    swap.add(0);
+    swap.add(1);
+    swap.add(2);
+    swap.add(3);
+    swap.add(4);
+
+    for (int h : hold) {
+      swap.remove(Integer.valueOf(h));
+    }
+
+    return swap;
   }
 
 }
