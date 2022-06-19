@@ -30,7 +30,7 @@ public class GameSimulator extends Game {
      * assumes
      * that the Ace is alone.
      *
-     * @return ArrayList<Integer>, indexes of the cards that are going to be swapped
+     * @return An Integer ArrayList, swap, with the indexes of the cards that are going to be swapped
      */
     public ArrayList<Integer> getAdvice() {
 

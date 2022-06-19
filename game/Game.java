@@ -150,7 +150,7 @@ public abstract class Game implements GameInterface {
    * the
    * card that are wanted to be hold
    * 
-   * @param ArrayList<Integer> list of the indexes that are going to be hold
+   * @param hold list of the indexes that are going to be hold
    * @return ArrayList<Integer>, indexes of the cards that are going to be swapped
    */
   public static ArrayList<Integer> holdToSwap(ArrayList<Integer> hold) {

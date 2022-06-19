@@ -21,13 +21,13 @@ public class Hand extends CardGroup {
 
     /**
      * TODO:
-     * Recoveres the indexes of the hand, given the input of a sorted hand.
+     * Recovers the indexes of the hand, given the input of a sorted hand.
      * 
-     * @param ArrayList<Integer> list with all the indexes of the sorted hand that
+     * @param idxOfSortedHand list with all the indexes of the sorted hand that
      *                           are going to be hold
-     * @param ArrayList<Card>    list of the cards in a sorted way
+     * @param sortedHand list of the cards in a sorted way
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
-     *         to be hold
+     *         to be held
      */
     private ArrayList<Integer> auxToIdxOutPut(ArrayList<Integer> idxOfSortedHand, ArrayList<Card> sortedHand) {
 
@@ -45,9 +45,9 @@ public class Hand extends CardGroup {
     /**
      * Verifies if there is a Flush in the hand
      * 
-     * @param char N if the its the normal flush, or H if it is needed checking on
+     * @param type N if the its the normal flush, or H if it is needed checking on
      *             the number of High Cards
-     * @param int  number of cards of this groups, 5,4 or 3, or the number of High
+     * @param cap  number of cards of this groups, 5,4 or 3, or the number of High
      *             cards needed checking
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not a flush in the hand
@@ -126,7 +126,7 @@ public class Hand extends CardGroup {
     /**
      * Verifies if there is a Straight Flush in the hand
      *
-     * @param int number of cards of this groups, 5,4 or 3
+     * @param cap number of cards of this groups, 5,4 or 3
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not a Straight FLush in the hand
      */
@@ -145,10 +145,10 @@ public class Hand extends CardGroup {
         idxOutput2 = checkStraight(cap);
 
         if (idxOutput2 != null) {
-            lenght1 = idxOutput1.size();
-            lenght2 = idxOutput2.size();
+            //lenght1 = idxOutput1.size();
+            //lenght2 = idxOutput2.size();
 
-            if (lenght1 != 0 && lenght2 != 0) {
+           // if (lenght1 != 0 && lenght2 != 0) {
                 count = 0;
                 for (int i : idxOutput1) {
                     for (int j : idxOutput2) {
@@ -159,16 +159,16 @@ public class Hand extends CardGroup {
                 }
                 if (count == cap)
                     return idxOutput1;
-            }
+            //}
         }
 
         idxOutput2 = checkInsideStraight(cap);
 
         if (idxOutput2 != null) {
 
-            lenght2 = idxOutput2.size();
+           // lenght2 = idxOutput2.size();
 
-            if (lenght1 != 0 && lenght2 != 0) {
+            //if (lenght1 != 0 && lenght2 != 0) {
                 count = 0;
                 for (int i : idxOutput1) {
                     for (int j : idxOutput2) {
@@ -179,25 +179,25 @@ public class Hand extends CardGroup {
                 }
                 if (count == cap)
                     return idxOutput1;
-            }
+            //}
         }
 
         idxOutput2 = checkOusideStraight(cap);
         lenght2 = idxOutput2.size();
+        if (idxOutput2 != null) {
+            //if (lenght1 != 0 && lenght2 != 0) {
+                count = 0;
+                for (int i : idxOutput1) {
+                    for (int j : idxOutput2) {
+                        if (i == j)
+                            count++;
+                    }
 
-        if (lenght1 != 0 && lenght2 != 0) {
-            count = 0;
-            for (int i : idxOutput1) {
-                for (int j : idxOutput2) {
-                    if (i == j)
-                        count++;
                 }
-
-            }
-            if (count == cap)
-                return idxOutput1;
-        }
-
+                if (count == cap)
+                    return idxOutput1;
+            //}
+        }  
         return null;
     }
     // TODO: straight flush - cap = 5
@@ -205,7 +205,7 @@ public class Hand extends CardGroup {
     /**
      * Verifies if there is a Outside Straight Flush in the hand
      * 
-     * @param int number of cards in the Outside Straight group wanted
+     * @param cap number of cards in the Outside Straight group wanted
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not a Outside Straight in the hand
      */
@@ -229,7 +229,7 @@ public class Hand extends CardGroup {
     /**
      * Verifies if there is a Inside Straight Flush in the hand
      * 
-     * @param int number of cards in the Inside Straight group wanted
+     * @param cap number of cards in the Inside Straight group wanted
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not a Inside Straight in the hand
      */
@@ -245,10 +245,13 @@ public class Hand extends CardGroup {
 
         // check for edges
         aux = checkStraight(cap);
-        for (int i : aux) {
-            if (cards.get(i).getValue() == 1)
-                return aux;
+        if (aux != null) {
+            for (int i : aux) {
+                if (cards.get(i).getValue() == 1)
+                    return aux;
+            }
         }
+        
         // reset auxiliar variable
         aux = new ArrayList<Integer>();
 
@@ -315,7 +318,7 @@ public class Hand extends CardGroup {
     /**
      * Verifies if there is a Four to Inside With High Cards in the hand
      * 
-     * @param int number of High cards wanted
+     * @param highCards number of High cards wanted
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not a Four to Inside With High card in
      *         the hand
@@ -343,7 +346,7 @@ public class Hand extends CardGroup {
     /**
      * Verifies if there is a Royal Flush in the hand
      * 
-     * @param int number of cards in the Royal FLush group wanted
+     * @param cap number of cards in the Royal FLush group wanted
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not a Royal FLush in the hand
      */
@@ -380,7 +383,7 @@ public class Hand extends CardGroup {
     /**
      * Verifies if there is a Straight in the hand
      * 
-     * @param int number of cards in the Straight group wanted
+     * @param cap number of cards in the Straight group wanted
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not a Straight in the hand
      */
@@ -397,7 +400,7 @@ public class Hand extends CardGroup {
         // it just needs to check once, if it is 4 to straight
         // it only needs to check twice, not all hands
         for (int i = 0; i < N_CARDS_ON_HAND - cap + 1; i++) {
-            count = 0;
+            count = 1;
             newCard = handSorted.get(i);
 
             seq = newCard.getValue();
@@ -421,6 +424,7 @@ public class Hand extends CardGroup {
                     return auxToIdxOutPut(aux, handSorted);
                 }
                 aux.clear();
+                aux.add(i);
             }
 
             for (int j = i + 1; j < N_CARDS_ON_HAND; j++) {
@@ -445,7 +449,7 @@ public class Hand extends CardGroup {
     /**
      * Verifies if there is a Three to Straight Flush in the hand
      * 
-     * @param int types of the ThreeToStraight, type 1, 2 and 3
+     * @param type types of the ThreeToStraight, type 1, 2 and 3
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not a Three to Straight FLush in the
      *         hand
@@ -537,8 +541,8 @@ public class Hand extends CardGroup {
 
         if (firstCard == null || secondCard == null || thirdCard == null || forthCard == null)
             return null;
-        if (firstCard.getRank() == secondCard.getRank() && thirdCard.getRank() == forthCard.getRank()
-                && firstCard.getRank() == thirdCard.getRank())
+        if (firstCard.getRank() != secondCard.getRank() || thirdCard.getRank() != forthCard.getRank()
+                || firstCard.getRank() != thirdCard.getRank())
             return idxOutput;
 
         return null;
@@ -573,7 +577,7 @@ public class Hand extends CardGroup {
 
         if (firstCard == null || secondCard == null || thirdCard == null)
             return null;
-        if (firstCard.getRank() == secondCard.getRank() && secondCard.getRank() == thirdCard.getRank())
+        if (firstCard.getRank() != secondCard.getRank() || secondCard.getRank() != thirdCard.getRank())
             return idxOutput;
 
         return null;
@@ -964,9 +968,9 @@ public class Hand extends CardGroup {
     /**
      * Verifies if there are two specific cards, suited or unsuited, in the hand
      * 
-     * @param int  first value wanted to be checked
-     * @param int  second value wanted to be checked
-     * @param char to know if it is wanted to check suited or unsuited cards
+     * @param value1  first value wanted to be checked
+     * @param value2 second value wanted to be checked
+     * @param type to know if it is wanted to check suited or unsuited cards
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not two specific cards suited or
      *         unsuited in the hand
