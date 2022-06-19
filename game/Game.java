@@ -68,23 +68,11 @@ public abstract class Game implements GameInterface {
   }
 
   public final void endRound() {
-    /*
-     * 1 -> Royal Flush
-     * 2 -> Straight Flush
-     * 3 -> Four Aces
-     * 4 -> Four 2–4
-     * 5 -> Four 5–K
-     * 6 -> Full House
-     * 7 -> Flush
-     * 8 -> Straight
-     * 9 -> Three of a Kind
-     * 10 -> Two Pair
-     * 11 -> Jacks or Better
-     */
-
     int gain = 0;
 
-    switch (this.analyseHand()) {
+    int handClassification = this.hand.classify();
+
+    switch (handClassification) {
       case 1:
         if (bet == 5)
           gain = 4000;
@@ -126,18 +114,13 @@ public abstract class Game implements GameInterface {
         gain = bet;
 
         break;
-
     }
 
     this.currCredits += gain;
 
     this.stats.registerGain(gain);
-  }
 
-  // Private Instance Methods
-
-  private int analyseHand() {
-    return 1;
+    this.stats.registerHand(handClassification);
   }
 
   // TODO: delete below - test porpuses only

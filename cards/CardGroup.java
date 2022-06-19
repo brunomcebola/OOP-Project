@@ -41,4 +41,25 @@ public abstract class CardGroup {
     return cards.get(position);
   }
 
+  /**
+   * Reaganges the Hand (ArrayList<Card>) in a way that its sorted
+   * by is value. Notice that the Ace has value of 1
+   *
+   * @return ArrayList<Card> which is the hand sorted
+   */
+  public ArrayList<Card> sort() {
+    ArrayList<Card> sorted = cards;
+    Collections.sort(sorted, new Comparator<Card>() {
+      @Override
+      public int compare(Card card1, Card card2) {
+        if (card1.getValue() > card2.getValue()) {
+          return 1;
+        }
+        return -1;
+      }
+    });
+
+    return sorted;
+  }
+
 }

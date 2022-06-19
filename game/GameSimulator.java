@@ -64,7 +64,7 @@ public class GameSimulator extends Game {
             return holdToSwap(hold); // 4
         }
 
-        else if ((hold = this.hand.checkFHouse()).size() != 0) {
+        else if ((hold = this.hand.checkFullHouse()).size() != 0) {
             return holdToSwap(hold); // 4
         }
 
