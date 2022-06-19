@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+
 import cards.*;
 
 public class GameTestMode extends Game {
@@ -7,11 +9,7 @@ public class GameTestMode extends Game {
     super(credits);
   }
 
-  protected Deck generateDeck() throws Exception {
-    Deck deck = new Deck();
-
-    deck.generateCards();
-
-    return deck;
+  protected ArrayList<Card> getCardsList() throws Exception {
+    return Card.generateAllCards();
   }
 }

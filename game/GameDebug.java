@@ -2,49 +2,36 @@ package game;
 
 import java.io.*;
 import java.util.*;
-import exceptions.debugExceptions.*;
 
 import cards.*;
+import exceptions.debugExceptions.*;
 
 public class GameDebug extends Game {
-    private String cardFilePath;
-    private String cmdFilePath;
-
     private File cardFile;
     private File cmdFile;
 
-    private String[] cardList;
-    private String[] cmdList;
+    private ArrayList<Card> cards;
+    private ArrayList<Command> commands;
 
     public GameDebug(int credits, String cmdFilePath, String cardFilePath) throws Exception {
         super(credits);
 
-        this.cmdFilePath = cmdFilePath;
-        this.cardFilePath = cardFilePath;
+        this.commands = new ArrayList<Command>();
 
-        cardFile = new File(this.cardFilePath);
-        cmdFile = new File(this.cmdFilePath);
+        this.cardFile = new File(cardFilePath);
+        this.cmdFile = new File(cmdFilePath);
 
-        this.readCmdFile();
         this.readCardFile();
+        this.readCmdFile();
 
         this.checkDeckSize();
     }
 
-    protected Deck generateDeck() throws Exception {
-        Deck deck = new Deck();
-
-        deck.uploadCards(cardList);
-
-        return deck;
+    protected ArrayList<Card> getCardsList() {
+        return this.cards;
     }
 
-    public void playRound() throws Exception {
-    }
-
-    // Private Instance Methods
-
-    private void readCardFile() throws cardFileDoesntExistException, IOException {
+    private void readCardFile() throws Exception {
         if (cardFile.exists() == false) {
             throw new cardFileDoesntExistException();
         }
@@ -59,16 +46,18 @@ public class GameDebug extends Game {
 
         cardReader.close();
 
-        cardList = text.split(" ");
-    }
+        String[] cardList = text.split(" ");
 
-    private void readCmdFile() throws cmdFileDoesntExistException, IOException {
-        // TODO: check if commands are valid
-
-        if (cardFile.exists() == false) {
-            throw new cmdFileDoesntExistException();
+        for (String s : cardList) {
+            this.cards.add(new Card(s.charAt(0), s.charAt(1)));
         }
 
+    }
+
+    private void readCmdFile() throws cmdFileDoesntExistException, invalidCommandException, IOException {
+        if (cmdFile.exists() == false) {
+            throw new cmdFileDoesntExistException();
+        }
         String text = "";
 
         Scanner cmdReader = new Scanner(cmdFile);
@@ -79,47 +68,87 @@ public class GameDebug extends Game {
 
         cmdReader.close();
 
-        cmdList = text.split(" ");
+        String[] cmdList = text.split(" ");
 
+        Command tempCommand;
+        ArrayList<Integer> values;
+
+        for (int i = 0; i < cmdList.length; i++) { // transforms string into ArrayList of Commands
+            values = new ArrayList<Integer>();
+
+            switch (cmdList[i]) {
+                case "b":
+                    if ((i + 1) < cmdList.length && auxFunctions.aux.isNumber(cmdList[i + 1])) {
+                        values.add(Integer.parseInt(cmdList[i + 1]));
+                        i++;
+                    }
+
+                    this.commands.add(new Command('b', values));
+
+                    break;
+
+                case "h":
+                    int lookahead = 1;
+
+                    while ((i + lookahead) < cmdList.length && auxFunctions.aux.isNumber(cmdList[(i + lookahead)])) {
+                        // the user can hold up to 5 cards
+                        if (values.size() == 5) {
+                            throw new invalidCommandException(cmdList[i + lookahead], i + lookahead);
+                        } // if the card to hold is not a valid Hand card (i.e. not from card 1 to card 5)
+                        if (Integer.parseInt(cmdList[(i + lookahead)]) < 1 || Integer.parseInt(cmdList[(i + lookahead)])  > 5) {
+                            throw new invalidCommandException(cmdList[i + lookahead], i + lookahead); 
+                        }
+                        values.add(Integer.parseInt(cmdList[i + lookahead]));
+                        lookahead++;
+                    }
+
+                    this.commands.add(new Command('h', values));
+
+                    i += (lookahead - 1);
+
+                    break;
+
+                case "$":
+                    tempCommand = new Command('$', values);
+                    this.commands.add(tempCommand);
+                    break;
+
+                case "d":
+                    tempCommand = new Command('d', values);
+                    this.commands.add(tempCommand);
+                    break;
+
+                case "a":
+                    tempCommand = new Command('a', values);
+                    this.commands.add(tempCommand);
+                    break;
+
+                case "s":
+                    tempCommand = new Command('s', values);
+                    this.commands.add(tempCommand);
+                    break;
+
+                default:
+                    throw new invalidCommandException(cmdList[i], i);
+            }
+        }
     }
 
     private void checkDeckSize() throws invalidDeckSizeException {
-        int holdCount = 0;
         int requiredSize = 0;
-        int deckSize = cardList.length;
 
-        for (int i = 0; i < cmdList.length; i++) {
-            switch (cmdList[i]) {
-                case "d":
+        for (Command c : this.commands) {
+            switch (c.getCommand()) {
+                case 'd':
                     requiredSize += 5;
                     break;
-                case "h":
-                    while (++i < cmdList.length
-                            && auxFunctions.aux.isNumber(cmdList[i])) {
-                        holdCount++;
-                    }
-                    --i;
-                    requiredSize += (5 - holdCount); // size of hand - cards that are not discarded
-                    holdCount = 0;
-                    break;
-                default:
+                case 'h':
+                    requiredSize += (5 - c.getValues().size()); // size of hand - cards that are not discarded
                     break;
             }
         }
-        if (deckSize < requiredSize) {
+        if (this.cards.size() < requiredSize) {
             throw new invalidDeckSizeException();
-        }
-    }
-
-    // Private subclass
-
-    private static class Command {
-        public char cmd;
-        public int[] values;
-
-        public Command(char cmd, int[] values) {
-            this.cmd = cmd;
-            this.values = values;
         }
     }
 }

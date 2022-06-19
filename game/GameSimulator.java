@@ -15,17 +15,8 @@ public class GameSimulator extends Game {
         super(credits);
     }
 
-    /**
-     * Generates the deck that is going to be played
-     *
-     * @return Deck of the cards
-     */
-    protected Deck generateDeck() throws Exception {
-        Deck deck = new Deck();
-
-        deck.generateCards();
-
-        return deck;
+    protected ArrayList<Card> getCardsList() throws Exception {
+        return Card.generateAllCards();
     }
 
     /**

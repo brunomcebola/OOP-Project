@@ -53,6 +53,8 @@ public class Main {
 
           Game Game = new GameSimulator(5);
 
+          Game.createDeck();
+
           Game.shuffleDeck();
 
           Game.printCredits();
@@ -65,11 +67,11 @@ public class Main {
 
           Game.printHand();
 
-          //ArrayList<Integer> swap = Game.getAdvice();
+          // ArrayList<Integer> swap = Game.getAdvice();
 
-          //Game.swapCards(swap);
+          // Game.swapCards(swap);
 
-          //Game.printHand();
+          // Game.printHand();
 
           Game.endRound();
 

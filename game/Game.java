@@ -1,7 +1,6 @@
 package game;
 
 import java.util.ArrayList;
-import java.util.stream.IntStream;
 
 import cards.*;
 import exceptions.gameExceptions.*;
@@ -9,7 +8,6 @@ import exceptions.gameExceptions.*;
 public abstract class Game implements GameInterface {
   protected int bet;
   protected int currCredits;
-  protected final int initCredits;
 
   protected Deck deck;
   protected Hand hand;
@@ -19,17 +17,18 @@ public abstract class Game implements GameInterface {
     this.bet = 0;
 
     this.hand = new Hand();
+    this.deck = new Deck();
 
-    this.initCredits = credits;
     this.currCredits = credits;
 
     this.stats = new Statistics(credits);
-
-    this.deck = this.generateDeck();
   }
 
-  // TODO: ver o que fazer a este
-  protected abstract Deck generateDeck() throws Exception;
+  protected abstract ArrayList<Card> getCardsList() throws Exception;
+
+  public final void createDeck() throws Exception {
+    this.deck.uploadCards(this.getCardsList());
+  }
 
   public final void shuffleDeck() throws Exception {
     this.deck.shuffle();
