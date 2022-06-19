@@ -21,8 +21,8 @@ public class Hand extends CardGroup {
 
 
     /**
-     * Copies the hand at the time and sorts it, giving an output
-     * of the hand sorted.
+     * Reaganges the Hand (ArrayList<Card>) in a way that its sorted
+     * by is value. Notice that the Ace has value of 1 
      *
      * @return ArrayList<Card> which is the hand sorted
      */
@@ -40,7 +40,14 @@ public class Hand extends CardGroup {
 
       return handSorted;
     }
-
+    
+    /**TODO:
+     * Recoveres the indexes of the hand, given the input of a sorted hand.
+     * 
+     * @param ArrayList<Integer> list with all the indexes of the sorted hand that are going to be hold
+     * @param ArrayList<Card> list of the cards in a sorted way
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold
+     */
     private ArrayList<Integer> auxToIdxOutPut(ArrayList<Integer> idxOfSortedHand, ArrayList<Card> sortedHand){
 
         ArrayList<Integer> idxOutPut = new ArrayList<Integer>();
@@ -53,8 +60,17 @@ public class Hand extends CardGroup {
 
         return idxOutPut;
     }
-    // TODO:needs checking for the idxoutput
+
+    /**
+     * Verifies if there is a Flush in the hand
+     * 
+     * @param char N if the its the normal flush, or H if it is needed checking on the number of High Cards
+     * @param int number of cards of this groups, 5,4 or 3, or the number of High cards needed checking
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a flush in the hand
+     */
     public ArrayList<Integer> checkFlush(char type, int cap) {
+        // TODO:needs checking for the idxoutput
+
         // Principal type and thirdType
         // N -> Normal
         // H -> High cards
@@ -122,8 +138,14 @@ public class Hand extends CardGroup {
         return null;
     }
 
-    //TODO: needs thinling
+    /**
+     * Verifies if there is a Straight Flush in the hand
+     *
+     * @param int number of cards of this groups, 5,4 or 3
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold,  null if there is not a Straight FLush in the hand
+     */
     public ArrayList<Integer> checkStraightFlush(int cap){
+        //TODO: needs thinling
 
         ArrayList<Integer> idxOutput1 = new ArrayList<Integer>();
         ArrayList<Integer> idxOutput2= new ArrayList<Integer>();
@@ -178,8 +200,14 @@ public class Hand extends CardGroup {
 
         return null;
     }
-    //TODO:
+
+    /**
+     * Verifies if there is a Outside Straight Flush in the hand
+     * @param int number of cards in the Outside Straight group wanted
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Outside Straight in the hand
+     */
     public ArrayList<Integer> checkOusideStraight(int cap){
+        //TODO:
 
         ArrayList<Integer> idxOutput = new ArrayList<Integer>();
 
@@ -192,8 +220,14 @@ public class Hand extends CardGroup {
 
         return idxOutput;
     }
-    //TODO:
+    
+    /**
+     * Verifies if there is a Inside Straight Flush in the hand
+     * @param int number of cards in the Inside Straight group wanted
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Inside Straight in the hand
+     */
     public ArrayList<Integer> checkInsideStraight(int cap){
+        //TODO:
 
         ArrayList<Integer> aux = new ArrayList<Integer>();
 
@@ -269,6 +303,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a Four to Inside With High Cards in the hand
+     * @param int number of High cards wanted
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Four to Inside With High card in the hand
+     */
     public ArrayList<Integer> checkFourToInsideWithHigh(int highCards){
         ArrayList<Integer> idxOutput = new ArrayList<Integer>();
         int count = 0, newValue = 0;
@@ -279,7 +318,7 @@ public class Hand extends CardGroup {
         for(int idx : idxOutput){
             newCard = cards.get(idx);
             newValue = newCard.getValue();
-            if(newValue == 1 || newValue == 10 || newValue == 11 || newValue == 12) count++;
+            if(newValue == 1 || newValue == 11 || newValue == 12 || newValue == 13) count++;
             
         }
         if(count == highCards) return idxOutput;
@@ -287,6 +326,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a Royal Flush in the hand
+     * @param int number of cards in the Royal FLush group wanted
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Royal FLush in the hand
+     */
     public ArrayList<Integer> checkRoyalFlush(int cap){
       ArrayList<Integer> idxOutput = new ArrayList<Integer>();
       int[] count = new int[]{0,0,0,0};
@@ -315,8 +359,14 @@ public class Hand extends CardGroup {
       }
       return null;
     }
-    //TODO: verify everything
+    
+    /**
+     * Verifies if there is a Straight in the hand
+     * @param int number of cards in the Straight group wanted
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Straight in the hand
+     */
     public ArrayList<Integer> checkStraight(int cap){
+        //TODO: verify everything
         ArrayList<Integer> aux = new ArrayList<Integer>();
 
         Card newCard, auxCard;
@@ -374,6 +424,11 @@ public class Hand extends CardGroup {
         return null;      
     }
 
+    /**
+     * Verifies if there is a Three to Straight Flush in the hand
+     * @param  int types of the ThreeToStraight, type 1, 2 and 3
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Three to Straight FLush in the hand
+     */
     public ArrayList<Integer> checkThreeToStraightFlush(int type){
         //TODO: FALTA FAZER ISSTOOOO
         ArrayList<Integer> aux = new ArrayList<Integer>();
@@ -427,6 +482,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a A K Q J Unsuited in the hand
+     *
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a A K Q J Unsuited in the hand
+     */
     public ArrayList<Integer> checkAKQJUnsuited() {
 
         Card firstCard = null, secondCard = null, thirdCard = null, forthCard = null, auxCard = null;
@@ -461,6 +521,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a K Q J Unsuited in the hand
+     *
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a K Q J unsuited in the hand
+     */
     public ArrayList<Integer> checkKQJUnsuited() {
 
         Card firstCard = null, secondCard = null, thirdCard = null, auxCard = null;
@@ -490,6 +555,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a Full House in the hand
+     *
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Full House in the hand
+     */
     public ArrayList<Integer> checkFHouse() {
         int counter = 1;
         int[] idx = new int[] { -1, -1, -1 };
@@ -559,6 +629,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a Four of a Kind in the hand
+     *
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Four of a Kind in the hand
+     */
     public ArrayList<Integer> checkFourOfAKind() {
         int counter = 1;
 
@@ -589,6 +664,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a Three of a Kind in the hand
+     *
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Three of a Kind in the hand
+     */
     public ArrayList<Integer> checkThreeOfAKind() {
         int counter = 1;
         Card myCard, auxCard;
@@ -617,6 +697,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a Pair in the hand
+     *
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Pair in the hand
+     */
     public ArrayList<Integer> checkPair() {
         int counter = 1;
         Card myCard, auxCard;
@@ -645,6 +730,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a Two Pair in the hand
+     *
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Two Pairs in the hand
+     */
     public ArrayList<Integer> checkTwoPair() {
         int[] idx = new int[] { -1, -1 };
         int counter = 1;
@@ -698,6 +788,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a High Pair in the hand
+     *
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a High Pair in the hand
+     */
     public ArrayList<Integer> checkHighPair() {
         int counter = 1;
         Card myCard, auxCard;
@@ -728,6 +823,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a Three Aces in the hand
+     *
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Three Aces in the hand
+     */
     public ArrayList<Integer> checkThreeAces() {
         int counter = 1;
         Card myCard, auxCard;
@@ -759,6 +859,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a Q and J Suited in the hand
+     *
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Q and J Suited in the hand
+     */
     public ArrayList<Integer> checkQJS() {
 
         Card firstCard = null, secondCard = null, auxCard = null;
@@ -785,6 +890,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a Two Suited High Cards in the hand
+     *
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold,null if there is not Two Suited High Cards in the hand
+     */
     public ArrayList<Integer> checkTwoSHC() {
         Card firstCard = null, secondCard = null, auxCard = null;
 
@@ -813,6 +923,13 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there are two specific cards, suited or unsuited, in the hand
+     * @param int first value wanted to be checked
+     * @param int second value wanted to be checked
+     * @param char to know if it is wanted to check suited or unsuited cards
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not two specific cards suited or unsuited in the hand
+     */
     public ArrayList<Integer> checkPairSuits(int value1, int value2, char type) {
         // note if there's a pair of some value, this counts the last one
         // but since this is used after the pair function this does not
@@ -859,6 +976,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a Royal Card, K , Q or J, in the hand
+     *
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not a Royal Card in the hand
+     */
     public ArrayList<Integer> checkForRoyalCard() {
         Card newCard;
         ArrayList<Integer> idxOutput = new ArrayList<Integer>();
@@ -873,6 +995,11 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verifies if there is a Ace in the hand
+     *
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed to be hold, null if there is not an Ace in the hand
+     */
     public ArrayList<Integer> checkAce() {
         Card newCard;
         ArrayList<Integer> idxOutput = new ArrayList<Integer>();

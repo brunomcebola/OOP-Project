@@ -15,6 +15,11 @@ public class GameSimulator extends Game {
         super(credits);
     }
 
+    /**
+     * Generates the deck that is going to be played
+     *
+     * @return Deck of the cards
+     */
     protected Deck generateDeck() throws Exception {
         Deck deck = new Deck();
 
@@ -23,6 +28,13 @@ public class GameSimulator extends Game {
         return deck;
     }
 
+    /**
+     * Creates the indexes of the cards wanted to be swaped based on the indexes of the 
+     * card that are wanted to be hold
+     * 
+     * @param ArrayList<Integer> list of the indexes that are going to be hold
+     * @return ArrayList<Integer>, indexes of the cards that are going to be swapped
+     */
     private ArrayList<Integer> holdToSwap(ArrayList<Integer> hold){
         ArrayList<Integer> swap = new ArrayList<Integer>();
         
@@ -39,6 +51,16 @@ public class GameSimulator extends Game {
         return swap;
     }
 
+    /**
+     * It searches for all the 33 important hands in this type of variant and returns 
+     * the indexes of the cards that are going to be swapped. This functions uses a lot
+     * of functions from another package that were made taking into account of the
+     * importance of each hand, for example, when it started checking for an A, it takes
+     * into account that Pairs were already checked, therefore if there is an Ace it assumes
+     * that the Ace is alone.
+     *
+     * @return ArrayList<Integer>, indexes of the cards that are going to be swapped
+     */
     public ArrayList<Integer> getAdvice() {
 
         // TODO: THE LOGIC, BECAUSE THE IFS CAN FUCK THINGS UP..
