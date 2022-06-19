@@ -121,6 +121,8 @@ public abstract class Game implements GameInterface {
     this.stats.registerGain(gain);
 
     this.stats.registerHand(handClassification);
+
+    this.hand = new Hand();
   }
 
   // TODO: delete below - test porpuses only

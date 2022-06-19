@@ -131,47 +131,55 @@ public class Hand extends CardGroup {
      *         to be hold, null if there is not a Straight FLush in the hand
      */
     public ArrayList<Integer> checkStraightFlush(int cap) {
-        // TODO: needs thinling
-
         ArrayList<Integer> idxOutput1 = new ArrayList<Integer>();
         ArrayList<Integer> idxOutput2 = new ArrayList<Integer>();
 
         int lenght1 = 0, lenght2 = 0, count = 0;
 
-        // TODO: needs to check outside and inside straights
         idxOutput1 = checkFlush('N', cap);
+
+        if (idxOutput1 == null) {
+            return null;
+        }
+
         idxOutput2 = checkStraight(cap);
 
-        lenght1 = idxOutput1.size();
-        lenght2 = idxOutput2.size();
+        if (idxOutput2 != null) {
+            lenght1 = idxOutput1.size();
+            lenght2 = idxOutput2.size();
 
-        if (lenght1 != 0 && lenght2 != 0) {
-            count = 0;
-            for (int i : idxOutput1) {
-                for (int j : idxOutput2) {
-                    if (i == j)
-                        count++;
+            if (lenght1 != 0 && lenght2 != 0) {
+                count = 0;
+                for (int i : idxOutput1) {
+                    for (int j : idxOutput2) {
+                        if (i == j)
+                            count++;
+                    }
+
                 }
-
+                if (count == cap)
+                    return idxOutput1;
             }
-            if (count == cap)
-                return idxOutput1;
         }
 
         idxOutput2 = checkInsideStraight(cap);
-        lenght2 = idxOutput2.size();
 
-        if (lenght1 != 0 && lenght2 != 0) {
-            count = 0;
-            for (int i : idxOutput1) {
-                for (int j : idxOutput2) {
-                    if (i == j)
-                        count++;
+        if (idxOutput2 != null) {
+
+            lenght2 = idxOutput2.size();
+
+            if (lenght1 != 0 && lenght2 != 0) {
+                count = 0;
+                for (int i : idxOutput1) {
+                    for (int j : idxOutput2) {
+                        if (i == j)
+                            count++;
+                    }
+
                 }
-
+                if (count == cap)
+                    return idxOutput1;
             }
-            if (count == cap)
-                return idxOutput1;
         }
 
         idxOutput2 = checkOusideStraight(cap);
@@ -1067,11 +1075,11 @@ public class Hand extends CardGroup {
 
         ArrayList<Integer> idx;
 
-        if (checkRoyalFlush(5).size() != 0) {
+        if (checkRoyalFlush(5) != null) {
             return 1;
-        } else if (checkStraightFlush(5).size() != 0) {
+        } else if (checkStraightFlush(5) != null) {
             return 2;
-        } else if ((idx = checkFourOfAKind()).size() != 0) {
+        } else if ((idx = checkFourOfAKind()) != null) {
             if (this.cards.get(idx.get(0)).getValue() == 1) {
                 return 3;
             } else if (this.cards.get(idx.get(0)).getValue() >= 2 && this.cards.get(idx.get(0)).getValue() <= 4) {
@@ -1079,17 +1087,17 @@ public class Hand extends CardGroup {
             } else {
                 return 5;
             }
-        } else if (checkFullHouse().size() != 0) {
+        } else if (checkFullHouse() != null) {
             return 6;
-        } else if (checkFlush('N', 5).size() != 0) {
+        } else if (checkFlush('N', 5) != null) {
             return 7;
-        } else if (checkStraight(5).size() != 0) {
+        } else if (checkStraight(5) != null) {
             return 8;
-        } else if (checkThreeOfAKind().size() != 0) {
+        } else if (checkThreeOfAKind() != null) {
             return 9;
-        } else if (checkTwoPair().size() != 0) {
+        } else if (checkTwoPair() != null) {
             return 10;
-        } else if (checkHighPair().size() != 0) {
+        } else if (checkHighPair() != null) {
             return 11;
         } else {
             return 12;
