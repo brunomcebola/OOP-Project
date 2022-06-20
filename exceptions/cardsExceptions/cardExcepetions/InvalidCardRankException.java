@@ -1,4 +1,4 @@
-package exceptions.cardExcepetions;
+package exceptions.cardsExceptions.cardExcepetions;
 
 public class InvalidCardRankException extends Exception {
   /**

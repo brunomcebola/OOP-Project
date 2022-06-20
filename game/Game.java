@@ -63,11 +63,11 @@ public abstract class Game implements GameInterface {
 
     // The bet value must be between 1 and 5 credits
     if (bet < 1 || bet > 5)
-      throw new InvalidBetException();
+      throw new IllegalBetException();
 
     // The bet value cannot be higher than the current credits
     if (bet > this.currCredits)
-      throw new InvalidBetException();
+      throw new IllegalBetException();
 
     this.bet = bet;
     this.lastBet = bet;
@@ -98,8 +98,18 @@ public abstract class Game implements GameInterface {
     if (this.hasDealt)
       throw new InvalidDealException();
 
-    for (int i = 0; i < 5; i++)
-      this.hand.appendCard(this.deck.drawCard());
+    int i = 0;
+    while (i < 5) {
+      Card tmpCard = this.deck.drawCard();
+
+      try {
+        this.hand.appendCard(tmpCard);
+        i++;
+      } catch (Exception e) {
+        if (this.verbose)
+          System.out.println(e.getMessage());
+      }
+    }
 
     this.hasDealt = true;
 
@@ -120,8 +130,20 @@ public abstract class Game implements GameInterface {
     if (swapId.size() > 5)
       throw new InvalidHoldException();
 
-    for (int s : swapId)
-      this.hand.swapCard(s, this.deck.drawCard());
+    for (int s : swapId) {
+      int i = 0;
+      while (i == 0) {
+        Card tmpCard = this.deck.drawCard();
+
+        try {
+          this.hand.swapCard(s, tmpCard);
+          i++;
+        } catch (Exception e) {
+          if (this.verbose)
+            System.out.println(e.getMessage());
+        }
+      }
+    }
 
     if (this.verbose)
       System.out.println("player's hand " + this.hand);
