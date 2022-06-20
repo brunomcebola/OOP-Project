@@ -1,7 +1,5 @@
 package main;
 
-import java.util.ArrayList;
-
 import game.*;
 
 public class Main {
@@ -48,12 +46,16 @@ public class Main {
           break;
 
         case "-t":
-          System.out.println("Game test");
+          System.out.println("Test mode");
           System.out.println("----------");
 
           GameDebug game = new GameDebug(5, "test/cmd1.txt", "test/card1.txt");
 
           game.run();
+
+          //AdviceTest test = new AdviceTest("test/big-card-file.txt");
+
+          //test.run();
 
           break;
 

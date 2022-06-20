@@ -53,8 +53,6 @@ public class Hand extends CardGroup {
      *         to be hold, null if there is not a flush in the hand
      */
     public ArrayList<Integer> checkFlush(char type, int cap) {
-        // TODO:needs checking for the idxoutput
-
         // Principal type and thirdType
         // N -> Normal
         // H -> High cards
@@ -76,21 +74,19 @@ public class Hand extends CardGroup {
 
             for (int i = 0; i < 4; i++) {
                 if (count[i] == cap) {
-                    for (int j = 0; j < N_CARDS_ON_HAND; j++) {
-                        newCard = cards.get(j);
-                        if (newCard.getRank() == i + 1)
-                            idxOutput.add(j);
+                    for (Card card : cards) {
+                        if (card.getRank() == i + 1)
+                            idxOutput.add(cards.indexOf(card));
                     }
-
                     return idxOutput;
                 }
             }
+
         }
 
-        // 3 TO FLUSH WITH 2/1 OR 0 HIGH CARDS
+        // TODO: voltar ca
 
-        // TODO: voltar ca a seguir
-
+        // 3 TO FLUSH WITH 2/1/0 HIGH CARDS
         if (type == 'H') {
             for (Card card : cards) {
                 count[card.getRank() - 1] += 1;
@@ -111,11 +107,9 @@ public class Hand extends CardGroup {
                 }
 
                 if (counter == cap) {
-                    for (int j = 0; j < N_CARDS_ON_HAND; j++) {
-                        newCard = cards.get(j);
-                        if (newCard.getRank() == i + 1)
-                            idxOutput.add(j);
-
+                    for (Card card : cards) {
+                        if (card.getRank() == i + 1)
+                            idxOutput.add(cards.indexOf(card));
                     }
                     return idxOutput;
                 }
@@ -148,33 +142,6 @@ public class Hand extends CardGroup {
         idxOutput2 = checkStraight(cap);
 
         if (idxOutput2 != null) {
-            /*
-             * Collections.sort(idxOutput1, new Comparator<Integer>() {
-             * 
-             * @Override
-             * public int compare(Integer v1, Integer v2) {
-             * if (v1 > v2) {
-             * return 1;
-             * }
-             * return -1;
-             * }
-             * });
-             * 
-             * Collections.sort(idxOutput2, new Comparator<Integer>() {
-             * 
-             * @Override
-             * public int compare(Integer v1, Integer v2) {
-             * if (v1 > v2) {
-             * return 1;
-             * }
-             * return -1;
-             * }
-             * });
-             * 
-             * System.out.print(idxOutput1);
-             * System.out.print(idxOutput2);
-             */
-
             count = 0;
             for (int i : idxOutput1) {
                 for (int j : idxOutput2) {
@@ -192,9 +159,6 @@ public class Hand extends CardGroup {
 
         if (idxOutput2 != null) {
 
-            // lenght2 = idxOutput2.size();
-
-            // if (lenght1 != 0 && lenght2 != 0) {
             count = 0;
             for (int i : idxOutput1) {
                 for (int j : idxOutput2) {
@@ -205,12 +169,12 @@ public class Hand extends CardGroup {
             }
             if (count == cap)
                 return idxOutput1;
-            // }
+
         }
 
         idxOutput2 = checkOusideStraight(cap);
         if (idxOutput2 != null) {
-            // if (lenght1 != 0 && lenght2 != 0) {
+
             count = 0;
             for (int i : idxOutput1) {
                 for (int j : idxOutput2) {
@@ -221,7 +185,7 @@ public class Hand extends CardGroup {
             }
             if (count == cap)
                 return idxOutput1;
-            // }
+
         }
 
         return null;
@@ -482,7 +446,6 @@ public class Hand extends CardGroup {
      *         hand
      */
     public ArrayList<Integer> checkThreeToStraightFlush(int type) {
-        // TODO: FALTA FAZER ISSTOOOO
         ArrayList<Integer> aux = new ArrayList<Integer>();
 
         ArrayList<Card> handSorted = new ArrayList<Card>();
@@ -496,11 +459,14 @@ public class Hand extends CardGroup {
         // mudar um bocado o straight flush, para aceitar o cap...
         // mudar o inside o outside para cap
         aux = checkStraightFlush(3);
+
         if (aux == null)
             return null;
+
         auxHand.add(cards.get(aux.get(0)));
         auxHand.add(cards.get(aux.get(1)));
         auxHand.add(cards.get(aux.get(2)));
+     
         // check for first and second minimiums
         for (int i = 0; i < auxHand.size(); i++) {
             for (Card card : auxHand) {
@@ -526,6 +492,7 @@ public class Hand extends CardGroup {
                 numberOfHighCards++;
             }
         }
+
         // if high >= gap type 1 true
         if (type == 1 && numberOfHighCards >= gap) {
             if ((cards.get(idxMinOne).getValue() == 1 && cards.get(idxMinTwo).getValue() >= 2
@@ -1122,6 +1089,12 @@ public class Hand extends CardGroup {
         } else {
             return 12;
         }
+    }
+
+    // TODO: apagar aqui para baixo
+
+    public void testStuff() {
+
     }
 
 }

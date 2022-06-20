@@ -12,11 +12,17 @@ public class GameDebug extends Game {
 
     private ArrayList<Card> cards;
     private ArrayList<Command> commands;
+
     /**
-     * Performed before a game in debug mode, this function makes sure that the necessary files are present and correctly read: Furthermore, it verifies if the card file has a list of cards large enough to execute every command in the command file. 
-     * @param credits The initial amount of credits of the player.
-     * @param cmdFilePath The path of the file with the commands to execute.
-     * @param cardFilePath The path of the file with the ordered list of cards to use.
+     * Performed before a game in debug mode, this function makes sure that the
+     * necessary files are present and correctly read: Furthermore, it verifies if
+     * the card file has a list of cards large enough to execute every command in
+     * the command file.
+     * 
+     * @param credits      The initial amount of credits of the player.
+     * @param cmdFilePath  The path of the file with the commands to execute.
+     * @param cardFilePath The path of the file with the ordered list of cards to
+     *                     use.
      * @throws Exception
      */
     public GameDebug(int credits, String cmdFilePath, String cardFilePath) throws Exception {
@@ -33,8 +39,10 @@ public class GameDebug extends Game {
 
         this.checkDeckSize();
     }
+
     /**
      * Runs the game on debug mode, with the commands and deck on the files.
+     * 
      * @throws Exception
      * @see Exception
      */
@@ -78,15 +86,20 @@ public class GameDebug extends Game {
             }
         }
     }
+
     /**
      * Gets the ArrayList of cards read from the card file.
+     * 
      * @return The list of cards.
      */
     protected ArrayList<Card> getCardsList() {
         return this.cards;
     }
+
     /**
-     * Reads the file with the list of cards and transforms the content into an ArrayList of Cards
+     * Reads the file with the list of cards and transforms the content into an
+     * ArrayList of Cards
+     * 
      * @throws Exception
      * @see Exception
      * @see Card
@@ -102,21 +115,27 @@ public class GameDebug extends Game {
 
         while (cardReader.hasNextLine()) {
             text += cardReader.nextLine();
+            text += " ";
         }
 
         cardReader.close();
 
-        String[] cardList = text.split(" ");
+        String[] cardList = text.split("\\s+");
 
         for (String s : cardList) {
             this.cards.add(new Card(s.charAt(0), s.charAt(1)));
         }
 
     }
+
     /**
-     * Reads the file with the list of commands and transforms the content into an ArrayList of Commands
-     * @throws cmdFileDoesntExistException If the path of the file with the list of commands is incorrect.
-     * @throws invalidCommandException If any of the commands in the list is not a valid Command.
+     * Reads the file with the list of commands and transforms the content into an
+     * ArrayList of Commands
+     * 
+     * @throws cmdFileDoesntExistException If the path of the file with the list of
+     *                                     commands is incorrect.
+     * @throws invalidCommandException     If any of the commands in the list is not
+     *                                     a valid Command.
      * @throws IOException
      * @see IOException
      * @see Command
@@ -131,11 +150,12 @@ public class GameDebug extends Game {
 
         while (cmdReader.hasNextLine()) {
             text += cmdReader.nextLine();
+            text += " ";
         }
 
         cmdReader.close();
 
-        String[] cmdList = text.split(" ");
+        String[] cmdList = text.split("\\s+");
 
         Command tempCommand;
         ArrayList<Integer> values;
@@ -201,9 +221,14 @@ public class GameDebug extends Game {
             }
         }
     }
+
     /**
-     * Checks if the deck of cards is large enough for the list of commands presented in the file.
-     * @throws invalidDeckSizeException If the Deck size is smaller than the required size to complete every command in the list.
+     * Checks if the deck of cards is large enough for the list of commands
+     * presented in the file.
+     * 
+     * @throws invalidDeckSizeException If the Deck size is smaller than the
+     *                                  required size to complete every command in
+     *                                  the list.
      */
     private void checkDeckSize() throws invalidDeckSizeException {
         int requiredSize = 0;
@@ -227,8 +252,10 @@ public class GameDebug extends Game {
     // TODO: ver o que fazer com isto
     /**
      * Checks if a String is only composed of numbers.
+     * 
      * @param input the String to analyze.
-     * @return True if all the character in the string are numerical, false if any are not.
+     * @return True if all the character in the string are numerical, false if any
+     *         are not.
      */
     private static boolean isNumber(String input) {
         char[] c = input.toCharArray();
