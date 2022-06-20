@@ -11,7 +11,7 @@ public abstract class Game implements GameInterface {
   private int currCredits;
 
   private Deck deck;
-  protected Hand hand;
+  private Hand hand;
   private Statistics stats;
 
   private boolean hasDealt;
@@ -238,10 +238,13 @@ public abstract class Game implements GameInterface {
    * @return An Integer ArrayList, swap, with the indexes of the cards that are
    *         going to be swapped
    */
-  public ArrayList<Integer> getAdvice() {
+  public ArrayList<Integer> getAdvice() throws InvalidAdviceException {
 
     ArrayList<Integer> hold = new ArrayList<Integer>();
     ArrayList<Integer> swap = new ArrayList<Integer>();
+
+    if (this.hand.getSize() == 0) 
+      throw new InvalidAdviceException();
 
     if ((hold = this.hand.checkStraightFlush(5)) != null) {
       if (this.verbose)

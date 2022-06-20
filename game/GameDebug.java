@@ -38,8 +38,6 @@ public class GameDebug extends Game {
         this.readCmdFile();
 
         this.checkDeckSize();
-
-        this.setVerbose(true);
     }
 
     /**
@@ -49,6 +47,7 @@ public class GameDebug extends Game {
      * @see Exception
      */
     public void run() throws Exception {
+        this.setVerbose(true);
 
         this.createDeck();
 
