@@ -1,6 +1,6 @@
 package main;
 
-import exceptions.InvalidNumberOfArgumentsException;
+import exceptions.MainExceptions.main.InvalidNumberOfArgumentsException;
 import game.*;
 
 public class Main {

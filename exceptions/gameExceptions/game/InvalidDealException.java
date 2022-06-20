@@ -1,4 +1,4 @@
-package exceptions.gameExceptions;
+package exceptions.gameExceptions.game;
 
 public class InvalidDealException extends Exception {
   /**

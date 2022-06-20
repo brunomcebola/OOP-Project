@@ -2,8 +2,8 @@ package cards;
 
 import java.util.*;
 
-import exceptions.cardsExceptions.cardExcepetions.*;
-import exceptions.cardsExceptions.cardGroupExceptions.*;
+import exceptions.cardsExceptions.card.*;
+import exceptions.cardsExceptions.cardGroup.*;
 
 public abstract class CardGroup {
   protected ArrayList<Card> cards;

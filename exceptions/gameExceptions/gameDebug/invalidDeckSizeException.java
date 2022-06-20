@@ -1,4 +1,4 @@
-package exceptions.debugExceptions;
+package exceptions.gameExceptions.gameDebug;
 
 public class invalidDeckSizeException extends Exception {
     /**

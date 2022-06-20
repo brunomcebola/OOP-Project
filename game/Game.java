@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import cards.*;
 import exceptions.gameExceptions.*;
+import exceptions.gameExceptions.game.IllegalBetException;
+import exceptions.gameExceptions.game.InvalidAdviceException;
+import exceptions.gameExceptions.game.InvalidBetException;
+import exceptions.gameExceptions.game.InvalidDealException;
+import exceptions.gameExceptions.game.InvalidHoldException;
 
 public abstract class Game implements GameInterface {
   private int bet;

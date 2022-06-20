@@ -1,4 +1,4 @@
-package exceptions.cardsExceptions.cardGroupExceptions;
+package exceptions.cardsExceptions.cardGroup;
 
 public class InvalidPositionException extends Exception {
   /**

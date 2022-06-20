@@ -1,4 +1,4 @@
-package exceptions.cardsExceptions.cardExcepetions;
+package exceptions.cardsExceptions.card;
 
 public class InvalidCardValueException extends Exception {
   /**
