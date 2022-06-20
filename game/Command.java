@@ -23,13 +23,13 @@ public class Command {
   public String toString() {
     StringBuilder str = new StringBuilder();
 
-    str.append(this.cmd);
-
-    if (this.values.size() != 0)
-      str.append(" -> ");
+    str.append("-cmd " + this.cmd + " ");
 
     for (int v : this.values) {
-      str.append(v + " ");
+      if (this.cmd == 'h')
+        str.append((v + 1) + " ");
+      else
+        str.append(v + " ");
     }
 
     return str.toString();

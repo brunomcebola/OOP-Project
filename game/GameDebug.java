@@ -38,6 +38,8 @@ public class GameDebug extends Game {
         this.readCmdFile();
 
         this.checkDeckSize();
+
+        this.setVerbose(true);
     }
 
     /**
@@ -47,44 +49,55 @@ public class GameDebug extends Game {
      * @see Exception
      */
     public void run() throws Exception {
+
         this.createDeck();
 
-        int i = 1;
         for (Command c : this.commands) {
+
+            System.out.println(c);
 
             switch (c.getCommand()) {
                 case 'b':
-                    System.out.println("• " + i++ + " cmd: " + c); // TODO: remove
-                    this.placeBet(c.getValues().get(0));
+                    try {
+                        if (c.getValues().size() == 0)
+                            this.placeBet();
+                        else
+                            this.placeBet(c.getValues().get(0));
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+
                     break;
                 case '$':
-                    System.out.println("• " + i++ + " cmd: " + c); // TODO: remove
+
                     this.printCredits();
                     break;
                 case 'd':
-                    System.out.println("• " + i++ + " cmd: " + c); // TODO: remove
+
                     this.dealHand();
-                    this.printHand(); // TODO: remove
                     break;
                 case 'h':
-                    System.out.println("• " + i++ + " cmd: " + c); // TODO: remove
+
                     ArrayList<Integer> swap = holdToSwap(c.getValues());
-                    System.out.println(swap); // TODO: remove
+
                     this.swapCards(swap);
-                    this.printHand(); // TODO: remove
                     this.endRound();
                     break;
                 case 'a':
                     // TODO: implement function from Rui
-                    System.out.println("• " + i++ + " cmd: " + c); // TODO: remove
+
                     break;
 
                 case 's':
-                    System.out.println("• " + i++ + " cmd: " + c); // TODO: remove
+
                     this.printStatistics();
                     break;
+
             }
+
+            System.out.println();
         }
+
     }
 
     /**

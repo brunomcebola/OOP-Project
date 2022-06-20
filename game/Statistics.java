@@ -27,12 +27,6 @@ public class Statistics {
   }
 
   public void registerHand(int hand) {
-    if (hand >= 3 && hand <= 5) {
-      hand = 3;
-    } else if (hand >= 6) {
-      hand -= 2;
-    }
-
     this.stats[hand - 1] += 1;
 
   }

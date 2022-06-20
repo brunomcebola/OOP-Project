@@ -13,7 +13,7 @@ import exceptions.cardExcepetions.*;
  */
 
 public class Card {
-  private static final String[] ranks = { "Spades", "Hearts", "Clubs", "Diamonds" };
+  private static final String[] ranks = { "S", "H", "C", "D" };
 
   private final int value;
   private final int rank;
@@ -52,20 +52,22 @@ public class Card {
 
   @Override
   public String toString() {
-    if (value >= 2 && value <= 10)
-      return Integer.toString(value) + " of " + ranks[rank - 1];
+    if (value >= 2 && value <= 9)
+      return value + "" + ranks[rank - 1];
 
     if (value == 1)
-      return "Ace" + " of " + ranks[rank - 1];
+      return "A" + ranks[rank - 1];
+
+    if (value == 10)
+      return "T" + ranks[rank - 1];
 
     if (value == 11)
-      return "Jack" + " of " + ranks[rank - 1];
+      return "J" + ranks[rank - 1];
 
     if (value == 12)
-      return "Queen" + " of " + ranks[rank - 1];
+      return "Q" + ranks[rank - 1];
 
-    return "King" + " of " + ranks[rank - 1];
-
+    return "K" + ranks[rank - 1];
   }
 
   @Override
