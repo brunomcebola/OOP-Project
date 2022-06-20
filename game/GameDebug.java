@@ -90,7 +90,7 @@ public class GameDebug extends Game {
                     }
                     break;
                 case 'a':
-                    // TODO: implement function from Rui
+                    this.getAdvice();
 
                     break;
 
