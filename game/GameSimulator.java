@@ -10,6 +10,13 @@ public class GameSimulator extends Game {
 
     private boolean verbose;
 
+    /**
+     * The constructor of the class.
+     * 
+     * @param credits credits that the user begins with
+     * @param bet     bet per round
+     * @param nbdeals number of rounds
+     */
     public GameSimulator(int credits, int bet, int nbdeals) throws Exception {
         super(credits);
 
@@ -17,12 +24,23 @@ public class GameSimulator extends Game {
         this.nbdeals = nbdeals;
 
         this.verbose = false;
+
     }
 
+    /**
+     * It returns an ArrayList of all the cards in a deck
+     * 
+     * @return An ArrayList of Card objects.
+     */
     protected ArrayList<Card> getCardsList() throws Exception {
         return Card.generateAllCards();
     }
 
+    /**
+     * The function runs the game by creating a deck, shuffling it, placing a bet,
+     * dealing a hand,
+     * getting advice, swapping cards, ending the round, and printing the statistics
+     */
     public void run() throws Exception {
         ArrayList<Integer> swap = new ArrayList<Integer>();
 

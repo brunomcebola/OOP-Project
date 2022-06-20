@@ -19,11 +19,23 @@ public abstract class Game implements GameInterface {
 
   private boolean verbose;
 
+  /**
+   * The constructor of the class.
+   * 
+   * @param credits credits that the user begins with
+   */
   public Game(int credits) throws Exception {
     this.bet = 0;
     this.lastBet = 0;
 
     this.hasDealt = false;
+    /**
+     * > This function swaps the cards in the player's hand with new cards from the
+     * deck
+     * 
+     * @param swapId an array of integers that represent the index of the cards to
+     *               be swapped
+     */
     this.hasSwap = false;
 
     this.verbose = false;
@@ -36,20 +48,46 @@ public abstract class Game implements GameInterface {
     this.stats = new Statistics(credits);
   }
 
+  /**
+   * This function returns an ArrayList of Card objects.
+   * 
+   * @return An ArrayList of Card objects.
+   */
   protected abstract ArrayList<Card> getCardsList() throws Exception;
 
+  /**
+   * This function sets the verbose flag to the value of the parameter.
+   * 
+   * @param sel The selection to set.
+   */
   public final void setVerbose(boolean sel) {
     this.verbose = sel;
   }
 
+  /**
+   * This function creates a deck of cards and uploads.
+   */
   public final void createDeck() throws Exception {
     this.deck.uploadCards(this.getCardsList());
   }
 
+  /**
+   * This function shuffles the deck.
+   */
   public final void shuffleDeck() throws Exception {
     this.deck.shuffle();
   }
 
+  /**
+   * A bet cannot be placed after the deal, if another already made, if the bet
+   * value is not between 1
+   * and 5 credits, or if the bet value is higher than the current credits.
+   * 
+   * The first thing we do is check if the player has dealt. If so, we throw an
+   * exception
+   * 
+   * @param bet The amount of credits to bet
+   */
   public final void placeBet(int bet) throws Exception {
     // A bet cannot be placed after the deal
     if (this.hasDealt) {
@@ -80,6 +118,10 @@ public abstract class Game implements GameInterface {
       System.out.println("player is betting " + this.bet);
   }
 
+  /**
+   * If the last bet was 0, place a bet of 5, otherwise place a bet of the last
+   * bet
+   */
   public final void placeBet() throws Exception {
     if (lastBet == 0) {
       this.placeBet(5);
@@ -89,6 +131,15 @@ public abstract class Game implements GameInterface {
 
   }
 
+  /**
+   * Deal the player a hand of five cards, but only if the player has placed a bet
+   * and hasn't dealt
+   * yet.
+   * 
+   * The first thing we do is check to see if the player has placed a bet. If not,
+   * we throw an
+   * exception
+   */
   public final void dealHand() throws Exception {
     // cannot deal until bet is placed
     if (this.bet == 0)
@@ -117,6 +168,13 @@ public abstract class Game implements GameInterface {
       System.out.println("player's hand " + this.hand);
   }
 
+  /**
+   * This function swaps the cards in the player's hand with new cards from the
+   * deck
+   * 
+   * @param swapId an array of integers that represent the index of the cards to
+   *               be swapped
+   */
   public final void swapCards(ArrayList<Integer> swapId) throws Exception {
     // Cannot swap cards before they are dealt
     if (this.hasDealt == false)
@@ -149,18 +207,34 @@ public abstract class Game implements GameInterface {
       System.out.println("player's hand " + this.hand);
   }
 
+  /**
+   * This function saves the statistics of the hand selected by the user.
+   * 
+   * @param handSel The index of the hand that was selected.
+   */
   public final void saveStatistics(int handSel) {
     this.stats.registerHand(handSel);
   }
 
+  /**
+   * Prints the statistics to the console.
+   */
   public final void printStatistics() {
     System.out.println(stats);
   }
 
+  /**
+   * This function prints the player's current credit.
+   */
   public final void printCredits() {
     System.out.println("player's credit is " + this.currCredits);
   }
 
+  /**
+   * If the player has dealt, then calculate the gain based on the hand class and add it to the
+   * player's credits, register the gain and hand class in the player's statistics, reset the bet,
+   * hand, and hasDealt, and if verbose is true, print out the hand class and the player's credits
+   */
   public final void endRound() {
     if (this.hasDealt == false)
       return;

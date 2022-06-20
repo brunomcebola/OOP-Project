@@ -10,11 +10,18 @@ import cards.*;
 public class AdviceTest {
     private File cardFile;
 
+    /**
+     * Constructor of the class
+     */
     public AdviceTest(String cardFilePath) throws Exception {
 
         cardFile = new File(cardFilePath);
     }
 
+    /**
+     * Reads in a file of cards, creates a hand for each line, and prints out the
+     * advice for each hand
+     */
     public void run() throws Exception {
         Scanner cardReader = new Scanner(cardFile);
 
@@ -36,6 +43,27 @@ public class AdviceTest {
         cardReader.close();
     }
 
+    /**
+     * If the hand is a straight flush, four of a kind, or royal flush, return 1. If
+     * the hand is a four
+     * to a royal flush, return 2. If the hand is three aces, return 3. If the hand
+     * is a straight,
+     * flush, or full house, return 4. If the hand is three of a kind (except aces),
+     * return 5. If the
+     * hand is a four to a straight flush, return 6. If the hand is two pair, return
+     * 7. If the hand is
+     * a high pair, return 8. If the hand is a four to a flush, return 9. If the
+     * hand is a three to a
+     * royal flush, return 10. If the hand is a four to an outside straight, return
+     * 11. If the hand is
+     * a low pair, return 12. If the hand is AKQJ unsuited, return 13. If the hand
+     * is a three to a
+     * straight flush (type 1), return 14.
+     * 
+     * @param hand The hand that you want to get advice for.
+     * 
+     * @return The return value is a string that is the advice for the player.
+     */
     public String getAdvice(Hand hand) {
         if (hand.checkStraightFlush(5) != null) {
             return "1. Straight flush, four of a kind, royal flush"; // 1

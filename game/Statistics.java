@@ -8,6 +8,11 @@ public class Statistics {
   private int[] stats;
   private final int credits;
 
+  /**
+   * The class constructor
+   * 
+   * @param credits initial credits of the player
+   */
   public Statistics(int credits) {
     this.bet = 0;
 
@@ -18,20 +23,38 @@ public class Statistics {
     this.stats = new int[10];
   }
 
+  /**
+   * This function adds the bet to the total bet.
+   * 
+   * @param bet The amount of money the player has bet.
+   */
   public void registerBet(int bet) {
     this.bet += bet;
   }
 
+  /**
+   * This function adds the value of the parameter gain to the value of the
+   * instance variable gain.
+   * 
+   * @param gain The amount of money gained from the sale of the item.
+   */
   public void registerGain(int gain) {
     this.gain += gain;
   }
 
+  /**
+   * This function takes in a hand and increments the corresponding index in the
+   * stats array.
+   * 
+   * @param hand the hand that was played (1-3)
+   */
   public void registerHand(int hand) {
     this.stats[hand - 1] += 1;
 
   }
 
   @Override
+  // A method that returns a string representation of the object.
   public String toString() {
     return ("Hand                  Nb   " + "\n" +
         "--------------------------------" + "\n" +
@@ -51,10 +74,20 @@ public class Statistics {
         "Credit             " + this.currCredits() + " (" + this.getTheoReturn() + "%)");
   }
 
+  /**
+   * It returns the current credits of the player.
+   * 
+   * @return The current credits of the player.
+   */
   private int currCredits() {
     return this.credits - this.bet + this.gain;
   }
 
+  /**
+   * It returns the percentage of the bet that the player won
+   * 
+   * @return Theoretical return
+   */
   private double getTheoReturn() {
     return ((double) this.gain / (double) this.bet) * 100;
   }
