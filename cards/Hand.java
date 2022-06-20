@@ -156,9 +156,7 @@ public class Hand extends CardGroup {
         }
 
         idxOutput2 = checkInsideStraight(cap);
-
         if (idxOutput2 != null) {
-
             count = 0;
             for (int i : idxOutput1) {
                 for (int j : idxOutput2) {
@@ -228,6 +226,9 @@ public class Hand extends CardGroup {
 
         ArrayList<Integer> aux = new ArrayList<Integer>();
 
+        int idx1;
+        int idx2;
+
         Card newCard, auxCard;
         int count = 1;
         int seq = 0, auxSeq = 0;
@@ -245,6 +246,67 @@ public class Hand extends CardGroup {
         // reset auxiliar variable
         aux = new ArrayList<Integer>();
 
+
+        for (Card card1 : sortedHand) {
+            idx1 = sortedHand.indexOf(card1);
+            if (idx1 > sortedHand.size() - cap)
+                break;
+
+            seq = card1.getValue();
+            aux.add(idx1);
+
+            // if it is an ace check if it's "counted as high card"
+            if (seq == 1) {
+
+                seq = 9; // starts on 9 because the next high card
+                         // is a 10, and since cards are sorted
+                         // it as to be like this.
+
+                for (Card card2 : sortedHand) {
+                    idx2 = sortedHand.indexOf(card2);
+                    if (idx2 <= idx1)
+                        continue;
+
+                    seq++;
+                    if (seq != card2.getValue()) {
+                        aux.add(idx2);
+                    }
+                    
+                }
+
+                if (aux.size() == cap) {
+                    return auxToIdxOutPut(aux, sortedHand);
+                }
+                aux.clear();
+
+                seq = card1.getValue();
+                aux.add(idx1);
+
+            }
+
+            for (Card card2 : sortedHand) {
+                idx2 = sortedHand.indexOf(card2);
+                if (idx2 <= idx1)
+                    continue;
+
+                seq++;
+                if (seq != card2.getValue()) {
+                    aux.add(idx2);
+                }
+                
+            }
+
+            if (aux.size() == cap) {
+                return auxToIdxOutPut(aux, sortedHand);
+            }
+
+            aux.clear();
+        }
+
+        return null;
+
+
+        /* 
         // check for seq, but this time
         for (int i = 0; i < N_CARDS_ON_HAND - cap + 1; i++) {
             count = 1;
@@ -303,6 +365,7 @@ public class Hand extends CardGroup {
 
         }
         return null;
+        */
     }
 
     /**
@@ -320,15 +383,17 @@ public class Hand extends CardGroup {
 
         idxOutput = checkInsideStraight(4);
 
-        for (int idx : idxOutput) {
-            newCard = cards.get(idx);
-            newValue = newCard.getValue();
-            if (newValue == 1 || newValue == 11 || newValue == 12 || newValue == 13)
-                count++;
-
+        if(idxOutput != null){
+            for (int idx : idxOutput) {
+                newCard = cards.get(idx);
+                newValue = newCard.getValue();
+                if (newValue == 1 || newValue == 11 || newValue == 12 || newValue == 13)
+                    count++;
+    
+            }
+            if (count == highCards)
+                return idxOutput;
         }
-        if (count == highCards)
-            return idxOutput;
 
         return null;
     }
@@ -412,9 +477,10 @@ public class Hand extends CardGroup {
                         continue;
 
                     seq++;
-                    if (seq == card2.getValue()) {
-                        aux.add(idx2);
+                    if (seq != card2.getValue()) {
+                        break;
                     }
+                    aux.add(idx2);
                 }
 
                 if (aux.size() == cap) {
@@ -433,9 +499,10 @@ public class Hand extends CardGroup {
                     continue;
 
                 seq++;
-                if (seq == card2.getValue()) {
-                    aux.add(idx2);
+                if (seq != card2.getValue()) {
+                    break;
                 }
+                aux.add(idx2);
             }
 
             if (aux.size() == cap) {
@@ -466,6 +533,7 @@ public class Hand extends CardGroup {
         sortedHand = getSortedCards();
 
         int gap = 0;
+        int auxGap = 0;
         int numberOfHighCards = 0;
 
         int minOne = 50, minTwo = 50, minThree = 50;
@@ -496,8 +564,11 @@ public class Hand extends CardGroup {
             }
         }
 
-        // Gap is basically the difference between the first two minimums
-        // gap = (idxMinThree - idxMinTwo - 1) + (idxMinTwo - idxMinOne - 1);
+        // Gap basically the differences between cards
+        auxGap = (idxMinThree - idxMinTwo - 1);
+        gap =  + (idxMinTwo - idxMinOne - 1);
+
+        gap = gap + auxGap;
 
         // high cards for(count high cards)
         for (Card card : auxHand) {
@@ -505,9 +576,8 @@ public class Hand extends CardGroup {
                 numberOfHighCards++;
             }
         }
-
         // if high >= gap type 1 true
-        if (type == 1 && numberOfHighCards >= 2) {
+        if (type == 1 && numberOfHighCards >= gap) {
 
             if ((auxHand.get(idxMinOne).getValue() == 1 && auxHand.get(idxMinTwo).getValue() >= 2
                     && auxHand.get(idxMinTwo).getValue() <= 4) || auxHand.get(idxMinOne).getValue() == 2) {
@@ -871,6 +941,15 @@ public class Hand extends CardGroup {
         Card myCard, auxCard;
 
         ArrayList<Integer> idxOutput = new ArrayList<Integer>();
+
+        idxOutput = checkThreeOfAKind();
+
+        if(idxOutput != null){
+            if(cards.get(idxOutput.get(0)).getValue() == 1 )
+                return idxOutput;
+        }
+        else 
+            return null;
 
         for (int i = 0; i < 3; i++) {
             counter = 1;
