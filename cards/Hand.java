@@ -7,14 +7,27 @@ import java.util.*;
 public class Hand extends CardGroup {
     public static final int N_CARDS_ON_HAND = 5;
 
+    /**
+     * Constructor of the Class
+     */
     public Hand() {
         super();
     }
-
+    /**
+     * Swaps a pre determined card
+     * 
+     * @param position position that needs to be changed
+     * @param card that needs to be changed
+     */
     public void swapCard(int position, Card card) {
         this.cards.set(position, card);
     }
 
+    /**
+     * Appends card to the hand
+     * 
+     * @param card card that is supposed to be appended to the hand
+     */
     public void appendCard(Card card) {
         this.cards.add(card);
     }
@@ -41,6 +54,17 @@ public class Hand extends CardGroup {
         return idxOutPut;
     }
 
+    /**
+     * Verivies if there is a sequence in a certain hand without gaps
+     * 
+     * @param hand hand of 5 cards
+     * @param startIdx first idx wanted to be checked
+     * @param startSeq first getValue possible for the sequence
+     * @param size size of sequence
+     * @param desc if we want to check the sequence in reverse mode
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed
+     *         to be held
+     */
     private ArrayList<Integer> checkSequence(ArrayList<Card> hand, int startIdx, int startSeq, int size, boolean desc) {
         ArrayList<Integer> idList = new ArrayList<Integer>();
 
@@ -68,6 +92,18 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    /**
+     * Verivies if there is a sequence in a certain hand even if there is
+     * gaps in that hand
+     * 
+     * @param hand hand of 5 cards
+     * @param startIdx first idx wanted to be checked
+     * @param startSeq first getValue possible for the sequence
+     * @param size size of sequence
+     * @param desc if we want to check the sequence in reverse mode
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed
+     *         to be held
+     */
     private ArrayList<Integer> findSequence(ArrayList<Card> hand, int startIdx, int startSeq, int size, boolean desc) {
         ArrayList<Integer> idList = new ArrayList<Integer>();
 
@@ -111,7 +147,6 @@ public class Hand extends CardGroup {
     /**
      * Verifies if there is a Straight in the hand
      * 
-     * @param cap number of cards in the Straight group wanted
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not a Straight in the hand
      */
@@ -178,10 +213,12 @@ public class Hand extends CardGroup {
 
     }
 
+    
     /**
      * Verifies if there is a Inside Straight Flush in the hand
      * 
      * @param cap number of cards in the Inside Straight group wanted
+     * @param desc if it is wanted to verify sequences in reverse mode
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not a Inside Straight in the hand
      */
@@ -230,6 +267,7 @@ public class Hand extends CardGroup {
         return null;
 
     }
+
 
     /**
      * Verifies if there is a Flush in the hand
@@ -298,6 +336,7 @@ public class Hand extends CardGroup {
 
         return null;
     }
+
 
     /**
      * Verifies if there is a Straight Flush in the hand
@@ -416,6 +455,7 @@ public class Hand extends CardGroup {
         return null;
     }
 
+
     /**
      * Verifies if there is a Four to Inside With High Cards in the hand
      * 
@@ -445,6 +485,7 @@ public class Hand extends CardGroup {
 
         return null;
     }
+
 
     /**
      * Verifies if there is a Royal Flush in the hand
@@ -481,7 +522,7 @@ public class Hand extends CardGroup {
         }
         return null;
     }
-    // TODO: royal flush - cap = 5
+
 
     /**
      * Verifies if there is a Three to Straight Flush in the hand
@@ -566,6 +607,7 @@ public class Hand extends CardGroup {
         return null;
     }
 
+
     /**
      * Verifies if there is a A K Q J Unsuited in the hand
      *
@@ -606,6 +648,7 @@ public class Hand extends CardGroup {
         return null;
     }
 
+
     /**
      * Verifies if there is a K Q J Unsuited in the hand
      *
@@ -640,6 +683,7 @@ public class Hand extends CardGroup {
 
         return null;
     }
+
 
     /**
      * Verifies if there is a Full House in the hand
@@ -715,7 +759,7 @@ public class Hand extends CardGroup {
 
         return null;
     }
-    // TODO: full house
+    
 
     /**
      * Verifies if there is a Four of a Kind in the hand
@@ -752,7 +796,7 @@ public class Hand extends CardGroup {
 
         return null;
     }
-    // TODO: four of a kind
+    
 
     /**
      * Verifies if there is a Three of a Kind in the hand
@@ -787,7 +831,7 @@ public class Hand extends CardGroup {
 
         return null;
     }
-    // TODO: three of a Kind
+    
 
     /**
      * Verifies if there is a Pair in the hand
@@ -823,11 +867,12 @@ public class Hand extends CardGroup {
         return null;
     }
 
+
     /**
-     * Verifies if there is a Two Pair in the hand
-     *
-     * @return ArrayList<Integer> of all the indexes of the cards that are supposed
-     *         to be hold, null if there is not a Two Pairs in the hand
+    * Verifies if there is a Two Pair in the hand
+    *
+    * @return ArrayList<Integer> of all the indexes of the cards that are supposed
+    *         to be hold, null if there is not a Two Pairs in the hand
      */
     public ArrayList<Integer> checkTwoPair() {
         int idx1;
@@ -860,7 +905,7 @@ public class Hand extends CardGroup {
             return null;
         }
     }
-    // TODO: two pair
+    
 
     /**
      * Verifies if there is a High Pair in the hand
@@ -897,7 +942,7 @@ public class Hand extends CardGroup {
 
         return null;
     }
-    // TODO: jacks or better
+    
 
     /**
      * Verifies if there is a Three Aces in the hand
@@ -944,6 +989,7 @@ public class Hand extends CardGroup {
         return null;
     }
 
+
     /**
      * Verifies if there is a Q and J Suited in the hand
      *
@@ -975,6 +1021,7 @@ public class Hand extends CardGroup {
 
         return null;
     }
+
 
     /**
      * Verifies if there is a Two Suited High Cards in the hand
@@ -1009,6 +1056,7 @@ public class Hand extends CardGroup {
 
         return null;
     }
+
 
     /**
      * Verifies if there are two specific cards, suited or unsuited, in the hand
@@ -1066,6 +1114,7 @@ public class Hand extends CardGroup {
         return null;
     }
 
+
     /**
      * Verifies if there is a Royal Card, K , Q or J, in the hand
      *
@@ -1086,8 +1135,9 @@ public class Hand extends CardGroup {
         return null;
     }
 
+
     /**
-     * Verifies if there is a Ace in the hand
+     * Verifies if there is an Ace in the hand
      *
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not an Ace in the hand
@@ -1106,6 +1156,17 @@ public class Hand extends CardGroup {
         return null;
     }
 
+    
+    /**
+     * If the hand is a royal flush, return 1. If the hand is a straight flush, return 2. If the hand
+     * is four of a kind, return 3 if the four of a kind is aces, 4 if the four of a kind is 2-4, and 5
+     * if the four of a kind is 5-K. If the hand is a full house, return 6. If the hand is a flush,
+     * return 7. If the hand is a straight, return 8. If the hand is three of a kind, return 9. If the
+     * hand is two pair, return 10. If the hand is a high pair, return 11. If the hand is none of the
+     * above, return 12
+     * 
+     * @return The classification of the hand.
+     */
     public int classify() {
         /*
          * 1 -> Royal Flush
@@ -1158,5 +1219,6 @@ public class Hand extends CardGroup {
     public void testStuff() {
 
     }
+    
 
 }
