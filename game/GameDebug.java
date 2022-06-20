@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import cards.*;
-import exceptions.gameExceptions.gameDebug.*;
+import exceptions.gameDebug.*;
 
 public class GameDebug extends Game {
     private File cardFile;

@@ -3,7 +3,7 @@ package game;
 import java.util.ArrayList;
 
 import cards.*;
-import exceptions.gameExceptions.game.*;
+import exceptions.game.*;
 
 public abstract class Game implements GameInterface {
   private int bet;

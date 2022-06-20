@@ -2,7 +2,7 @@ package cards;
 
 import java.util.ArrayList;
 
-import exceptions.cardsExceptions.card.*;
+import exceptions.card.*;
 
 /*
  * Card explanation:

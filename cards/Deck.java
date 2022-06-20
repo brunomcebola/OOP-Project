@@ -1,9 +1,8 @@
 package cards;
 
 import java.util.*;
-
-import exceptions.cardsExceptions.cardGroup.*;
-import exceptions.cardsExceptions.deck.*;
+import exceptions.cardGroup.*;
+import exceptions.deck.*;
 
 public class Deck extends CardGroup {
   private int nextCard;

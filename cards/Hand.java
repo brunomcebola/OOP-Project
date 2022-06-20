@@ -2,7 +2,7 @@ package cards;
 
 import java.util.*;
 
-import exceptions.cardsExceptions.hand.DuplicateCardException;
+import exceptions.hand.*;
 
 //import auxFunctions.aux;
 
