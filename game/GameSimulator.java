@@ -8,11 +8,15 @@ public class GameSimulator extends Game {
     private int bet;
     private int nbdeals;
 
+    private boolean verbose;
+
     public GameSimulator(int credits, int bet, int nbdeals) throws Exception {
         super(credits);
 
         this.bet = bet;
         this.nbdeals = nbdeals;
+
+        this.verbose = false;
     }
 
     protected ArrayList<Card> getCardsList() throws Exception {
@@ -22,36 +26,38 @@ public class GameSimulator extends Game {
     public void run() throws Exception {
         ArrayList<Integer> swap = new ArrayList<Integer>();
 
-        this.setVerbose(true);
+        this.setVerbose(this.verbose);
 
         this.createDeck();
 
         for (int i = 0; i < this.nbdeals; i++) {
-            System.out.println("\n\nGame " + (i + 1) + "\n");
+            if (this.verbose)
+                System.out.println("\n\nGame " + (i + 1) + "\n");
 
             this.shuffleDeck();
 
-            System.out.println("-cmd b");
+            if (this.verbose)
+                System.out.println("-cmd b");
 
             try {
                 this.placeBet(this.bet);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                if (this.verbose)
+                    System.out.println(e.getMessage());
             }
 
-            System.out.println();
-
-            System.out.println("-cmd d");
+            if (this.verbose)
+                System.out.println("\n-cmd d");
 
             try {
                 this.dealHand();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                if (this.verbose)
+                    System.out.println(e.getMessage());
             }
 
-            System.out.println();
-
-            System.out.println("-cmd a");
+            if (this.verbose)
+                System.out.println("\n-cmd a");
 
             try {
                 swap = this.getAdvice();
@@ -59,25 +65,28 @@ public class GameSimulator extends Game {
                 System.out.println(e.getMessage());
             }
 
-            System.out.println();
-
-            System.out.println("-cmd h");
+            if (this.verbose)
+                System.out.println("\n-cmd h");
 
             try {
                 this.swapCards(swap);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                if (this.verbose)
+                    System.out.println(e.getMessage());
             }
 
-            System.out.println();
+            if (this.verbose)
+                System.out.println();
 
             this.endRound();
 
-            System.out.println();
+            if (this.verbose)
+                System.out.println();
 
         }
 
-        System.out.println("-cmd s");
+        if (this.verbose)
+            System.out.println("-cmd s");
 
         this.printStatistics();
     }

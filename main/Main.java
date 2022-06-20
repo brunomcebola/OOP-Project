@@ -1,5 +1,6 @@
 package main;
 
+import exceptions.InvalidNumberOfArgumentsException;
 import game.*;
 
 public class Main {
@@ -11,12 +12,13 @@ public class Main {
     String cmd_file = "";
     String card_file = "";
 
+    Game game;
+
     try {
-      /*
-       * if (args.length != 4) {
-       * throw new InvalidNumberOfArgumentsException();
-       * }
-       */
+
+      if (args.length != 4) {
+        throw new InvalidNumberOfArgumentsException();
+      }
 
       switch (args[0]) {
         case "-d":
@@ -24,11 +26,9 @@ public class Main {
           cmd_file = args[2];
           card_file = args[3];
 
-          System.out.println("Debug mode");
-          System.out.println("----------");
-          System.out.println("credit: " + credit);
-          System.out.println("cmd_file: " + cmd_file);
-          System.out.println("card_file: " + card_file);
+          game = new GameDebug(credit, cmd_file, card_file);
+
+          ((GameDebug) game).run();
 
           break;
 
@@ -37,27 +37,10 @@ public class Main {
           bet = Integer.parseInt(args[2]);
           nbdeals = Integer.parseInt(args[3]);
 
-          System.out.println("Simulation mode");
-          System.out.println("----------");
-          System.out.println("credit: " + credit);
-          System.out.println("bet: " + bet);
-          System.out.println("nbdeals: " + nbdeals);
+          game = new GameSimulator(credit, bet, nbdeals);
 
-          break;
+          ((GameSimulator) game).run();
 
-        case "-t":
-          System.out.println("Test mode");
-          System.out.println("----------");
-
-          GameSimulator game = new GameSimulator(5, 5, 10);
-
-          game.run();
-
-          
-          //AdviceTest test = new AdviceTest("test/big-card-file.txt");
-          
-          //test.run();
-          
           break;
 
         default:
