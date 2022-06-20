@@ -1,5 +1,4 @@
 .vscode/
-test/
 *.jar
 *.class
 *.pdf

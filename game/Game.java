@@ -7,14 +7,22 @@ import exceptions.gameExceptions.*;
 
 public abstract class Game implements GameInterface {
   private int bet;
+  private int lastBet;
   private int currCredits;
 
   private Deck deck;
   protected Hand hand;
   private Statistics stats;
 
+  private boolean hasDealt;
+  private boolean hasSwap;
+
   public Game(int credits) throws Exception {
     this.bet = 0;
+    this.lastBet = 0;
+
+    this.hasDealt = false;
+    this.hasSwap = false;
 
     this.hand = new Hand();
     this.deck = new Deck();
@@ -34,25 +42,73 @@ public abstract class Game implements GameInterface {
     this.deck.shuffle();
   }
 
-  public final void dealHand() throws Exception {
-    // create hand
-    for (int i = 0; i < 5; i++)
-      this.hand.appendCard(this.deck.drawCard());
-  }
-
-  public final void swapCards(ArrayList<Integer> swapId) throws Exception {
-    for (int s : swapId)
-      this.hand.swapCard(s, this.deck.drawCard());
-  }
-
   public final void placeBet(int bet) throws Exception {
-    if (bet > this.currCredits || bet < 1 || bet > 5)
-      throw new InvalidBetValueException(bet);
+    // A bet cannot be placed after the deal
+    if (this.hasDealt) {
+      throw new InvalidBetException();
+    }
+
+    // A bet cannot be placed if another already made
+    if (this.bet != 0) {
+      throw new InvalidBetException();
+    }
+
+    // The bet value must be between 1 and 5 credits
+    if (bet < 1 || bet > 5)
+      throw new InvalidBetException();
+
+    // The bet value cannot be higher than the current credits
+    if (bet > this.currCredits)
+      throw new InvalidBetException();
 
     this.bet = bet;
+    this.lastBet = bet;
+
     this.currCredits -= bet;
 
     this.stats.registerBet(bet);
+  }
+
+  public final void placeBet() throws Exception {
+    if (lastBet == 0) {
+      this.placeBet(5);
+    } else {
+      this.placeBet(lastBet);
+    }
+
+  }
+
+  public final void dealHand() throws Exception {
+    // cannot deal until bet is placed
+    if (this.bet == 0)
+      throw new InvalidDealException();
+
+    // can only deal once per round
+    if (this.hasDealt)
+      throw new InvalidDealException();
+
+    // create hand
+    for (int i = 0; i < 5; i++)
+      this.hand.appendCard(this.deck.drawCard());
+
+    this.hasDealt = true;
+  }
+
+  public final void swapCards(ArrayList<Integer> swapId) throws Exception {
+    // Cannot swap cards before they are dealt
+    if (this.hasDealt == false)
+      throw new InvalidHoldException();
+
+    // Can only swap cards once
+    if (this.hasSwap)
+      throw new InvalidHoldException();
+
+    // cannot swap more than the existing cards
+    if (swapId.size() > 5)
+      throw new InvalidHoldException();
+
+    for (int s : swapId)
+      this.hand.swapCard(s, this.deck.drawCard());
   }
 
   public final void saveStatistics(int handSel) {
@@ -122,7 +178,11 @@ public abstract class Game implements GameInterface {
 
     this.stats.registerHand(handClassification);
 
+    this.bet = 0;
+
     this.hand = new Hand();
+
+    this.hasDealt = false;
   }
 
   // TODO: delete below - test porpuses only
