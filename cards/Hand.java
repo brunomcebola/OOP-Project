@@ -24,8 +24,8 @@ public class Hand extends CardGroup {
      * Recovers the indexes of the hand, given the input of a sorted hand.
      * 
      * @param idxOfSortedHand list with all the indexes of the sorted hand that
-     *                           are going to be hold
-     * @param sortedHand list of the cards in a sorted way
+     *                        are going to be hold
+     * @param sortedHand      list of the cards in a sorted way
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be held
      */
@@ -70,18 +70,18 @@ public class Hand extends CardGroup {
 
         // FLUSH / 4 TO FLUSH / 3 TO FLUSH
         if (type == 'N') {
-            for (int i = 0; i < N_CARDS_ON_HAND; i++) {
-                newCard = cards.get(i);
-                count[newCard.getRank() - 1] += 1;
+            for (Card card : cards) {
+                count[card.getRank() - 1] += 1;
             }
 
             for (int i = 0; i < 4; i++) {
                 if (count[i] == cap) {
                     for (int j = 0; j < N_CARDS_ON_HAND; j++) {
                         newCard = cards.get(j);
-                        if (newCard.getRank() == (count[i] + 1))
+                        if (newCard.getRank() == i + 1)
                             idxOutput.add(j);
                     }
+
                     return idxOutput;
                 }
             }
@@ -89,15 +89,17 @@ public class Hand extends CardGroup {
 
         // 3 TO FLUSH WITH 2/1 OR 0 HIGH CARDS
 
+        // TODO: voltar ca a seguir
+
         if (type == 'H') {
-            for (int i = 0; i < N_CARDS_ON_HAND; i++) {
-                newCard = cards.get(i);
-                count[newCard.getRank() - 1] += 1;
+            for (Card card : cards) {
+                count[card.getRank() - 1] += 1;
             }
 
             // search for our three cards with the same naipe.
             for (int i = 0; i < 4; i++) {
-                counter = 1;
+                counter = 0;
+
                 if (count[i] == 3) { // already known that it's 3 in the case
                     for (int j = 0; j < N_CARDS_ON_HAND; j++) {
                         newCard = cards.get(i);
@@ -107,10 +109,11 @@ public class Hand extends CardGroup {
                         }
                     }
                 }
+
                 if (counter == cap) {
                     for (int j = 0; j < N_CARDS_ON_HAND; j++) {
                         newCard = cards.get(j);
-                        if (newCard.getRank() == (count[i] + 1))
+                        if (newCard.getRank() == i + 1)
                             idxOutput.add(j);
 
                     }
@@ -134,7 +137,7 @@ public class Hand extends CardGroup {
         ArrayList<Integer> idxOutput1 = new ArrayList<Integer>();
         ArrayList<Integer> idxOutput2 = new ArrayList<Integer>();
 
-        int lenght1 = 0, lenght2 = 0, count = 0;
+        int count = 0;
 
         idxOutput1 = checkFlush('N', cap);
 
@@ -145,59 +148,82 @@ public class Hand extends CardGroup {
         idxOutput2 = checkStraight(cap);
 
         if (idxOutput2 != null) {
-            //lenght1 = idxOutput1.size();
-            //lenght2 = idxOutput2.size();
+            /*
+             * Collections.sort(idxOutput1, new Comparator<Integer>() {
+             * 
+             * @Override
+             * public int compare(Integer v1, Integer v2) {
+             * if (v1 > v2) {
+             * return 1;
+             * }
+             * return -1;
+             * }
+             * });
+             * 
+             * Collections.sort(idxOutput2, new Comparator<Integer>() {
+             * 
+             * @Override
+             * public int compare(Integer v1, Integer v2) {
+             * if (v1 > v2) {
+             * return 1;
+             * }
+             * return -1;
+             * }
+             * });
+             * 
+             * System.out.print(idxOutput1);
+             * System.out.print(idxOutput2);
+             */
 
-           // if (lenght1 != 0 && lenght2 != 0) {
-                count = 0;
-                for (int i : idxOutput1) {
-                    for (int j : idxOutput2) {
-                        if (i == j)
-                            count++;
-                    }
-
+            count = 0;
+            for (int i : idxOutput1) {
+                for (int j : idxOutput2) {
+                    if (i == j)
+                        count++;
                 }
-                if (count == cap)
-                    return idxOutput1;
-            //}
+
+            }
+            if (count == cap)
+                return idxOutput1;
+
         }
 
         idxOutput2 = checkInsideStraight(cap);
 
         if (idxOutput2 != null) {
 
-           // lenght2 = idxOutput2.size();
+            // lenght2 = idxOutput2.size();
 
-            //if (lenght1 != 0 && lenght2 != 0) {
-                count = 0;
-                for (int i : idxOutput1) {
-                    for (int j : idxOutput2) {
-                        if (i == j)
-                            count++;
-                    }
-
+            // if (lenght1 != 0 && lenght2 != 0) {
+            count = 0;
+            for (int i : idxOutput1) {
+                for (int j : idxOutput2) {
+                    if (i == j)
+                        count++;
                 }
-                if (count == cap)
-                    return idxOutput1;
-            //}
+
+            }
+            if (count == cap)
+                return idxOutput1;
+            // }
         }
 
         idxOutput2 = checkOusideStraight(cap);
-        lenght2 = idxOutput2.size();
         if (idxOutput2 != null) {
-            //if (lenght1 != 0 && lenght2 != 0) {
-                count = 0;
-                for (int i : idxOutput1) {
-                    for (int j : idxOutput2) {
-                        if (i == j)
-                            count++;
-                    }
-
+            // if (lenght1 != 0 && lenght2 != 0) {
+            count = 0;
+            for (int i : idxOutput1) {
+                for (int j : idxOutput2) {
+                    if (i == j)
+                        count++;
                 }
-                if (count == cap)
-                    return idxOutput1;
-            //}
-        }  
+
+            }
+            if (count == cap)
+                return idxOutput1;
+            // }
+        }
+
         return null;
     }
     // TODO: straight flush - cap = 5
@@ -251,7 +277,7 @@ public class Hand extends CardGroup {
                     return aux;
             }
         }
-        
+
         // reset auxiliar variable
         aux = new ArrayList<Integer>();
 
@@ -442,6 +468,7 @@ public class Hand extends CardGroup {
             aux.clear();
 
         }
+
         return null;
     }
     // TODO: straight - cap = 5
@@ -500,13 +527,14 @@ public class Hand extends CardGroup {
             }
         }
         // if high >= gap type 1 true
-        if (type == 1 && numberOfHighCards >= gap){
-            if ((cards.get(idxMinOne).getValue() == 1 && cards.get(idxMinTwo).getValue() >= 2 && cards.get(idxMinTwo).getValue() <= 4) || cards.get(idxMinOne).getValue() == 2) {
+        if (type == 1 && numberOfHighCards >= gap) {
+            if ((cards.get(idxMinOne).getValue() == 1 && cards.get(idxMinTwo).getValue() >= 2
+                    && cards.get(idxMinTwo).getValue() <= 4) || cards.get(idxMinOne).getValue() == 2) {
                 return null;
             }
             return auxToIdxOutPut(aux, handSorted);
         }
-            
+
         // if high < gap type 2 true
         if (type == 2 && numberOfHighCards < gap)
             return auxToIdxOutPut(aux, handSorted);
@@ -781,56 +809,35 @@ public class Hand extends CardGroup {
      *         to be hold, null if there is not a Two Pairs in the hand
      */
     public ArrayList<Integer> checkTwoPair() {
-        int[] idx = new int[] { -1, -1 };
-        int counter = 1;
-        Card myCard, auxCard;
+        int idx1;
+        int idx2;
 
         ArrayList<Integer> idxOutput = new ArrayList<Integer>();
 
-        // search first pair and keep idx of them
-        for (int i = 0; i < N_CARDS_ON_HAND - 1; i++) {
-            counter = 1;
-            myCard = cards.get(i);
-            idxOutput.add(i);
-            for (int j = 0; j < N_CARDS_ON_HAND; j++) {
-                if (i == j)
+        for (Card card1 : cards) {
+            idx1 = cards.indexOf(card1);
+
+            if (idxOutput.contains(idx1))
+                continue;
+
+            for (Card card2 : cards) {
+                idx2 = cards.indexOf(card2);
+
+                if (idx1 == idx2)
                     continue;
 
-                auxCard = cards.get(j);
-
-                if (myCard.getValue() == auxCard.getValue()) {
-                    idx[0] = i;
-                    idx[1] = j;
-                    counter++;
-                    idxOutput.add(j);
+                if (card1.getValue() == card2.getValue()) {
+                    idxOutput.add(idx1);
+                    idxOutput.add(idx2);
                 }
             }
-            if (counter == 2)
-                break;
-            idxOutput.clear();
         }
 
-        // search second pair
-        for (int i = 0; i < N_CARDS_ON_HAND - 1; i++) {
-            counter = 1;
-            myCard = cards.get(i);
-            idxOutput.add(i);
-            for (int j = 0; j < N_CARDS_ON_HAND; j++) {
-                if (i == j || j == idx[0] || j == idx[1])
-                    continue;
-
-                auxCard = cards.get(j);
-
-                if (myCard.getValue() == auxCard.getValue()) {
-                    counter++;
-                }
-            }
-            if (counter == 2)
-                break;
-            idxOutput.remove(Integer.valueOf(i));
+        if (idxOutput.size() == 4) {
+            return idxOutput;
+        } else {
+            return null;
         }
-
-        return null;
     }
     // TODO: two pair
 
@@ -977,9 +984,9 @@ public class Hand extends CardGroup {
     /**
      * Verifies if there are two specific cards, suited or unsuited, in the hand
      * 
-     * @param value1  first value wanted to be checked
+     * @param value1 first value wanted to be checked
      * @param value2 second value wanted to be checked
-     * @param type to know if it is wanted to check suited or unsuited cards
+     * @param type   to know if it is wanted to check suited or unsuited cards
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not two specific cards suited or
      *         unsuited in the hand
