@@ -77,14 +77,13 @@ public abstract class Game implements GameInterface {
     this.stats.registerBet(bet);
 
     if (this.verbose)
-      System.out.println("player is betting " + bet);
+      System.out.println("player is betting " + this.bet);
   }
 
   public final void placeBet() throws Exception {
     if (lastBet == 0) {
       this.placeBet(5);
-    }
-    {
+    } else {
       this.placeBet(lastBet);
     }
 
@@ -137,7 +136,7 @@ public abstract class Game implements GameInterface {
   }
 
   public final void printCredits() {
-    System.out.println("Current credits: " + this.currCredits);
+    System.out.println("player's credit is " + this.currCredits);
   }
 
   public final void endRound() {
@@ -243,7 +242,7 @@ public abstract class Game implements GameInterface {
     ArrayList<Integer> hold = new ArrayList<Integer>();
     ArrayList<Integer> swap = new ArrayList<Integer>();
 
-    if (this.hand.getSize() == 0) 
+    if (this.hand.getSize() == 0)
       throw new InvalidAdviceException();
 
     if ((hold = this.hand.checkStraightFlush(5)) != null) {

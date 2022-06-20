@@ -58,10 +58,11 @@ public class GameDebug extends Game {
             switch (c.getCommand()) {
                 case 'b':
                     try {
-                        if (c.getValues().size() == 0)
+                        if (c.getValues().size() == 0) {
                             this.placeBet();
-                        else
+                        } else {
                             this.placeBet(c.getValues().get(0));
+                        }
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
