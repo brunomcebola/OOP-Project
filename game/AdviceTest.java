@@ -1,3 +1,5 @@
+//TODO: n colocar no jar
+
 package game;
 
 import java.io.*;
@@ -28,7 +30,7 @@ public class AdviceTest {
             }
 
             System.out.println(i++ + ".");
-            System.out.println(getAdvice(hand));
+            System.out.println(this.getAdvice(hand));
         }
 
         cardReader.close();
@@ -50,7 +52,7 @@ public class AdviceTest {
         if (hand.checkRoyalFlush(4) != null) {
             return "2. 4 to a royal flush"; // 2
         }
-        
+
         if (hand.checkThreeAces() != null) {
             return "3. Three aces"; // 3
         }
@@ -67,7 +69,7 @@ public class AdviceTest {
         if (hand.checkFullHouse() != null) {
             return "4. Straight, flush, full house"; // 4
         }
-        
+
         if (hand.checkThreeOfAKind() != null) {
             return "5. Three of a kind (except aces)"; // 5
         }
@@ -83,7 +85,7 @@ public class AdviceTest {
         if (hand.checkHighPair() != null) {
             return "8. High pair"; // 8
         }
-        
+
         if (hand.checkFlush('N', 4) != null) {
             return "9. 4 to a flush"; // 9
         }
@@ -95,15 +97,15 @@ public class AdviceTest {
         if (hand.checkOusideStraight(4) != null) {
             return "11. 4 to an outside straight"; // 11
         }
-        
+
         if (hand.checkPair() != null) {
             return "12. Low pair"; // 12
         }
-        
+
         if (hand.checkAKQJUnsuited() != null) {
             return "13. AKQJ unsuited"; // 13
         }
-        
+
         if (hand.checkThreeToStraightFlush(1) != null) {
             return "14. 3 to a straight flush (type 1)"; // 14
         }

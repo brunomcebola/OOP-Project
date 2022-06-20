@@ -34,7 +34,7 @@ public class Statistics {
   @Override
   public String toString() {
     return ("Hand                  Nb   " + "\n" +
-        "------------------------------" + "\n" +
+        "--------------------------------" + "\n" +
         "Jacks or Better       " + this.stats[8] + "\n" +
         "Two Pair              " + this.stats[7] + "\n" +
         "Three of a Kind       " + this.stats[6] + "\n" +
@@ -45,9 +45,9 @@ public class Statistics {
         "Straight Flush        " + this.stats[1] + "\n" +
         "Royal Flush           " + this.stats[0] + "\n" +
         "Other                 " + this.stats[9] + "\n" +
-        "------------------------------" + "\n" +
+        "--------------------------------" + "\n" +
         "Total                 " + IntStream.of(this.stats).sum() + "\n" +
-        "------------------------------" + "\n" +
+        "--------------------------------" + "\n" +
         "Credit             " + this.currCredits() + " (" + this.getTheoReturn() + "%)");
   }
 
@@ -56,6 +56,6 @@ public class Statistics {
   }
 
   private double getTheoReturn() {
-    return (this.gain / this.bet) * 100;
+    return ((double) this.gain / (double) this.bet) * 100;
   }
 }

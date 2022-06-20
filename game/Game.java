@@ -242,271 +242,159 @@ public abstract class Game implements GameInterface {
     ArrayList<Integer> hold = new ArrayList<Integer>();
     ArrayList<Integer> swap = new ArrayList<Integer>();
 
+    // only gives advice if there is a hand
     if (this.hand.getSize() == 0)
       throw new InvalidAdviceException();
 
     if ((hold = this.hand.checkStraightFlush(5)) != null) {
-      if (this.verbose)
-        System.out.println("1. Straight flush, four of a kind, royal flush");
-
-      return holdToSwap(hold); // 1
+      return holdToSwap(hold, this.verbose); // 1
     }
 
     if ((hold = this.hand.checkFourOfAKind()) != null) {
-      if (this.verbose)
-        System.out.println("1. Straight flush, four of a kind, royal flush");
-
-      return holdToSwap(hold); // 1
+      return holdToSwap(hold, this.verbose); // 1
     }
 
     if ((hold = this.hand.checkRoyalFlush(5)) != null) {
-      if (this.verbose)
-        System.out.println("1. Straight flush, four of a kind, royal flush");
-
-      return holdToSwap(hold); // 1
+      return holdToSwap(hold, this.verbose); // 1
     }
 
     if ((hold = this.hand.checkRoyalFlush(4)) != null) {
-      if (this.verbose)
-        System.out.println("2. 4 to a royal flush");
-
-      return holdToSwap(hold); // 2
+      return holdToSwap(hold, this.verbose); // 2
     }
 
     if ((hold = this.hand.checkThreeAces()) != null) {
-      if (this.verbose)
-        System.out.println("3. Three aces");
-
-      return holdToSwap(hold); // 3
+      return holdToSwap(hold, this.verbose); // 3
     }
 
     if ((hold = this.hand.checkStraight()) != null) {
-      if (this.verbose)
-        System.out.println("4. Straight, flush, full house");
-
-      return holdToSwap(hold); // 4
+      return holdToSwap(hold, this.verbose); // 4
     }
 
     if ((hold = this.hand.checkFlush('N', 5)) != null) {
-      if (this.verbose)
-        System.out.println("4. Straight, flush, full house");
-
-      return holdToSwap(hold); // 4
+      return holdToSwap(hold, this.verbose); // 4
     }
 
     if ((hold = this.hand.checkFullHouse()) != null) {
-      if (this.verbose)
-        System.out.println("4. Straight, flush, full house");
-
-      return holdToSwap(hold); // 4
+      return holdToSwap(hold, this.verbose); // 4
     }
 
     if ((hold = this.hand.checkThreeOfAKind()) != null) {
-      if (this.verbose)
-        System.out.println("5. Three of a kind (except aces)");
-
-      return holdToSwap(hold); // 5
+      return holdToSwap(hold, this.verbose); // 5
     }
 
     if ((hold = this.hand.checkStraightFlush(4)) != null) {
-      if (this.verbose)
-        System.out.println("6. 4 to a straight flush");
-
-      return holdToSwap(hold); // 6
+      return holdToSwap(hold, this.verbose); // 6
     }
 
     if ((hold = this.hand.checkTwoPair()) != null) {
-      if (this.verbose)
-        System.out.println("7. Two pair");
-
-      return holdToSwap(hold); // 7
+      return holdToSwap(hold, this.verbose); // 7
     }
 
     if ((hold = this.hand.checkHighPair()) != null) {
-      if (this.verbose)
-        System.out.println("8. High pair");
-
-      return holdToSwap(hold); // 8
+      return holdToSwap(hold, this.verbose); // 8
     }
 
     if ((hold = this.hand.checkFlush('N', 4)) != null) {
-      if (this.verbose)
-        System.out.println("9. 4 to a flush");
-
-      return holdToSwap(hold); // 9
+      return holdToSwap(hold, this.verbose); // 9
     }
 
     if ((hold = this.hand.checkRoyalFlush(3)) != null) {
-      if (this.verbose)
-        System.out.println("10. 3 to a royal flush");
-
-      return holdToSwap(hold); // 10
+      return holdToSwap(hold, this.verbose); // 10
     }
 
     if ((hold = this.hand.checkOusideStraight(4)) != null) {
-      if (this.verbose)
-        System.out.println("11. 4 to an outside straight");
-
-      return holdToSwap(hold); // 11
+      return holdToSwap(hold, this.verbose); // 11
     }
 
     if ((hold = this.hand.checkPair()) != null) {
-      if (this.verbose)
-        System.out.println("12. Low pair");
-
-      return holdToSwap(hold); // 12
+      return holdToSwap(hold, this.verbose); // 12
     }
 
     if ((hold = this.hand.checkAKQJUnsuited()) != null) {
-      if (this.verbose)
-        System.out.println("13. AKQJ unsuited");
-
-      return holdToSwap(hold); // 13 AKQJ unsuited
+      return holdToSwap(hold, this.verbose); // 13
     }
 
     if ((hold = this.hand.checkThreeToStraightFlush(1)) != null) {
-      if (this.verbose)
-        System.out.println("14. 3 to a straight flush (type 1)");
-
-      return holdToSwap(hold); // 14
+      return holdToSwap(hold, this.verbose); // 14
     }
 
     if ((hold = this.hand.checkFourToInsideWithHigh(3)) != null) {
-      if (this.verbose)
-        System.out.println("15. 4 to an inside straight with 3 high cards");
-
-      return holdToSwap(hold); // 15
+      return holdToSwap(hold, this.verbose); // 15
     }
 
     if ((hold = this.hand.checkQJS()) != null) {
-      if (this.verbose)
-        System.out.println("16. QJ suited");
-
-      return holdToSwap(hold); // 16 QJ suited
+      return holdToSwap(hold, this.verbose); // 16
     }
 
     if ((hold = this.hand.checkFlush('H', 2)) != null) {
-      if (this.verbose)
-        System.out.println("17. 3 to a flush with 2 high cards");
-
-      return holdToSwap(hold); // 17
+      return holdToSwap(hold, this.verbose); // 17
     }
 
     if ((hold = this.hand.checkTwoSHC()) != null) {
-      if (this.verbose)
-        System.out.println("18. 2 suited high cards");
-
-      return holdToSwap(hold); // 18 Two suited high cards
+      return holdToSwap(hold, this.verbose); // 18
     }
 
     if ((hold = this.hand.checkFourToInsideWithHigh(2)) != null) {
-      if (this.verbose)
-        System.out.println("19. 4 to an inside straight with 2 high cards");
-
-      return holdToSwap(hold); // 19
+      return holdToSwap(hold, this.verbose); // 19
     }
 
     if ((hold = this.hand.checkThreeToStraightFlush(2)) != null) {
-      if (this.verbose)
-        System.out.println("20. 3 to a straight flush (type 2)");
-      return holdToSwap(hold); // 20
+      return holdToSwap(hold, this.verbose); // 20
     }
 
     if ((hold = this.hand.checkFourToInsideWithHigh(1)) != null) {
-      if (this.verbose)
-        System.out.println("21. 4 to an inside straight with 1 high card");
-
-      return holdToSwap(hold); // 21
+      return holdToSwap(hold, this.verbose); // 21
     }
 
     if ((hold = this.hand.checkKQJUnsuited()) != null) {
-      if (this.verbose)
-        System.out.println("22. KQJ unsuited");
-
-      return holdToSwap(hold); // 22
+      return holdToSwap(hold, this.verbose); // 22
     }
 
     if ((hold = this.hand.checkPairSuits(11, 10, 'S')) != null) {
-      if (this.verbose)
-        System.out.println("23. JT suited");
-
-      return holdToSwap(hold); // 23 check JT suited
+      return holdToSwap(hold, this.verbose); // 23 check JT suited
     }
 
     if ((hold = this.hand.checkPairSuits(12, 11, 'U')) != null) {
-      if (this.verbose)
-        System.out.println("24. QJ unsuited");
-
-      return holdToSwap(hold); // 24 check QJ unsuited
+      return holdToSwap(hold, this.verbose); // 24 check QJ unsuited
     }
 
     if ((hold = this.hand.checkFlush('H', 1)) != null) {
-      if (this.verbose)
-        System.out.println("25. 3 to a flush with 1 high card");
-
-      return holdToSwap(hold); // 25
+      return holdToSwap(hold, this.verbose); // 25
     }
 
     if ((hold = this.hand.checkPairSuits(12, 10, 'S')) != null) {
-      if (this.verbose)
-        System.out.println("26. QT suited");
-
-      return holdToSwap(hold); // 26 check QT suited
+      return holdToSwap(hold, this.verbose); // 26 check QT suited
     }
 
     if ((hold = this.hand.checkThreeToStraightFlush(3)) != null) {
-      if (this.verbose)
-        System.out.println("27. 3 to a straight flush (type 3)");
-
-      return holdToSwap(hold); // 27 type 3
+      return holdToSwap(hold, this.verbose); // 27 type 3
     }
 
     if ((hold = this.hand.checkPairSuits(13, 11, 'U')) != null) {
-      if (this.verbose)
-        System.out.println("28. KQ, KJ unsuited");
-
-      return holdToSwap(hold); // 28 check KJ unsuited
+      return holdToSwap(hold, this.verbose); // 28 check KJ unsuited
     }
     if ((hold = this.hand.checkPairSuits(13, 12, 'U')) != null) {
-      if (this.verbose)
-        System.out.println("28. KQ, KJ unsuited");
-
-      return holdToSwap(hold); // 28 check KQ unsuited
+      return holdToSwap(hold, this.verbose); // 28 check KQ unsuited
     }
 
     if ((hold = this.hand.checkAce()) != null) {
-      if (this.verbose)
-        System.out.println("29. Ace");
-
-      return holdToSwap(hold); // 29
+      return holdToSwap(hold, this.verbose); // 29
     }
 
     if ((hold = this.hand.checkPairSuits(13, 10, 'S')) != null) {
-      if (this.verbose)
-        System.out.println("30. KT suited");
-
-      return holdToSwap(hold); // 30
+      return holdToSwap(hold, this.verbose); // 30
     }
 
     if ((hold = this.hand.checkForRoyalCard()) != null) {
-      if (this.verbose)
-        System.out.println("31. Jack, Queen or King");
-
-      return holdToSwap(hold); // 31
+      return holdToSwap(hold, this.verbose); // 31
     }
 
     if ((hold = this.hand.checkInsideStraight(4, false)) != null) {
-      if (this.verbose)
-        System.out.println("32. 4 to an inside straight with no high cards");
-
-      return holdToSwap(hold); // 32
+      return holdToSwap(hold, this.verbose); // 32
     }
 
     if ((hold = this.hand.checkFlush('N', 3)) != null) {
-      if (this.verbose)
-        System.out.println("33. 3 to a flush with no high cards");
-
-      return holdToSwap(hold); // 33
+      return holdToSwap(hold, this.verbose); // 33
     }
 
     swap.add(0);
@@ -529,7 +417,7 @@ public abstract class Game implements GameInterface {
    * @param hold list of the indexes that are going to be hold
    * @return ArrayList<Integer>, indexes of the cards that are going to be swapped
    */
-  public static ArrayList<Integer> holdToSwap(ArrayList<Integer> hold) {
+  public static ArrayList<Integer> holdToSwap(ArrayList<Integer> hold, boolean verbose) {
     ArrayList<Integer> swap = new ArrayList<Integer>();
 
     swap.add(0);
@@ -540,6 +428,18 @@ public abstract class Game implements GameInterface {
 
     for (int h : hold) {
       swap.remove(Integer.valueOf(h));
+    }
+
+    if (verbose) {
+      StringBuilder str = new StringBuilder();
+
+      str.append("player should hold cards ");
+
+      for (int s : swap) {
+        str.append(s + " ");
+      }
+
+      System.out.println(str.toString());
     }
 
     return swap;

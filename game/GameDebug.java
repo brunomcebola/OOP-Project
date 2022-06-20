@@ -13,6 +13,8 @@ public class GameDebug extends Game {
     private ArrayList<Card> cards;
     private ArrayList<Command> commands;
 
+    private boolean verbose;
+
     /**
      * Performed before a game in debug mode, this function makes sure that the
      * necessary files are present and correctly read: Furthermore, it verifies if
@@ -27,6 +29,8 @@ public class GameDebug extends Game {
      */
     public GameDebug(int credits, String cmdFilePath, String cardFilePath) throws Exception {
         super(credits);
+
+        this.verbose = true;
 
         this.cards = new ArrayList<Card>();
         this.commands = new ArrayList<Command>();
@@ -47,7 +51,7 @@ public class GameDebug extends Game {
      * @see Exception
      */
     public void run() throws Exception {
-        this.setVerbose(true);
+        this.setVerbose(this.verbose);
 
         this.createDeck();
 
@@ -80,7 +84,7 @@ public class GameDebug extends Game {
                     break;
                 case 'h':
                     try {
-                        ArrayList<Integer> swap = holdToSwap(c.getValues());
+                        ArrayList<Integer> swap = holdToSwap(c.getValues(), false);
 
                         this.swapCards(swap);
 
