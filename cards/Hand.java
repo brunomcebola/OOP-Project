@@ -29,7 +29,7 @@ public class Hand extends CardGroup {
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be held
      */
-    private ArrayList<Integer> auxToIdxOutPut(ArrayList<Integer> idxOfSortedHand, ArrayList<Card> sortedHand) {
+    private ArrayList<Integer> sortedToUnsortedIdx(ArrayList<Integer> idxOfSortedHand, ArrayList<Card> sortedHand) {
 
         ArrayList<Integer> idxOutPut = new ArrayList<Integer>();
         Card auxCard;
@@ -226,6 +226,8 @@ public class Hand extends CardGroup {
 
         ArrayList<Integer> aux = new ArrayList<Integer>();
 
+        // 568KQ - A239T - 45QKA / A2789 -> cap = 3
+
         int idx1;
         int idx2;
 
@@ -234,18 +236,20 @@ public class Hand extends CardGroup {
         int seq = 0, auxSeq = 0;
         ArrayList<Card> sortedHand = getSortedCards();
 
-        // check for edges
-        aux = checkStraight(cap);
-        if (aux != null) {
-            for (int i : aux) {
-                if (cards.get(i).getValue() == 1)
-                    return aux;
+        // check straight if exists an Ace
+        if (sortedHand.get(0).getValue() == 1) {
+            // check for edges
+            aux = checkStraight(cap);
+            if (aux != null) {
+                for (int i : aux) {
+                    if (cards.get(i).getValue() == 1)
+                        return aux;
+                }
             }
         }
 
         // reset auxiliar variable
         aux = new ArrayList<Integer>();
-
 
         for (Card card1 : sortedHand) {
             idx1 = sortedHand.indexOf(card1);
@@ -271,11 +275,11 @@ public class Hand extends CardGroup {
                     if (seq != card2.getValue()) {
                         aux.add(idx2);
                     }
-                    
+
                 }
 
                 if (aux.size() == cap) {
-                    return auxToIdxOutPut(aux, sortedHand);
+                    return sortedToUnsortedIdx(aux, sortedHand);
                 }
                 aux.clear();
 
@@ -293,11 +297,11 @@ public class Hand extends CardGroup {
                 if (seq != card2.getValue()) {
                     aux.add(idx2);
                 }
-                
+
             }
 
             if (aux.size() == cap) {
-                return auxToIdxOutPut(aux, sortedHand);
+                return sortedToUnsortedIdx(aux, sortedHand);
             }
 
             aux.clear();
@@ -305,67 +309,66 @@ public class Hand extends CardGroup {
 
         return null;
 
-
-        /* 
-        // check for seq, but this time
-        for (int i = 0; i < N_CARDS_ON_HAND - cap + 1; i++) {
-            count = 1;
-            newCard = sortedHand.get(i);
-
-            seq = newCard.getValue();
-            aux.add(i);
-            // if it is an ace check if it's "counted as high card"
-            if (seq == 1) {
-                auxSeq = 9; // starts on 9 because the next high card
-                // is a 10, and since cards are sorted
-                // it as to be like this.
-
-                for (int j = auxSeq + 1; j < auxSeq + 5; j++) {
-                    for (int k = i + 1; k < N_CARDS_ON_HAND; k++) {
-                        auxCard = sortedHand.get(k);
-
-                        if (auxCard.getValue() == j) {
-                            count++;
-                            aux.add(k);
-                        }
-                    }
-                }
-
-                if (count == cap) {
-                    return auxToIdxOutPut(aux, sortedHand);
-                }
-                aux.clear();
-                seq = newCard.getValue();
-                aux.add(i);
-                count = 1;
-            }
-
-            for (int j = seq + 1; j < seq + 5; j++) {
-                for (int k = 0; k < N_CARDS_ON_HAND; k++) {
-                    if (k == i)
-                        continue;
-                    auxCard = sortedHand.get(k);
-                    if (j == 13) {
-                        if (auxCard.getValue() == 1) {
-                            count++;
-                            aux.add(k);
-                        }
-                    }
-                    if (auxCard.getValue() == j) {
-                        count++;
-                        aux.add(k);
-                    }
-                }
-            }
-
-            if (count == 4) {
-                return auxToIdxOutPut(aux, sortedHand);
-            }
-            aux.clear();
-
-        }
-        return null;
-        */
+        /*
+         * // check for seq, but this time
+         * for (int i = 0; i < N_CARDS_ON_HAND - cap + 1; i++) {
+         * count = 1;
+         * newCard = sortedHand.get(i);
+         * 
+         * seq = newCard.getValue();
+         * aux.add(i);
+         * // if it is an ace check if it's "counted as high card"
+         * if (seq == 1) {
+         * auxSeq = 9; // starts on 9 because the next high card
+         * // is a 10, and since cards are sorted
+         * // it as to be like this.
+         * 
+         * for (int j = auxSeq + 1; j < auxSeq + 5; j++) {
+         * for (int k = i + 1; k < N_CARDS_ON_HAND; k++) {
+         * auxCard = sortedHand.get(k);
+         * 
+         * if (auxCard.getValue() == j) {
+         * count++;
+         * aux.add(k);
+         * }
+         * }
+         * }
+         * 
+         * if (count == cap) {
+         * return sortedToUnsortedIdx(aux, sortedHand);
+         * }
+         * aux.clear();
+         * seq = newCard.getValue();
+         * aux.add(i);
+         * count = 1;
+         * }
+         * 
+         * for (int j = seq + 1; j < seq + 5; j++) {
+         * for (int k = 0; k < N_CARDS_ON_HAND; k++) {
+         * if (k == i)
+         * continue;
+         * auxCard = sortedHand.get(k);
+         * if (j == 13) {
+         * if (auxCard.getValue() == 1) {
+         * count++;
+         * aux.add(k);
+         * }
+         * }
+         * if (auxCard.getValue() == j) {
+         * count++;
+         * aux.add(k);
+         * }
+         * }
+         * }
+         * 
+         * if (count == 4) {
+         * return sortedToUnsortedIdx(aux, sortedHand);
+         * }
+         * aux.clear();
+         * 
+         * }
+         * return null;
+         */
     }
 
     /**
@@ -383,13 +386,13 @@ public class Hand extends CardGroup {
 
         idxOutput = checkInsideStraight(4);
 
-        if(idxOutput != null){
+        if (idxOutput != null) {
             for (int idx : idxOutput) {
                 newCard = cards.get(idx);
                 newValue = newCard.getValue();
                 if (newValue == 1 || newValue == 11 || newValue == 12 || newValue == 13)
                     count++;
-    
+
             }
             if (count == highCards)
                 return idxOutput;
@@ -453,6 +456,8 @@ public class Hand extends CardGroup {
 
         int seq = 0;
 
+        // 568QK - A234T - A45QK / A2789 -> cap = 3
+
         // if need to have straight, it needs 5 seq, therefore
         // it just needs to check once, if it is 4 to straight
         // it only needs to check twice, not all hands
@@ -464,35 +469,6 @@ public class Hand extends CardGroup {
             seq = card1.getValue();
             aux.add(idx1);
 
-            // if it is an ace check if it's "counted as high card"
-            if (seq == 1) {
-
-                seq = 9; // starts on 9 because the next high card
-                         // is a 10, and since cards are sorted
-                         // it as to be like this.
-
-                for (Card card2 : sortedHand) {
-                    idx2 = sortedHand.indexOf(card2);
-                    if (idx2 <= idx1)
-                        continue;
-
-                    seq++;
-                    if (seq != card2.getValue()) {
-                        break;
-                    }
-                    aux.add(idx2);
-                }
-
-                if (aux.size() == cap) {
-                    return auxToIdxOutPut(aux, sortedHand);
-                }
-                aux.clear();
-
-                seq = card1.getValue();
-                aux.add(idx1);
-
-            }
-
             for (Card card2 : sortedHand) {
                 idx2 = sortedHand.indexOf(card2);
                 if (idx2 <= idx1)
@@ -502,14 +478,50 @@ public class Hand extends CardGroup {
                 if (seq != card2.getValue()) {
                     break;
                 }
-                aux.add(idx2);
-            }
 
-            if (aux.size() == cap) {
-                return auxToIdxOutPut(aux, sortedHand);
+                aux.add(idx2);
+
+                if (aux.size() == cap) {
+                    return sortedToUnsortedIdx(aux, sortedHand);
+                }
             }
 
             aux.clear();
+
+            // check for Ace
+            seq = card1.getValue();
+
+            if (seq == 1) {
+                Collections.reverse(sortedHand);
+
+                seq = 14;
+
+                idx1 = sortedHand.size() - 1;
+
+                aux.add(idx1);
+
+                for (Card card2 : sortedHand) {
+                    idx2 = sortedHand.indexOf(card2);
+                    if (idx2 >= idx1)
+                        continue;
+
+                    seq--;
+                    if (seq != card2.getValue()) {
+                        break;
+                    }
+
+                    aux.add(idx2);
+
+                    if (aux.size() == cap) {
+                        return sortedToUnsortedIdx(aux, sortedHand);
+                    }
+                }
+
+                Collections.reverse(sortedHand);
+
+                aux.clear();
+            }
+
         }
 
         return null;
@@ -566,7 +578,7 @@ public class Hand extends CardGroup {
 
         // Gap basically the differences between cards
         auxGap = (idxMinThree - idxMinTwo - 1);
-        gap =  + (idxMinTwo - idxMinOne - 1);
+        gap = +(idxMinTwo - idxMinOne - 1);
 
         gap = gap + auxGap;
 
@@ -584,15 +596,15 @@ public class Hand extends CardGroup {
                 return null;
             }
 
-            return auxToIdxOutPut(aux, sortedHand);
+            return sortedToUnsortedIdx(aux, sortedHand);
         }
 
         // if high < gap type 2 true
         if (type == 2 && numberOfHighCards < gap)
-            return auxToIdxOutPut(aux, sortedHand);
+            return sortedToUnsortedIdx(aux, sortedHand);
         // if 2 gaps and 0 high cards type 3 true
         if (type == 3 && gap == 2 && numberOfHighCards == 0)
-            return auxToIdxOutPut(aux, sortedHand);
+            return sortedToUnsortedIdx(aux, sortedHand);
 
         return null;
     }
@@ -944,11 +956,10 @@ public class Hand extends CardGroup {
 
         idxOutput = checkThreeOfAKind();
 
-        if(idxOutput != null){
-            if(cards.get(idxOutput.get(0)).getValue() == 1 )
+        if (idxOutput != null) {
+            if (cards.get(idxOutput.get(0)).getValue() == 1)
                 return idxOutput;
-        }
-        else 
+        } else
             return null;
 
         for (int i = 0; i < 3; i++) {
