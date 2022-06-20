@@ -69,19 +69,25 @@ public class GameDebug extends Game {
 
                     break;
                 case '$':
-
                     this.printCredits();
                     break;
                 case 'd':
-
-                    this.dealHand();
+                    try {
+                        this.dealHand();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 'h':
+                    try {
+                        ArrayList<Integer> swap = holdToSwap(c.getValues());
 
-                    ArrayList<Integer> swap = holdToSwap(c.getValues());
+                        this.swapCards(swap);
 
-                    this.swapCards(swap);
-                    this.endRound();
+                        this.endRound();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 'a':
                     // TODO: implement function from Rui
@@ -97,7 +103,6 @@ public class GameDebug extends Game {
 
             System.out.println();
         }
-
     }
 
     /**

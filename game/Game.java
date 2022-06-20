@@ -140,6 +140,9 @@ public abstract class Game implements GameInterface {
   }
 
   public final void endRound() {
+    if (this.hasDealt == false)
+      return;
+
     int gain = 0;
 
     int handClass = this.hand.classify();

@@ -1,5 +1,1 @@
-<<<<<<< HEAD
 AC AC AD QC KS
-=======
-AC TC JD QC KS 2D 3C
->>>>>>> 87f9748d6d952d90f87f3935ee02aa229d1fd1c6
