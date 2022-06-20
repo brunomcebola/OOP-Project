@@ -18,6 +18,9 @@ public class Card {
   private final int value;
   private final int rank;
 
+  /**
+     * Constructor of the Class which has Exceptions
+     */
   public Card(int value, int rank)
       throws InvalidCardValueException, InvalidCardRankException, InvalidCardValueAndRankException {
     boolean invalidValue = false;
@@ -43,13 +46,19 @@ public class Card {
     this.value = value;
     this.rank = rank;
   }
-
+  /**
+     * Overload of the main constructor
+     */
   public Card(char value, char rank)
       throws InvalidCardValueException, InvalidCardRankException, InvalidCardValueAndRankException {
     this(valueToInt(value), rankToInt(rank));
 
   }
 
+  /**
+     * Override of the toString function to show
+     * the cards in a right way
+     */
   @Override
   public String toString() {
     if (value >= 2 && value <= 9)
@@ -69,7 +78,10 @@ public class Card {
 
     return "K" + ranks[rank - 1];
   }
-
+  /**
+     * Override of the hashCode to verify equals
+     * in the right way
+     */
   @Override
   public int hashCode() {
     int res = 1;
@@ -100,6 +112,11 @@ public class Card {
     return true;
   }
 
+  /**
+   * Generate all 52 cards and return them in an ArrayList.
+   * 
+   * @return An ArrayList of Card objects.
+   */
   public static ArrayList<Card> generateAllCards()
       throws InvalidCardValueException, InvalidCardRankException, InvalidCardValueAndRankException {
 
@@ -114,6 +131,13 @@ public class Card {
     return cardsList;
   }
 
+  /**
+   * If the rank is a spade, return 1. If the rank is a heart, return 2. If the rank is a club, return
+   * 3. If the rank is a diamond, return 4. Otherwise, throw an exception.
+   * 
+   * @param rank The rank of the card.
+   * @return The rank of the card as an integer.
+   */
   static private int rankToInt(char rank) throws InvalidCardRankException {
     if (rank == 'S')
       return 1;
@@ -130,14 +154,30 @@ public class Card {
     throw new InvalidCardRankException();
   }
 
+  /**
+   * This function returns the value of the variable value.
+   * 
+   * @return The value of the enum.
+   */
   public int getValue() {
     return this.value;
   }
 
+  /**
+   * This function returns the rank of the card.
+   * 
+   * @return The rank of the card.
+   */
   public int getRank() {
     return this.rank;
   }
 
+  /**
+   * It converts a card value to an integer
+   * 
+   * @param value The value of the card.
+   * @return The value of the card.
+   */
   static private int valueToInt(char value) throws InvalidCardValueException {
     if (value == 'A')
       return 1;

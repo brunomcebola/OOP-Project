@@ -7,11 +7,18 @@ import exceptions.cardGroupExceptions.*;
 
 public abstract class CardGroup {
   protected ArrayList<Card> cards;
-
+  /**
+     * Constructor of the Class
+     */
   public CardGroup() {
     cards = new ArrayList<Card>();
   }
 
+  /**
+   * This function takes an ArrayList of Cards and adds them to the cards ArrayList.
+   * 
+   * @param cardsList The list of cards to be uploaded to the deck.
+   */
   public final void uploadCards(ArrayList<Card> cardsList)
       throws InvalidCardValueException, InvalidCardRankException,
       InvalidCardValueAndRankException {
@@ -23,14 +30,30 @@ public abstract class CardGroup {
     }
   }
 
+  /**
+   * Returns the number of cards in the deck.
+   * 
+   * @return The size of the cards arraylist.
+   */
   public final int getSize() {
     return cards.size();
   }
 
+  /**
+   * This function returns a copy of the cards array.
+   * 
+   * @return An ArrayList of Card objects.
+   */
   public final ArrayList<Card> getAllCards() {
     return cards;
   }
 
+  /**
+   * If the position is invalid, throw an exception.
+   * 
+   * @param position The position of the card in the hand.
+   * @return A card object
+   */
   public final Card getCard(int position) throws InvalidPositionException {
     if (position >= cards.size())
       throw new InvalidPositionException();
@@ -38,6 +61,10 @@ public abstract class CardGroup {
     return cards.get(position);
   }
 
+  /**
+     * Override of the toString method that returns a 
+     * string representation of the CardGroup object.
+     */
   @Override
   public String toString() {
     StringBuilder str = new StringBuilder();
