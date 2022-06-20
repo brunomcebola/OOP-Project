@@ -178,7 +178,7 @@ public class GameSimulator extends Game {
             return holdToSwap(hold); // 31
         }
         // TODO:
-        else if ((hold = this.hand.checkInsideStraight(4)) != null) {
+        else if ((hold = this.hand.checkInsideStraight(4, false)) != null) {
             return holdToSwap(hold); // 32
         }
 

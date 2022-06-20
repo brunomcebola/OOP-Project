@@ -56,7 +56,7 @@ public abstract class CardGroup {
    * @return ArrayList<Card> which is the hand sorted
    */
   public ArrayList<Card> getSortedCards() {
-    ArrayList<Card> sorted = cards;
+    ArrayList<Card> sorted = new ArrayList<Card>(cards);
     Collections.sort(sorted, new Comparator<Card>() {
       @Override
       public int compare(Card card1, Card card2) {

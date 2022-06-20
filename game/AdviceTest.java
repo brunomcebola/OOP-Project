@@ -60,6 +60,7 @@ public class AdviceTest {
         }
 
         if (hand.checkFlush('N', 5) != null) {
+
             return "4. Straight, flush, full house"; // 4
         }
 
@@ -176,7 +177,7 @@ public class AdviceTest {
             return "31. Jack, Queen or King"; // 31
         }
 
-        if (hand.checkInsideStraight(4) != null) {
+        if (hand.checkInsideStraight(4, false) != null) {
             return "32. 4 to an inside straight with no high cards"; // 32
         }
 
