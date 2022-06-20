@@ -30,7 +30,8 @@ public class GameSimulator extends Game {
      * assumes
      * that the Ace is alone.
      *
-     * @return An Integer ArrayList, swap, with the indexes of the cards that are going to be swapped
+     * @return An Integer ArrayList, swap, with the indexes of the cards that are
+     *         going to be swapped
      */
     public ArrayList<Integer> getAdvice() {
 
@@ -58,7 +59,7 @@ public class GameSimulator extends Game {
             return holdToSwap(hold); // 3
         }
 
-        else if ((hold = this.hand.checkStraight(5)) != null) {
+        else if ((hold = this.hand.checkStraight()) != null) {
             return holdToSwap(hold); // 4
         } else if ((hold = this.hand.checkFlush('N', 5)) != null) {
             return holdToSwap(hold); // 4

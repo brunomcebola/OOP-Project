@@ -20,7 +20,6 @@ public class Hand extends CardGroup {
     }
 
     /**
-     * TODO:
      * Recovers the indexes of the hand, given the input of a sorted hand.
      * 
      * @param idxOfSortedHand list with all the indexes of the sorted hand that
@@ -40,6 +39,198 @@ public class Hand extends CardGroup {
         }
 
         return idxOutPut;
+    }
+
+    private ArrayList<Integer> checkSequence(ArrayList<Card> hand, int startIdx, int seq, int size) {
+        ArrayList<Integer> idList = new ArrayList<Integer>();
+
+        int idx;
+
+        for (Card card2 : hand) {
+            idx = hand.indexOf(card2);
+            if (idx < startIdx)
+                continue;
+
+            seq++;
+            if (card2.getValue() == seq) {
+                idList.add(idx);
+
+                if (idList.size() == size) {
+                    return idList;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Verifies if there is a Straight in the hand
+     * 
+     * @param cap number of cards in the Straight group wanted
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed
+     *         to be hold, null if there is not a Straight in the hand
+     */
+    public ArrayList<Integer> checkStraight() {
+        ArrayList<Integer> aux = new ArrayList<Integer>();
+
+        ArrayList<Card> sortedHand = this.getSortedCards();
+
+        Card card1 = sortedHand.get(0);
+
+        aux = this.checkSequence(sortedHand, 1, card1.getValue(), 4);
+
+        if (aux != null) {
+            aux.add(0);
+
+            return aux;
+        }
+
+        if (card1.getValue() == 1) {
+            aux = this.checkSequence(sortedHand, 1, 9, 4);
+
+            if (aux != null) {
+                aux.add(0);
+
+                return aux;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Verifies if there is a Outside Straight Flush in the hand
+     * 
+     * @param cap number of cards in the Outside Straight group wanted
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed
+     *         to be hold, null if there is not a Outside Straight in the hand
+     */
+    public ArrayList<Integer> checkOusideStraight(int cap) {
+        ArrayList<Integer> aux = new ArrayList<Integer>();
+
+        ArrayList<Card> sortedHand = this.getSortedCards();
+
+        int idx;
+
+        Card card1 = sortedHand.get(0);
+
+        for (Card card : sortedHand) {
+            idx = sortedHand.indexOf(card);
+
+            if (idx > sortedHand.size() - cap)
+                break;
+
+            aux = this.checkSequence(sortedHand, idx + 1, card1.getValue(), cap - 1);
+
+            if (aux != null) {
+
+                aux.add(idx);
+                
+                for (int s : aux) {
+                    if (sortedHand.get(s).getValue() == 1) {
+                        return null;
+                    }
+                }
+
+                return sortedToUnsortedIdx(aux, sortedHand);
+            }
+        }
+
+        return null;
+
+    }
+
+    /**
+     * Verifies if there is a Inside Straight Flush in the hand
+     * 
+     * @param cap number of cards in the Inside Straight group wanted
+     * @return ArrayList<Integer> of all the indexes of the cards that are supposed
+     *         to be hold, null if there is not a Inside Straight in the hand
+     */
+    public ArrayList<Integer> checkInsideStraight(int cap) {
+        /* ArrayList<Integer> aux = new ArrayList<Integer>();
+
+        ArrayList<Card> sortedHand = this.getSortedCards();
+
+        int idx1;
+        int idx2;
+
+        int seq = 0;
+
+        // check straight if exists an Ace
+        if (sortedHand.get(0).getValue() == 1) {
+            // check for edges
+            aux = checkStraight(cap);
+            if (aux != null) {
+                for (int i : aux) {
+                    if (cards.get(i).getValue() == 1)
+                        return aux;
+                }
+            }
+        }
+
+        // reset auxiliar variable
+        aux = new ArrayList<Integer>();
+
+        for (Card card1 : sortedHand) {
+            idx1 = sortedHand.indexOf(card1);
+            if (idx1 > sortedHand.size() - cap)
+                break;
+
+            seq = card1.getValue();
+            aux.add(idx1);
+
+            // if it is an ace check if it's "counted as high card"
+            if (seq == 1) {
+
+                seq = 9; // starts on 9 because the next high card
+                         // is a 10, and since cards are sorted
+                         // it as to be like this.
+
+                for (Card card2 : sortedHand) {
+                    idx2 = sortedHand.indexOf(card2);
+                    if (idx2 <= idx1)
+                        continue;
+
+                    seq++;
+                    if (seq != card2.getValue()) {
+                        aux.add(idx2);
+                    }
+
+                }
+
+                if (aux.size() == cap) {
+                    return sortedToUnsortedIdx(aux, sortedHand);
+                }
+                aux.clear();
+
+                seq = card1.getValue();
+                aux.add(idx1);
+
+            }
+
+            for (Card card2 : sortedHand) {
+                idx2 = sortedHand.indexOf(card2);
+                if (idx2 <= idx1)
+                    continue;
+
+                seq++;
+                if (seq != card2.getValue()) {
+                    aux.add(idx2);
+                }
+
+            }
+
+            if (aux.size() == cap) {
+                return sortedToUnsortedIdx(aux, sortedHand);
+            }
+
+            aux.clear();
+        } */
+
+        return null;
+
     }
 
     /**
@@ -139,7 +330,7 @@ public class Hand extends CardGroup {
             return null;
         }
 
-        idxOutput2 = checkStraight(cap);
+        idxOutput2 = checkStraight();
 
         if (idxOutput2 != null) {
             count = 0;
@@ -152,7 +343,6 @@ public class Hand extends CardGroup {
             }
             if (count == cap)
                 return idxOutput1;
-
         }
 
         idxOutput2 = checkInsideStraight(cap);
@@ -189,187 +379,6 @@ public class Hand extends CardGroup {
         return null;
     }
     // TODO: straight flush - cap = 5
-
-    /**
-     * Verifies if there is a Outside Straight Flush in the hand
-     * 
-     * @param cap number of cards in the Outside Straight group wanted
-     * @return ArrayList<Integer> of all the indexes of the cards that are supposed
-     *         to be hold, null if there is not a Outside Straight in the hand
-     */
-    public ArrayList<Integer> checkOusideStraight(int cap) {
-        // TODO:
-
-        ArrayList<Integer> idxOutput = new ArrayList<Integer>();
-
-        idxOutput = checkStraight(cap);
-        if (idxOutput == null)
-            return null;
-
-        for (int i : idxOutput) {
-            if (cards.get(i).getValue() == 1)
-                return null;
-        }
-
-        return idxOutput;
-    }
-
-    /**
-     * Verifies if there is a Inside Straight Flush in the hand
-     * 
-     * @param cap number of cards in the Inside Straight group wanted
-     * @return ArrayList<Integer> of all the indexes of the cards that are supposed
-     *         to be hold, null if there is not a Inside Straight in the hand
-     */
-    public ArrayList<Integer> checkInsideStraight(int cap) {
-        // TODO:
-
-        ArrayList<Integer> aux = new ArrayList<Integer>();
-
-        // 568KQ - A239T - 45QKA / A2789 -> cap = 3
-
-        int idx1;
-        int idx2;
-
-        Card newCard, auxCard;
-        int count = 1;
-        int seq = 0, auxSeq = 0;
-        ArrayList<Card> sortedHand = getSortedCards();
-
-        // check straight if exists an Ace
-        if (sortedHand.get(0).getValue() == 1) {
-            // check for edges
-            aux = checkStraight(cap);
-            if (aux != null) {
-                for (int i : aux) {
-                    if (cards.get(i).getValue() == 1)
-                        return aux;
-                }
-            }
-        }
-
-        // reset auxiliar variable
-        aux = new ArrayList<Integer>();
-
-        for (Card card1 : sortedHand) {
-            idx1 = sortedHand.indexOf(card1);
-            if (idx1 > sortedHand.size() - cap)
-                break;
-
-            seq = card1.getValue();
-            aux.add(idx1);
-
-            // if it is an ace check if it's "counted as high card"
-            if (seq == 1) {
-
-                seq = 9; // starts on 9 because the next high card
-                         // is a 10, and since cards are sorted
-                         // it as to be like this.
-
-                for (Card card2 : sortedHand) {
-                    idx2 = sortedHand.indexOf(card2);
-                    if (idx2 <= idx1)
-                        continue;
-
-                    seq++;
-                    if (seq != card2.getValue()) {
-                        aux.add(idx2);
-                    }
-
-                }
-
-                if (aux.size() == cap) {
-                    return sortedToUnsortedIdx(aux, sortedHand);
-                }
-                aux.clear();
-
-                seq = card1.getValue();
-                aux.add(idx1);
-
-            }
-
-            for (Card card2 : sortedHand) {
-                idx2 = sortedHand.indexOf(card2);
-                if (idx2 <= idx1)
-                    continue;
-
-                seq++;
-                if (seq != card2.getValue()) {
-                    aux.add(idx2);
-                }
-
-            }
-
-            if (aux.size() == cap) {
-                return sortedToUnsortedIdx(aux, sortedHand);
-            }
-
-            aux.clear();
-        }
-
-        return null;
-
-        /*
-         * // check for seq, but this time
-         * for (int i = 0; i < N_CARDS_ON_HAND - cap + 1; i++) {
-         * count = 1;
-         * newCard = sortedHand.get(i);
-         * 
-         * seq = newCard.getValue();
-         * aux.add(i);
-         * // if it is an ace check if it's "counted as high card"
-         * if (seq == 1) {
-         * auxSeq = 9; // starts on 9 because the next high card
-         * // is a 10, and since cards are sorted
-         * // it as to be like this.
-         * 
-         * for (int j = auxSeq + 1; j < auxSeq + 5; j++) {
-         * for (int k = i + 1; k < N_CARDS_ON_HAND; k++) {
-         * auxCard = sortedHand.get(k);
-         * 
-         * if (auxCard.getValue() == j) {
-         * count++;
-         * aux.add(k);
-         * }
-         * }
-         * }
-         * 
-         * if (count == cap) {
-         * return sortedToUnsortedIdx(aux, sortedHand);
-         * }
-         * aux.clear();
-         * seq = newCard.getValue();
-         * aux.add(i);
-         * count = 1;
-         * }
-         * 
-         * for (int j = seq + 1; j < seq + 5; j++) {
-         * for (int k = 0; k < N_CARDS_ON_HAND; k++) {
-         * if (k == i)
-         * continue;
-         * auxCard = sortedHand.get(k);
-         * if (j == 13) {
-         * if (auxCard.getValue() == 1) {
-         * count++;
-         * aux.add(k);
-         * }
-         * }
-         * if (auxCard.getValue() == j) {
-         * count++;
-         * aux.add(k);
-         * }
-         * }
-         * }
-         * 
-         * if (count == 4) {
-         * return sortedToUnsortedIdx(aux, sortedHand);
-         * }
-         * aux.clear();
-         * 
-         * }
-         * return null;
-         */
-    }
 
     /**
      * Verifies if there is a Four to Inside With High Cards in the hand
@@ -437,97 +446,6 @@ public class Hand extends CardGroup {
         return null;
     }
     // TODO: royal flush - cap = 5
-
-    /**
-     * Verifies if there is a Straight in the hand
-     * 
-     * @param cap number of cards in the Straight group wanted
-     * @return ArrayList<Integer> of all the indexes of the cards that are supposed
-     *         to be hold, null if there is not a Straight in the hand
-     */
-    // !
-    public ArrayList<Integer> checkStraight(int cap) {
-        ArrayList<Integer> aux = new ArrayList<Integer>();
-
-        ArrayList<Card> sortedHand = this.getSortedCards();
-
-        int idx1;
-        int idx2;
-
-        int seq = 0;
-
-        // 568QK - A234T - A45QK / A2789 -> cap = 3
-
-        // if need to have straight, it needs 5 seq, therefore
-        // it just needs to check once, if it is 4 to straight
-        // it only needs to check twice, not all hands
-        for (Card card1 : sortedHand) {
-            idx1 = sortedHand.indexOf(card1);
-            if (idx1 > sortedHand.size() - cap)
-                break;
-
-            seq = card1.getValue();
-            aux.add(idx1);
-
-            for (Card card2 : sortedHand) {
-                idx2 = sortedHand.indexOf(card2);
-                if (idx2 <= idx1)
-                    continue;
-
-                seq++;
-                if (seq != card2.getValue()) {
-                    break;
-                }
-
-                aux.add(idx2);
-
-                if (aux.size() == cap) {
-                    return sortedToUnsortedIdx(aux, sortedHand);
-                }
-            }
-
-            aux.clear();
-
-            // check for Ace
-            seq = card1.getValue();
-
-            if (seq == 1) {
-                Collections.reverse(sortedHand);
-
-                seq = 14;
-
-                idx1 = sortedHand.size() - 1;
-
-                aux.add(idx1);
-
-                for (Card card2 : sortedHand) {
-                    idx2 = sortedHand.indexOf(card2);
-                    if (idx2 >= idx1)
-                        continue;
-
-                    seq--;
-                    if (seq != card2.getValue()) {
-                        break;
-                    }
-
-                    aux.add(idx2);
-
-                    if (aux.size() == cap) {
-                        return sortedToUnsortedIdx(aux, sortedHand);
-                    }
-                }
-
-                Collections.reverse(sortedHand);
-
-                aux.clear();
-            }
-
-        }
-
-        return null;
-
-    }
-    // TODO: straight - cap = 5
 
     /**
      * Verifies if there is a Three to Straight Flush in the hand
@@ -1183,7 +1101,7 @@ public class Hand extends CardGroup {
             return 6;
         } else if (checkFlush('N', 5) != null) {
             return 7;
-        } else if (checkStraight(5) != null) {
+        } else if (checkStraight() != null) {
             return 8;
         } else if (checkThreeOfAKind() != null) {
             return 9;

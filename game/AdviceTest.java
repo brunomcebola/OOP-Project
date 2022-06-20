@@ -55,7 +55,7 @@ public class AdviceTest {
             return "3. Three aces"; // 3
         }
 
-        if (hand.checkStraight(5) != null) {
+        if (hand.checkStraight() != null) {
             return "4. Straight, flush, full house"; // 4
         }
 
