@@ -17,12 +17,16 @@ public abstract class Game implements GameInterface {
   private boolean hasDealt;
   private boolean hasSwap;
 
+  private boolean verbose;
+
   public Game(int credits) throws Exception {
     this.bet = 0;
     this.lastBet = 0;
 
     this.hasDealt = false;
     this.hasSwap = false;
+
+    this.verbose = false;
 
     this.hand = new Hand();
     this.deck = new Deck();
@@ -33,6 +37,10 @@ public abstract class Game implements GameInterface {
   }
 
   protected abstract ArrayList<Card> getCardsList() throws Exception;
+
+  public final void setVerbose(boolean sel) {
+    this.verbose = sel;
+  }
 
   public final void createDeck() throws Exception {
     this.deck.uploadCards(this.getCardsList());
@@ -67,6 +75,9 @@ public abstract class Game implements GameInterface {
     this.currCredits -= bet;
 
     this.stats.registerBet(bet);
+
+    if (this.verbose)
+      System.out.println("player is betting " + bet);
   }
 
   public final void placeBet() throws Exception {
@@ -87,11 +98,13 @@ public abstract class Game implements GameInterface {
     if (this.hasDealt)
       throw new InvalidDealException();
 
-    // create hand
     for (int i = 0; i < 5; i++)
       this.hand.appendCard(this.deck.drawCard());
 
     this.hasDealt = true;
+
+    if (this.verbose)
+      System.out.println("player's hand " + this.hand);
   }
 
   public final void swapCards(ArrayList<Integer> swapId) throws Exception {
@@ -109,6 +122,9 @@ public abstract class Game implements GameInterface {
 
     for (int s : swapId)
       this.hand.swapCard(s, this.deck.drawCard());
+
+    if (this.verbose)
+      System.out.println("player's hand " + this.hand);
   }
 
   public final void saveStatistics(int handSel) {
@@ -126,9 +142,9 @@ public abstract class Game implements GameInterface {
   public final void endRound() {
     int gain = 0;
 
-    int handClassification = this.hand.classify();
+    int handClass = this.hand.classify();
 
-    switch (handClassification) {
+    switch (handClass) {
       case 1:
         if (bet == 5)
           gain = 4000;
@@ -172,28 +188,37 @@ public abstract class Game implements GameInterface {
         break;
     }
 
+    if (handClass >= 3 && handClass <= 5) {
+      handClass = 3;
+    } else if (handClass >= 6) {
+      handClass -= 2;
+    }
+
     this.currCredits += gain;
 
     this.stats.registerGain(gain);
 
-    this.stats.registerHand(handClassification);
+    this.stats.registerHand(handClass);
 
     this.bet = 0;
 
     this.hand = new Hand();
 
     this.hasDealt = false;
+
+    if (this.verbose) {
+      String[] hands = { "ROYAL FLUSH", "STRAIGHT FLUSH", "FOUR OF A KIND", "FULL HOUSE", "FLUSH", "STRAIGHT",
+          "THREE OF  KIND", "TWO PAIR", "JACKS OR BETTER" };
+
+      if (gain != 0)
+        System.out.println("player wins with a " + hands[handClass - 1] + " and his credit is " + this.currCredits);
+      else
+        System.out.println("player loses and his credits is " + this.currCredits);
+
+    }
   }
 
   // TODO: delete below - test porpuses only
-
-  public void printHand() {
-    int i = 1;
-    System.out.println("Hand:");
-    for (Card c : this.hand.getAllCards()) {
-      System.out.println(i++ + ": " + c);
-    }
-  }
 
   public void printDeck() {
     int i = 1;

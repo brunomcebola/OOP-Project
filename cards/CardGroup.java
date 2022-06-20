@@ -14,14 +14,11 @@ public abstract class CardGroup {
 
   public final void uploadCards(ArrayList<Card> cardsList)
       throws InvalidCardValueException, InvalidCardRankException,
-      InvalidCardValueAndRankException, DuplicateCardException {
+      InvalidCardValueAndRankException {
 
     this.cards = new ArrayList<Card>();
 
     for (Card c : cardsList) {
-      if (this.cards.contains(c))
-        throw new DuplicateCardException(c.toString());
-
       this.cards.add(c);
     }
   }
@@ -39,6 +36,17 @@ public abstract class CardGroup {
       throw new InvalidPositionException();
 
     return cards.get(position);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder str = new StringBuilder();
+
+    for (Card card : this.cards) {
+      str.append(card + " ");
+    }
+
+    return str.toString();
   }
 
   /**

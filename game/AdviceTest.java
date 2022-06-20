@@ -35,7 +35,6 @@ public class AdviceTest {
     }
 
     public String getAdvice(Hand hand) {
-        
         if (hand.checkStraightFlush(5) != null) {
             return "1. Straight flush, four of a kind, royal flush"; // 1
         }
