@@ -103,15 +103,15 @@ public class AdviceTest {
         if (hand.checkAKQJUnsuited() != null) {
             return "13. AKQJ unsuited"; // 13
         }
-        System.out.println("cucu");
+        
         if (hand.checkThreeToStraightFlush(1) != null) {
             return "14. 3 to a straight flush (type 1)"; // 14
         }
-        System.out.println("cucu");
+        System.out.println("cucu2");
         if (hand.checkFourToInsideWithHigh(3) != null) {
             return "15. 4 to an inside straight with 3 high cards"; // 15
         }
-
+        System.out.println("cucu1");
         if (hand.checkQJS() != null) {
             return "16. QJ suited"; // 16
         }

@@ -231,7 +231,7 @@ public class Hand extends CardGroup {
         Card newCard, auxCard;
         int count = 1;
         int seq = 0, auxSeq = 0;
-        ArrayList<Card> handSorted = sort();
+        ArrayList<Card> sortedHand = getSortedCards();
 
         // check for edges
         aux = checkStraight(cap);
@@ -248,7 +248,7 @@ public class Hand extends CardGroup {
         // check for seq, but this time
         for (int i = 0; i < N_CARDS_ON_HAND - cap + 1; i++) {
             count = 1;
-            newCard = handSorted.get(i);
+            newCard = sortedHand.get(i);
 
             seq = newCard.getValue();
             aux.add(i);
@@ -260,7 +260,7 @@ public class Hand extends CardGroup {
 
                 for (int j = auxSeq + 1; j < auxSeq + 5; j++) {
                     for (int k = i + 1; k < N_CARDS_ON_HAND; k++) {
-                        auxCard = handSorted.get(k);
+                        auxCard = sortedHand.get(k);
 
                         if (auxCard.getValue() == j) {
                             count++;
@@ -270,7 +270,7 @@ public class Hand extends CardGroup {
                 }
 
                 if (count == cap) {
-                    return auxToIdxOutPut(aux, handSorted);
+                    return auxToIdxOutPut(aux, sortedHand);
                 }
                 aux.clear();
                 seq = newCard.getValue();
@@ -282,7 +282,7 @@ public class Hand extends CardGroup {
                 for (int k = 0; k < N_CARDS_ON_HAND; k++) {
                     if (k == i)
                         continue;
-                    auxCard = handSorted.get(k);
+                    auxCard = sortedHand.get(k);
                     if (j == 13) {
                         if (auxCard.getValue() == 1) {
                             count++;
@@ -297,7 +297,7 @@ public class Hand extends CardGroup {
             }
 
             if (count == 4) {
-                return auxToIdxOutPut(aux, handSorted);
+                return auxToIdxOutPut(aux, sortedHand);
             }
             aux.clear();
 
@@ -377,63 +377,76 @@ public class Hand extends CardGroup {
      * @return ArrayList<Integer> of all the indexes of the cards that are supposed
      *         to be hold, null if there is not a Straight in the hand
      */
+    // !
     public ArrayList<Integer> checkStraight(int cap) {
-        // TODO: verify everything
         ArrayList<Integer> aux = new ArrayList<Integer>();
 
-        Card newCard, auxCard;
-        int count = 1;
+        ArrayList<Card> sortedHand = this.getSortedCards();
+
+        int idx1;
+        int idx2;
+
         int seq = 0;
-        ArrayList<Card> handSorted = sort();
 
         // if need to have straight, it needs 5 seq, therefore
         // it just needs to check once, if it is 4 to straight
         // it only needs to check twice, not all hands
-        for (int i = 0; i < N_CARDS_ON_HAND - cap + 1; i++) {
-            count = 1;
-            newCard = handSorted.get(i);
+        for (Card card1 : sortedHand) {
+            idx1 = sortedHand.indexOf(card1);
+            if (idx1 > sortedHand.size() - cap)
+                break;
 
-            seq = newCard.getValue();
-            aux.add(i);
+            seq = card1.getValue();
+            aux.add(idx1);
+
             // if it is an ace check if it's "counted as high card"
             if (seq == 1) {
+
                 seq = 9; // starts on 9 because the next high card
                          // is a 10, and since cards are sorted
                          // it as to be like this.
-                for (int j = i + 1; j < N_CARDS_ON_HAND; j++) {
+
+                for (Card card2 : sortedHand) {
+                    idx2 = sortedHand.indexOf(card2);
+                    if (idx2 <= idx1)
+                        continue;
+
                     seq++;
-                    auxCard = handSorted.get(j);
-                    if (seq == auxCard.getValue()) {
-                        count++;
+                    if (seq == card2.getValue()) {
+                        aux.add(idx2);
                     }
-                    aux.add(j);
                 }
 
-                seq = newCard.getValue();
-                if (count == cap) {
-                    return auxToIdxOutPut(aux, handSorted);
+                if (aux.size() == cap) {
+                    return auxToIdxOutPut(aux, sortedHand);
                 }
                 aux.clear();
-                aux.add(i);
+
+                seq = card1.getValue();
+                aux.add(idx1);
+
             }
 
-            for (int j = i + 1; j < N_CARDS_ON_HAND; j++) {
+            for (Card card2 : sortedHand) {
+                idx2 = sortedHand.indexOf(card2);
+                if (idx2 <= idx1)
+                    continue;
+
                 seq++;
-                auxCard = handSorted.get(j);
-                if (seq == auxCard.getValue()) {
-                    count++;
+                if (seq == card2.getValue()) {
+                    aux.add(idx2);
                 }
-                aux.add(j);
             }
 
-            if (count == cap) {
-                return auxToIdxOutPut(aux, handSorted);
+            if (aux.size() == cap) {
+                return auxToIdxOutPut(aux, sortedHand);
             }
+
             aux.clear();
-
         }
 
         return null;
+
     }
     // TODO: straight - cap = 5
 
@@ -448,13 +461,15 @@ public class Hand extends CardGroup {
     public ArrayList<Integer> checkThreeToStraightFlush(int type) {
         ArrayList<Integer> aux = new ArrayList<Integer>();
 
-        ArrayList<Card> handSorted = new ArrayList<Card>();
+        ArrayList<Card> sortedHand = new ArrayList<Card>();
         ArrayList<Card> auxHand = new ArrayList<Card>();
-        handSorted = sort();
+        sortedHand = getSortedCards();
 
         int gap = 0;
         int numberOfHighCards = 0;
-        int idxMinOne = 50, idxMinTwo = 50, idxMinThree = 50;
+
+        int minOne = 50, minTwo = 50, minThree = 50;
+        int idxMinOne = 0, idxMinTwo = 0, idxMinThree = 0;
 
         // mudar um bocado o straight flush, para aceitar o cap...
         // mudar o inside o outside para cap
@@ -466,26 +481,24 @@ public class Hand extends CardGroup {
         auxHand.add(cards.get(aux.get(0)));
         auxHand.add(cards.get(aux.get(1)));
         auxHand.add(cards.get(aux.get(2)));
-     
-        // check for first and second minimiums
-        for (int i = 0; i < auxHand.size(); i++) {
-            for (Card card : auxHand) {
-                if (card.getValue() <= idxMinOne) {
-                    idxMinOne = card.getValue();
-                    continue;
-                }
-                if (card.getValue() <= idxMinTwo) {
-                    idxMinTwo = card.getValue();
-                    continue;
-                }
-                if (card.getValue() <= idxMinThree) {
-                    idxMinThree = card.getValue();
-                }
+
+        // check for 1st, 2nd and 3rd minimiums
+        for (Card card : auxHand) {
+            if (card.getValue() <= minOne) {
+                minOne = card.getValue();
+                idxMinOne = auxHand.indexOf(card);
+            } else if (card.getValue() <= minTwo) {
+                minTwo = card.getValue();
+                idxMinTwo = auxHand.indexOf(card);
+            } else if (card.getValue() <= minThree) {
+                minThree = card.getValue();
+                idxMinThree = auxHand.indexOf(card);
             }
         }
 
         // Gap is basically the difference between the first two minimums
-        gap = (idxMinThree - idxMinTwo - 1) + (idxMinTwo - idxMinOne - 1);
+        // gap = (idxMinThree - idxMinTwo - 1) + (idxMinTwo - idxMinOne - 1);
+
         // high cards for(count high cards)
         for (Card card : auxHand) {
             if (card.getValue() == 1 || card.getValue() == 10 || card.getValue() == 11 || card.getValue() == 12) {
@@ -494,20 +507,22 @@ public class Hand extends CardGroup {
         }
 
         // if high >= gap type 1 true
-        if (type == 1 && numberOfHighCards >= gap) {
-            if ((cards.get(idxMinOne).getValue() == 1 && cards.get(idxMinTwo).getValue() >= 2
-                    && cards.get(idxMinTwo).getValue() <= 4) || cards.get(idxMinOne).getValue() == 2) {
+        if (type == 1 && numberOfHighCards >= 2) {
+
+            if ((auxHand.get(idxMinOne).getValue() == 1 && auxHand.get(idxMinTwo).getValue() >= 2
+                    && auxHand.get(idxMinTwo).getValue() <= 4) || auxHand.get(idxMinOne).getValue() == 2) {
                 return null;
             }
-            return auxToIdxOutPut(aux, handSorted);
+
+            return auxToIdxOutPut(aux, sortedHand);
         }
 
         // if high < gap type 2 true
         if (type == 2 && numberOfHighCards < gap)
-            return auxToIdxOutPut(aux, handSorted);
+            return auxToIdxOutPut(aux, sortedHand);
         // if 2 gaps and 0 high cards type 3 true
         if (type == 3 && gap == 2 && numberOfHighCards == 0)
-            return auxToIdxOutPut(aux, handSorted);
+            return auxToIdxOutPut(aux, sortedHand);
 
         return null;
     }

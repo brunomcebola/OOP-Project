@@ -49,13 +49,13 @@ public class Main {
           System.out.println("Test mode");
           System.out.println("----------");
 
-          GameDebug game = new GameDebug(5, "test/cmd1.txt", "test/card1.txt");
+          /* GameDebug game = new GameDebug(5, "test/cmd1.txt", "test/card1.txt");
 
-          game.run();
+          game.run(); */
 
-          //AdviceTest test = new AdviceTest("test/big-card-file.txt");
+          AdviceTest test = new AdviceTest("test/big-card-file.txt");
 
-          //test.run();
+          test.run();
 
           break;
 
